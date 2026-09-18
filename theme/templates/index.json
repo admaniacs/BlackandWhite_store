@@ -1,0 +1,35 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-slab"
+    },
+    "categories": {
+      "type": "category-strip",
+      "blocks": {
+        "hoodies": { "type": "category", "settings": { "collection": "hoodies" } },
+        "tees": { "type": "category", "settings": { "collection": "tees" } },
+        "shirts": { "type": "category", "settings": { "collection": "shirts" } },
+        "shoes": { "type": "category", "settings": { "collection": "shoes" } },
+        "hats": { "type": "category", "settings": { "collection": "hats" } },
+        "watches": { "type": "category", "settings": { "collection": "watches" } }
+      },
+      "block_order": ["hoodies", "tees", "shirts", "shoes", "hats", "watches"]
+    },
+    "best_sellers": {
+      "type": "best-sellers",
+      "settings": {
+        "heading": "Best sellers",
+        "view_all_label": "View all",
+        "collection": "best-sellers",
+        "products_to_show": 4
+      }
+    },
+    "split_promo": {
+      "type": "lookbook-split"
+    },
+    "features": {
+      "type": "features-bar"
+    }
+  },
+  "order": ["hero", "categories", "best_sellers", "split_promo", "features"]
+}

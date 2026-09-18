@@ -1,0 +1,94 @@
+{
+  "general": {
+    "search": {
+      "placeholder": "Search",
+      "results_count": {
+        "one": "{{ count }} result",
+        "other": "{{ count }} results"
+      },
+      "no_results": "No results for \"{{ terms }}\"",
+      "suggestions": "Suggestions",
+      "collections": "Collections",
+      "recent": "Recent",
+      "products": "Products",
+      "view_all": "See all {{ count }} results",
+      "esc_to_close": "esc to close"
+    },
+    "cart": {
+      "title": "Cart",
+      "empty": "Your cart is empty",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "total": "Total",
+      "checkout": "Checkout",
+      "remove": "Remove",
+      "free_shipping_remaining": "{{ amount }} away from free shipping",
+      "free_shipping_reached": "You've unlocked free shipping",
+      "returns_note": "30-day returns · secure checkout",
+      "add_on_title": "Add {{ title }} for {{ price }}",
+      "view_cart": "View cart"
+    },
+    "newsletter": {
+      "placeholder": "email address",
+      "submit": "Join"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "size_guide": "Size guide",
+      "colour": "Colour",
+      "size": "Size",
+      "reviews_count": {
+        "one": "{{ count }} review",
+        "other": "{{ count }} reviews"
+      },
+      "quick_add": "Quick add"
+    }
+  },
+  "collections": {
+    "general": {
+      "filter": "Filter",
+      "filter_count": "Filter — {{ count }} active",
+      "clear_all": "Clear all",
+      "sort": "Sort",
+      "showing": "Showing {{ count }} of {{ total }}",
+      "load_more": "Load more",
+      "no_products": "No products found"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Orders",
+      "orders": "Orders",
+      "addresses": "Addresses",
+      "wishlist": "Wishlist",
+      "returns": "Returns",
+      "log_out": "Log out",
+      "member_since": "Member since {{ year }} · {{ count }} orders"
+    },
+    "orders": {
+      "track": "Track",
+      "reorder": "Reorder",
+      "invoice": "Invoice",
+      "start_return": "Start a return"
+    },
+    "login": {
+      "title": "Log in",
+      "email": "Email",
+      "password": "Password",
+      "sign_in": "Sign in",
+      "forgot_password": "Forgot password?",
+      "create_account": "Create account"
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create"
+    }
+  }
+}

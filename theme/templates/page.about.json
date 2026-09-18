@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "hero": { "type": "about-hero" },
+    "stats": { "type": "about-stats" },
+    "pricing": { "type": "about-pricing" }
+  },
+  "order": ["hero", "stats", "pricing"]
+}

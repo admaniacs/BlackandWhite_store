@@ -1,0 +1,127 @@
+{%- assign product_form_id = 'product-form-' | append: product.id -%}
+<nav class="bw-breadcrumb">Home / {{ product.collections.first.title | default: 'Shop' }} / {{ product.title }}</nav>
+
+<div class="bw-product-layout" data-product-section data-product-id="{{ product.id }}">
+  <div class="bw-product-gallery" data-product-gallery>
+    {%- for image in product.images limit: 4 -%}
+      <div class="bw-media-placeholder{% if forloop.first %} bw-product-gallery__main{% else %} bw-product-gallery__thumb{% endif %}" data-gallery-image data-media-id="{{ image.id }}">
+        <img src="{{ image | image_url: width: 1200 }}" alt="{{ image.alt | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+      </div>
+    {%- else -%}
+      <div class="bw-media-placeholder bw-media-placeholder--dark bw-product-gallery__main">front · 1200×1600</div>
+      <div class="bw-media-placeholder bw-media-placeholder--dark" style="grid-column:1;height:300px">back · 1200×1600</div>
+      <div class="bw-media-placeholder" style="grid-column:2;height:300px">cuff detail</div>
+    {%- endfor -%}
+  </div>
+
+  <div class="bw-buybox">
+    <div class="bw-buybox__title">{{ product.title }}</div>
+    <div class="bw-buybox__meta">
+      <span style="font:700 22px var(--font-ui)" data-product-price>{{ product.selected_or_first_available_variant.price | money }}</span>
+      {%- if product.metafields.reviews.rating.value -%}
+        <span class="bw-label-mono">{% render 'star-rating', rating: product.metafields.reviews.rating.value.rating %} {{ product.metafields.reviews.rating.value.rating }} · {{ product.metafields.reviews.rating_count.value }} {{ 'products.product.reviews_count' | t: count: product.metafields.reviews.rating_count.value }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- form 'product', product, id: product_form_id, data-product-form: 'true' -%}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
+
+      {%- for option in product.options_with_values -%}
+        <div class="bw-buybox__section" data-option-position="{{ forloop.index }}">
+          <div class="bw-buybox__section-label">
+            <span>{{ option.name }} — <span data-selected-option-value>{{ option.selected_value }}</span></span>
+            {%- if option.name == 'Size' -%}
+              <button type="button" style="text-decoration:underline" data-size-guide-open>{{ 'products.product.size_guide' | t }}</button>
+            {%- endif -%}
+          </div>
+
+          {%- if option.name == 'Color' or option.name == 'Colour' -%}
+            <div style="display:flex;gap:10px">
+              {%- for value in option.values -%}
+                <span
+                  class="bw-swatch{% if value == option.selected_value %} is-selected{% endif %}"
+                  data-color="{{ value | handleize }}"
+                  data-option-index="{{ forloop.parentloop.index0 }}"
+                  data-option-value="{{ value | escape }}"
+                  role="button" tabindex="0" aria-label="{{ value }}"
+                ></span>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <div class="bw-size-row">
+              {%- for value in option.values -%}
+                <span
+                  class="bw-size-chip{% if value == option.selected_value %} is-selected{% endif %}"
+                  data-option-index="{{ forloop.parentloop.index0 }}"
+                  data-option-value="{{ value | escape }}"
+                  role="button" tabindex="0"
+                >{{ value }}</span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+
+      <div class="bw-add-row">
+        <button type="submit" class="bw-btn" style="flex:1" data-add-to-cart {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+          <span data-add-to-cart-text>
+            {%- if product.selected_or_first_available_variant.available -%}
+              {{ 'products.product.add_to_cart' | t }} — {{ product.selected_or_first_available_variant.price | money }}
+            {%- else -%}
+              {{ 'products.product.sold_out' | t }}
+            {%- endif -%}
+          </span>
+        </button>
+        <button type="button" class="bw-wishlist-btn" aria-label="Add to wishlist">♥</button>
+      </div>
+      <div class="bw-label-mono" style="margin-top:10px">{{ section.settings.shipping_note }}</div>
+    {%- endform -%}
+
+    <div class="bw-size-guide" data-size-guide>
+      <div class="bw-size-guide__head">{{ 'products.product.size_guide' | t }} — measurements in inches</div>
+      {%- if product.metafields.custom.size_guide != blank -%}
+        {{ product.metafields.custom.size_guide }}
+      {%- else -%}
+        {%- render 'size-guide-table-fallback', product: product -%}
+      {%- endif -%}
+    </div>
+
+    <div class="bw-spec-grid">
+      {%- if product.metafields.custom.fabric != blank -%}
+        <div class="bw-spec-cell"><div class="bw-spec-cell__label">Fabric</div><div class="bw-spec-cell__value">{{ product.metafields.custom.fabric.value }}</div></div>
+      {%- endif -%}
+      {%- if product.metafields.custom.fit != blank -%}
+        <div class="bw-spec-cell"><div class="bw-spec-cell__label">Fit</div><div class="bw-spec-cell__value">{{ product.metafields.custom.fit.value }}</div></div>
+      {%- endif -%}
+      {%- if product.metafields.custom.origin != blank -%}
+        <div class="bw-spec-cell"><div class="bw-spec-cell__label">Origin</div><div class="bw-spec-cell__value">{{ product.metafields.custom.origin.value }}</div></div>
+      {%- endif -%}
+      {%- if product.metafields.custom.care != blank -%}
+        <div class="bw-spec-cell"><div class="bw-spec-cell__label">Care</div><div class="bw-spec-cell__value">{{ product.metafields.custom.care.value }}</div></div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<div class="bw-sticky-addbar" data-sticky-addbar>
+  <div>
+    <div class="bw-label-mono" data-sticky-variant-title>{{ product.selected_or_first_available_variant.title }}</div>
+    <div style="font:700 17px var(--font-ui)" data-sticky-price>{{ product.selected_or_first_available_variant.price | money }}</div>
+  </div>
+  <button type="submit" form="{{ product_form_id }}" class="bw-btn" style="flex:1" data-sticky-add-to-cart>{{ 'products.product.add_to_cart' | t }}</button>
+</div>
+
+<script type="application/json" data-product-json>
+  {{ product.variants | json }}
+</script>
+
+{% render 'product-reviews', product: product %}
+
+{% schema %}
+{
+  "name": "Product page",
+  "settings": [
+    { "type": "text", "id": "shipping_note", "label": "Shipping note", "default": "Free shipping over $75 · ships in 1–2 days" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,42 @@
+<div class="bw-account-layout">
+  {%- render 'account-nav', active: 'orders' -%}
+
+  <div style="padding:24px" class="bw-container">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <div class="bw-h2">{{ 'customer.account.title' | t }}</div>
+      <span class="bw-label-mono">Last 12 months ▾</span>
+    </div>
+
+    {%- paginate customer.orders by: 10 -%}
+      {%- if customer.orders.size == 0 -%}
+        <p class="bw-body" style="margin-top:18px">No orders yet.</p>
+      {%- else -%}
+        {%- for order in customer.orders -%}
+          <div class="bw-order-card{% if forloop.first %} is-active{% endif %}">
+            <div class="bw-order-card__head">
+              <span>{{ order.name }} · {{ order.created_at | date: '%d %b %Y' }}</span>
+              <span class="bw-order-card__status">{{ order.fulfillment_status_label }}</span>
+            </div>
+            {%- for line_item in order.line_items limit: 4 -%}
+              <div class="bw-order-card__line">
+                <div class="bw-media-placeholder" style="width:58px;height:74px;flex:none">
+                  {%- if line_item.image -%}<img src="{{ line_item.image | image_url: width: 120 }}" alt="{{ line_item.title | escape }}" loading="lazy">{%- endif -%}
+                </div>
+                <div style="flex:1">
+                  <div style="font:600 13px var(--font-ui);text-transform:uppercase">{{ line_item.title }}</div>
+                  <div class="bw-label-mono" style="margin-top:4px">{{ order.line_items.size }} item{% if order.line_items.size != 1 %}s{% endif %} · {{ order.total_price | money }}</div>
+                </div>
+                <a href="{{ order.customer_url }}" class="bw-btn bw-btn--outline bw-btn--sm" style="align-self:center">{{ 'customer.orders.track' | t }}</a>
+              </div>
+            {%- endfor -%}
+            <div class="bw-order-card__actions">
+              <a href="{{ order.customer_url }}">{{ 'customer.orders.reorder' | t }}</a>
+              <a href="{{ order.order_status_url }}">{{ 'customer.orders.invoice' | t }}</a>
+              <a href="{{ order.customer_url }}">{{ 'customer.orders.start_return' | t }}</a>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>

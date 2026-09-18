@@ -1,0 +1,56 @@
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:#000;border-top:1px solid #000">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'image' -%}
+        <div class="bw-media-placeholder{% if block.settings.dark %} bw-media-placeholder--dark{% endif %}" style="height:300px">
+          {%- if block.settings.image -%}
+            <img src="{{ block.settings.image | image_url: width: 900 }}" alt="" loading="lazy">
+          {%- else -%}{{ block.settings.placeholder_label }}{%- endif -%}
+        </div>
+      {%- when 'text' -%}
+        <div style="background:#fff;padding:26px;display:flex;flex-direction:column;justify-content:center">
+          <div class="bw-h2" style="font-size:24px;line-height:1.1">{{ block.settings.title }}</div>
+          <p class="bw-body" style="margin-top:10px">{{ block.settings.body }}</p>
+          <a href="{{ block.settings.link }}" class="bw-nav-link" style="text-decoration:underline;margin-top:14px">{{ block.settings.cta_text }} →</a>
+        </div>
+    {%- endcase -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Lookbook — feature row",
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "placeholder_label", "label": "Placeholder label" },
+        { "type": "checkbox", "id": "dark", "label": "Dark placeholder", "default": false }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Wear it out, not away" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Nine pieces, eighteen outfits. That's the whole point of a two-colour wardrobe." },
+        { "type": "text", "id": "cta_text", "label": "Link label", "default": "Shop the edit" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Lookbook — feature row",
+      "blocks": [
+        { "type": "image", "settings": { "placeholder_label": "look 04", "dark": false } },
+        { "type": "text" },
+        { "type": "image", "settings": { "placeholder_label": "look 05", "dark": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}

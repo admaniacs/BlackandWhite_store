@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "hero": { "type": "lookbook-hero" },
+    "top": { "type": "lookbook-top" },
+    "bottom": { "type": "lookbook-bottom" }
+  },
+  "order": ["hero", "top", "bottom"]
+}

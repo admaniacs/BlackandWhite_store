@@ -1,0 +1,38 @@
+<div class="bw-container">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;padding:30px 0 16px;flex-wrap:wrap;gap:10px">
+    <div class="bw-h2">{{ section.settings.heading }}</div>
+    {%- if section.settings.collection != blank -%}
+      <a href="{{ collections[section.settings.collection].url }}" class="bw-nav-link">{{ section.settings.view_all_label }} ({{ collections[section.settings.collection].products_count }}) →</a>
+    {%- endif -%}
+  </div>
+</div>
+<div class="bw-container" style="padding-bottom:34px">
+  <div class="bw-grid bw-grid--4">
+    {%- assign coll = collections[section.settings.collection] -%}
+    {%- if coll != blank -%}
+      {%- for product in coll.products limit: section.settings.products_to_show -%}
+        {%- render 'product-card', product: product, show_sizes: true -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..4) -%}
+        <div class="bw-product-card">
+          <div class="bw-media-placeholder bw-product-card__media">product · 900×1200</div>
+          <div class="bw-product-card__body"><span class="bw-product-card__title">Product title</span><span class="bw-price">$0</span></div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Best sellers",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Best sellers" },
+    { "type": "text", "id": "view_all_label", "label": "View all label", "default": "View all" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 2, "max": 8, "step": 1, "default": 4 }
+  ],
+  "presets": [{ "name": "Best sellers" }]
+}
+{% endschema %}

@@ -1,0 +1,8 @@
+{%- comment -%} Fallback table shown when no product.metafields.custom.size_guide is set. Override via that metafield for accurate per-product measurements. {%- endcomment -%}
+{%- assign current_size = product.selected_or_first_available_variant.title | split: ' / ' | last -%}
+<div class="bw-size-guide__table">
+  <span class="is-header">Size</span><span class="is-header">Chest</span><span class="is-header">Length</span><span class="is-header">Sleeve</span><span class="is-header">Fit</span>
+  <span{% if current_size == 'S' %} class="is-current"{% endif %}>S</span><span{% if current_size == 'S' %} class="is-current"{% endif %}>21</span><span{% if current_size == 'S' %} class="is-current"{% endif %}>26</span><span{% if current_size == 'S' %} class="is-current"{% endif %}>23</span><span{% if current_size == 'S' %} class="is-current"{% endif %}>Boxy</span>
+  <span{% if current_size == 'M' %} class="is-current"{% endif %}>M</span><span{% if current_size == 'M' %} class="is-current"{% endif %}>23</span><span{% if current_size == 'M' %} class="is-current"{% endif %}>27</span><span{% if current_size == 'M' %} class="is-current"{% endif %}>24</span><span{% if current_size == 'M' %} class="is-current"{% endif %}>Boxy</span>
+  <span{% if current_size == 'L' %} class="is-current"{% endif %}>L</span><span{% if current_size == 'L' %} class="is-current"{% endif %}>25</span><span{% if current_size == 'L' %} class="is-current"{% endif %}>28</span><span{% if current_size == 'L' %} class="is-current"{% endif %}>25</span><span{% if current_size == 'L' %} class="is-current"{% endif %}>Boxy</span>
+</div>

@@ -1,0 +1,39 @@
+<div class="bw-category-strip">
+  {%- for block in section.blocks -%}
+    {%- assign coll = collections[block.settings.collection] -%}
+    <a href="{{ coll.url | default: '#' }}">
+      {{ block.settings.label | default: coll.title }}
+      <div class="bw-category-strip__count">{{ coll.products_count | default: 0 }}</div>
+    </a>
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Category strip",
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "label", "label": "Label override" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Category strip",
+      "blocks": [
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}

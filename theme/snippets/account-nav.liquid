@@ -1,0 +1,13 @@
+{%- comment -%} Accepts: active ('orders' | 'addresses') {%- endcomment -%}
+<aside class="bw-account-nav">
+  <div class="bw-h3">{{ customer.name | default: customer.first_name }}</div>
+  {%- assign member_year = customer.created_at | date: '%Y' -%}
+  <div class="bw-label-mono" style="margin-top:4px">{{ 'customer.account.member_since' | t: year: member_year, count: customer.orders_count }}</div>
+  <nav class="bw-account-nav__list">
+    <a href="{{ routes.account_url }}" class="{% if active == 'orders' %}is-active{% endif %}">{{ 'customer.account.orders' | t }}</a>
+    <a href="{{ routes.account_addresses_url }}" class="{% if active == 'addresses' %}is-active{% endif %}">{{ 'customer.account.addresses' | t }}</a>
+    <a href="{{ routes.account_url }}#wishlist">{{ 'customer.account.wishlist' | t }}</a>
+    <a href="{{ routes.account_url }}#returns">{{ 'customer.account.returns' | t }}</a>
+    <a href="{{ routes.account_logout_url }}">{{ 'customer.account.log_out' | t }}</a>
+  </nav>
+</aside>

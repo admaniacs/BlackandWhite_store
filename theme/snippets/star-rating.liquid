@@ -1,0 +1,8 @@
+{%- comment -%} Accepts: rating (0-5 float) {%- endcomment -%}
+{%- assign full_stars = rating | at_most: 5 | floor -%}
+{%- assign has_half = false -%}
+{%- assign remainder = rating | minus: full_stars -%}
+{%- if remainder >= 0.5 -%}{%- assign has_half = true -%}{%- endif -%}
+{%- for i in (1..5) -%}
+  {%- if i <= full_stars -%}★{%- elsif has_half and i == full_stars | plus: 1 -%}★{%- else -%}☆{%- endif -%}
+{%- endfor -%}

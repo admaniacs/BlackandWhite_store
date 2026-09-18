@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "hero": {
+      "type": "watches-hero"
+    },
+    "grid": {
+      "type": "watches-grid"
+    },
+    "strap_promo": {
+      "type": "watches-strap-promo"
+    }
+  },
+  "order": ["hero", "grid", "strap_promo"]
+}

@@ -1,0 +1,46 @@
+<div class="bw-collection-hero">
+  <div>
+    <div class="bw-label-mono" style="color:#999">Home / Search</div>
+    <div class="bw-display" style="font-size:clamp(32px,5vw,56px);margin-top:8px">{% if search.terms != blank %}"{{ search.terms }}"{% else %}Search{% endif %}</div>
+  </div>
+  <p style="font:14px/1.5 var(--font-ui);color:#bbb;max-width:340px;margin:0">
+    {%- if search.performed -%}
+      {{ 'general.search.results_count' | t: count: search.results_count }}
+    {%- endif -%}
+  </p>
+</div>
+
+<form action="{{ routes.search_url }}" method="get" role="search" class="bw-container" style="padding-top:20px;padding-bottom:20px;display:flex;gap:8px">
+  <input type="search" name="q" value="{{ search.terms | escape }}" class="bw-field" placeholder="{{ 'general.search.placeholder' | t }}">
+  <input type="hidden" name="type" value="product">
+  <button type="submit" class="bw-btn">{{ 'general.search.placeholder' | t }}</button>
+</form>
+
+<div class="bw-container" style="padding-bottom:34px">
+  {%- paginate search.results by: 24 -%}
+    {%- if search.performed and search.results.size == 0 -%}
+      <p class="bw-body">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+    {%- else -%}
+      <div class="bw-grid bw-grid--3 bw-grid--flush">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}
+            {%- render 'product-card', product: item, show_sizes: false, quick_add: true -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if paginate.next -%}
+      <div class="bw-load-more">
+        <a href="{{ paginate.next.url }}" class="bw-btn bw-btn--outline">{{ 'collections.general.load_more' | t }}</a>
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Search results",
+  "settings": []
+}
+{% endschema %}

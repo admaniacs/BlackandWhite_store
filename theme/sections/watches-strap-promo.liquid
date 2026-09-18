@@ -1,0 +1,30 @@
+<div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #000" class="bw-split-media">
+  <div style="padding:26px">
+    <div class="bw-h2" style="font-size:26px">{{ section.settings.heading }}</div>
+    <p class="bw-body" style="margin-top:8px;max-width:420px">{{ section.settings.body }}</p>
+    {%- if section.settings.cta_text != blank -%}
+      <a href="{{ section.settings.cta_link }}" class="bw-btn bw-btn--outline" style="margin-top:16px">{{ section.settings.cta_text }}</a>
+    {%- endif -%}
+  </div>
+  <div class="bw-media-placeholder" style="height:260px;border-left:1px solid #000">
+    {%- if section.settings.image -%}
+      <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.heading | escape }}" loading="lazy">
+    {%- else -%}
+      strap flat-lay · 1200×520
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Strap promo",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Strap swap, no tools" },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Every case takes a 20mm quick-release. Canvas, leather, steel — all black, all white, $28 each." },
+    { "type": "text", "id": "cta_text", "label": "Button label", "default": "Shop straps" },
+    { "type": "url", "id": "cta_link", "label": "Button link" },
+    { "type": "image_picker", "id": "image", "label": "Image" }
+  ],
+  "presets": [{ "name": "Strap promo" }]
+}
+{% endschema %}

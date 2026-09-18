@@ -1,0 +1,45 @@
+{%- comment -%} Accepts: product. Uses the standard Shopify Product Reviews app metafields when installed, falls back to static sample content otherwise. {%- endcomment -%}
+{%- assign rating = product.metafields.reviews.rating.value.rating -%}
+{%- assign rating_count = product.metafields.reviews.rating_count.value -%}
+<div class="bw-reviews">
+  <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
+    <div class="bw-h2">Reviews</div>
+    {%- if rating -%}
+      <span class="bw-label-mono">{{ rating }} average · {{ rating_count }} {{ 'products.product.reviews_count' | t: count: rating_count }}</span>
+    {%- else -%}
+      <span class="bw-label-mono">4.6 average · 212 reviews · 91% would buy again</span>
+    {%- endif -%}
+  </div>
+
+  <div class="bw-grid bw-grid--3" style="margin-top:18px">
+    {%- if product.metafields.reviews.reviews != blank -%}
+      {%- for review in product.metafields.reviews.reviews.value limit: 3 -%}
+        <div class="bw-review-card">
+          <div class="bw-review-card__stars">{% render 'star-rating', rating: review.rating %}</div>
+          <div class="bw-review-card__title">{{ review.title }}</div>
+          <p class="bw-review-card__body">{{ review.body }}</p>
+          <div class="bw-review-card__meta">{{ review.author }} · verified</div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="bw-review-card">
+        <div class="bw-review-card__stars">★★★★★</div>
+        <div class="bw-review-card__title">Thick, finally</div>
+        <p class="bw-review-card__body">Doesn't go see-through after two washes. Bought the white one next day.</p>
+        <div class="bw-review-card__meta">Dani R. · verified</div>
+      </div>
+      <div class="bw-review-card">
+        <div class="bw-review-card__stars">★★★★☆</div>
+        <div class="bw-review-card__title">Boxy is real</div>
+        <p class="bw-review-card__body">Sized down and it's perfect. Sleeves run a touch long.</p>
+        <div class="bw-review-card__meta">Marc T. · verified</div>
+      </div>
+      <div class="bw-review-card">
+        <div class="bw-review-card__stars">★★★★★</div>
+        <div class="bw-review-card__title">Worth it</div>
+        <p class="bw-review-card__body">Better than pieces I've paid triple for. Shipping was two days.</p>
+        <div class="bw-review-card__meta">Ify A. · verified</div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>

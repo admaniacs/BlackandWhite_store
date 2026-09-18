@@ -1,0 +1,36 @@
+<div class="bw-features-bar">
+  {%- for block in section.blocks -%}
+    <div class="bw-features-bar__item">
+      <div class="bw-features-bar__item-title">{{ block.settings.title }}</div>
+      <div class="bw-features-bar__item-body">{{ block.settings.body }}</div>
+    </div>
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Features bar",
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Features bar",
+      "blocks": [
+        { "type": "feature", "settings": { "title": "Free over $75", "body": "$5 flat under that." } },
+        { "type": "feature", "settings": { "title": "30-day returns", "body": "Unworn, tags on." } },
+        { "type": "feature", "settings": { "title": "True sizing", "body": "Measurements on every page." } },
+        { "type": "feature", "settings": { "title": "4.6 / 5", "body": "From 3,410 reviews." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

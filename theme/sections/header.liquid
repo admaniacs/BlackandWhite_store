@@ -1,0 +1,42 @@
+<header class="bw-header" data-header>
+  <button type="button" class="bw-burger bw-hide-desktop" data-mobile-nav-toggle aria-label="Menu" aria-expanded="false">☰</button>
+
+  <a href="{{ routes.root_url }}" class="bw-header__logo">{{ shop.name | default: 'B/W' }}</a>
+
+  <nav class="bw-header__nav bw-hide-mobile" aria-label="Main">
+    {%- for link in linklists[section.settings.menu].links -%}
+      <a href="{{ link.url }}" class="bw-nav-link{% if link.active %} is-active{% endif %}">{{ link.title }}</a>
+    {%- endfor -%}
+  </nav>
+
+  <div class="bw-header__actions">
+    <button type="button" class="bw-hide-mobile" data-search-open>Search</button>
+    <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="bw-hide-mobile">Account</a>
+    <button type="button" data-cart-open>
+      <span class="bw-cart-count">Cart ({{ cart.item_count }})</span>
+    </button>
+  </div>
+</header>
+
+<nav class="bw-mobile-nav" data-mobile-nav hidden>
+  <div class="bw-container" style="padding-top:16px;padding-bottom:16px;border-bottom:1px solid #000">
+    {%- for link in linklists[section.settings.menu].links -%}
+      <a href="{{ link.url }}" class="bw-nav-link" style="display:block;padding:10px 0">{{ link.title }}</a>
+    {%- endfor -%}
+    <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="bw-nav-link" style="display:block;padding:10px 0">Account</a>
+  </div>
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

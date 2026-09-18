@@ -1,0 +1,89 @@
+{%- liquid
+  assign threshold_cents = settings.free_shipping_threshold | default: 75 | times: 100
+  assign remaining_cents = threshold_cents | minus: cart.total_price
+  if remaining_cents < 0
+    assign remaining_cents = 0
+  endif
+  assign progress = 100
+  if threshold_cents > 0
+    assign progress = cart.total_price | times: 100 | divided_by: threshold_cents
+    if progress > 100
+      assign progress = 100
+    endif
+  endif
+  assign remaining_money = remaining_cents | money
+-%}
+<div class="bw-cart-overlay" data-cart-overlay></div>
+<aside class="bw-cart-drawer" data-cart-drawer aria-hidden="true" aria-label="Cart">
+  <div class="bw-cart-drawer__head">
+    <span class="bw-h3">{{ 'general.cart.title' | t }} ({{ cart.item_count }})</span>
+    <button type="button" data-cart-close aria-label="Close cart">✕</button>
+  </div>
+
+  <div class="bw-cart-drawer__ship">
+    {%- if remaining_cents > 0 -%}
+      <div class="bw-label-mono" style="color:#fff">{{ 'general.cart.free_shipping_remaining' | t: amount: remaining_money }}</div>
+    {%- else -%}
+      <div class="bw-label-mono" style="color:#fff">{{ 'general.cart.free_shipping_reached' | t }}</div>
+    {%- endif -%}
+    <div class="bw-cart-drawer__ship-bar"><div class="bw-cart-drawer__ship-fill" style="width:{{ progress }}%"></div></div>
+  </div>
+
+  <div class="bw-cart-drawer__lines" data-cart-lines>
+    {%- if cart.item_count == 0 -%}
+      <p class="bw-body" style="padding:24px 0">{{ 'general.cart.empty' | t }}</p>
+    {%- else -%}
+      {%- for item in cart.items -%}
+        <div class="bw-cart-line" data-cart-line data-line-key="{{ item.key }}">
+          <div class="bw-cart-line__media bw-media-placeholder">
+            {%- if item.image -%}<img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.image.alt | escape }}" loading="lazy">{%- endif -%}
+          </div>
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between">
+              <span style="font:600 13px var(--font-ui);text-transform:uppercase">{{ item.product.title }}</span>
+              <span style="font:700 13px var(--font-ui)">{{ item.final_line_price | money }}</span>
+            </div>
+            <div class="bw-label-mono" style="margin-top:4px">{{ item.variant.title }}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+              <div class="bw-qty-stepper" data-qty-stepper>
+                <button type="button" data-qty-decrease aria-label="Decrease quantity">−</button>
+                <span data-qty-value>{{ item.quantity }}</span>
+                <button type="button" data-qty-increase aria-label="Increase quantity">+</button>
+              </div>
+              <button type="button" class="bw-label-mono" style="text-decoration:underline" data-cart-remove>{{ 'general.cart.remove' | t }}</button>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+
+      {%- if settings.cart_upsell_product != blank -%}
+        {%- assign upsell = settings.cart_upsell_product -%}
+        {%- assign upsell_price = upsell.price | money -%}
+        <div class="bw-cart-drawer__upsell">
+          <div class="bw-label-mono">{{ 'general.cart.add_on_title' | t: title: upsell.title, price: upsell_price }}</div>
+          <div style="display:flex;align-items:center;gap:12px;border:1px solid #000;padding:10px">
+            <div class="bw-media-placeholder" style="width:44px;height:44px;flex:none">
+              {%- if upsell.featured_image -%}<img src="{{ upsell.featured_image | image_url: width: 100 }}" alt="{{ upsell.title | escape }}" loading="lazy">{%- endif -%}
+            </div>
+            <div style="flex:1;font:600 12px var(--font-ui);text-transform:uppercase">{{ upsell.title }}</div>
+            <button type="button" class="bw-btn bw-btn--sm" data-cart-add-variant="{{ upsell.selected_or_first_available_variant.id }}">Add</button>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+
+  <div class="bw-cart-drawer__foot">
+    <div class="bw-summary-row"><span>{{ 'general.cart.subtotal' | t }}</span><span data-cart-subtotal>{{ cart.total_price | money }}</span></div>
+    <div class="bw-summary-total">
+      <span class="bw-h3" style="font-size:18px">{{ 'general.cart.total' | t }}</span>
+      <span style="font:700 20px var(--font-ui)" data-cart-total>{{ cart.total_price | money }}</span>
+    </div>
+    <a href="{{ routes.cart_url }}" class="bw-btn bw-btn--block" style="margin-top:14px">{{ 'general.cart.checkout' | t }}</a>
+    <div class="bw-label-mono" style="text-align:center;margin-top:10px">{{ 'general.cart.returns_note' | t }}</div>
+  </div>
+</aside>
+
+{% schema %}
+{ "name": "Cart drawer", "settings": [] }
+{% endschema %}

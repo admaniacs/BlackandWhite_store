@@ -1,0 +1,17 @@
+<div class="bw-container" style="max-width:440px;padding-top:60px;padding-bottom:60px">
+  <div class="bw-h2">{{ 'customer.login.title' | t }}</div>
+  {%- form 'customer_login' -%}
+    {{ form.errors | default_errors }}
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
+      <input type="email" name="customer[email]" class="bw-field" placeholder="{{ 'customer.login.email' | t }}" autocomplete="email" required>
+      {%- if form.password_needed -%}
+        <input type="password" name="customer[password]" class="bw-field" placeholder="{{ 'customer.login.password' | t }}" autocomplete="current-password" required>
+      {%- endif -%}
+      <button type="submit" class="bw-btn bw-btn--block">{{ 'customer.login.sign_in' | t }}</button>
+    </div>
+  {%- endform -%}
+  <div style="display:flex;justify-content:space-between;margin-top:16px" class="bw-label-mono">
+    <a href="{{ routes.account_recover_url }}" style="text-decoration:underline">{{ 'customer.login.forgot_password' | t }}</a>
+    <a href="{{ routes.account_register_url }}" style="text-decoration:underline">{{ 'customer.login.create_account' | t }}</a>
+  </div>
+</div>

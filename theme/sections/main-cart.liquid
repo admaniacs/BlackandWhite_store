@@ -1,0 +1,47 @@
+<div class="bw-container" style="padding-top:24px;padding-bottom:40px">
+  <div class="bw-h2">{{ 'general.cart.title' | t }} ({{ cart.item_count }})</div>
+
+  {%- if cart.item_count == 0 -%}
+    <p class="bw-body" style="margin-top:20px">{{ 'general.cart.empty' | t }}</p>
+    <a href="{{ routes.all_products_collection_url }}" class="bw-btn" style="margin-top:16px">Continue shopping</a>
+  {%- else -%}
+    {%- form 'cart', cart -%}
+      <div style="display:flex;flex-direction:column;gap:1px;background:var(--grey-20);margin-top:20px">
+        {%- for item in cart.items -%}
+          <div class="bw-cart-line" style="background:#fff;padding:16px" data-cart-line data-line-key="{{ item.key }}">
+            <div class="bw-cart-line__media bw-media-placeholder">
+              {%- if item.image -%}<img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.image.alt | escape }}" loading="lazy">{%- endif -%}
+            </div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between">
+                <a href="{{ item.url }}" style="font:600 13px var(--font-ui);text-transform:uppercase">{{ item.product.title }}</a>
+                <span style="font:700 13px var(--font-ui)">{{ item.final_line_price | money }}</span>
+              </div>
+              <div class="bw-label-mono" style="margin-top:4px">{{ item.variant.title }}</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+                <div class="bw-qty-stepper" data-qty-stepper>
+                  <button type="button" data-qty-decrease aria-label="Decrease quantity">−</button>
+                  <span data-qty-value>{{ item.quantity }}</span>
+                  <button type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                </div>
+                <button type="button" class="bw-label-mono" style="text-decoration:underline" data-cart-remove>{{ 'general.cart.remove' | t }}</button>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-top:24px">
+        <div style="width:320px">
+          <div class="bw-summary-row"><span>{{ 'general.cart.subtotal' | t }}</span><span>{{ cart.total_price | money }}</span></div>
+          <div class="bw-summary-total"><span class="bw-h3" style="font-size:18px">{{ 'general.cart.total' | t }}</span><span style="font:700 20px var(--font-ui)">{{ cart.total_price | money }}</span></div>
+          <button type="submit" name="checkout" class="bw-btn bw-btn--block" style="margin-top:14px">{{ 'general.cart.checkout' | t }}</button>
+        </div>
+      </div>
+    {%- endform -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Cart", "settings": [] }
+{% endschema %}

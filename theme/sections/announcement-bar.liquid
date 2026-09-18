@@ -1,0 +1,29 @@
+{%- if section.settings.announcement_enable -%}
+<div class="bw-marquee">
+  <div class="bw-marquee__track" aria-hidden="true">
+    {%- for i in (1..6) -%}
+      <span>{{ section.settings.announcement_message }}</span>
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "announcement_enable",
+      "label": "Show announcement bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_message",
+      "label": "Message",
+      "default": "FREE SHIPPING OVER $75 · 30-DAY RETURNS · NEW DROP FRIDAY 9AM"
+    }
+  ]
+}
+{% endschema %}

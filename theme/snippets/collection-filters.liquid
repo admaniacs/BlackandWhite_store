@@ -1,0 +1,80 @@
+{%- comment -%} Accepts: collection, active_filter_count, mobile (bool) {%- endcomment -%}
+<form method="get" action="{{ collection.url }}" data-filter-form>
+  {%- unless mobile -%}
+    <div class="bw-filters__head">
+      <span>{{ 'collections.general.filter_count' | t: count: active_filter_count }}</span>
+      {%- if active_filter_count > 0 -%}
+        <a href="{{ collection.url }}" class="bw-label-mono" style="text-decoration:underline">{{ 'collections.general.clear_all' | t }}</a>
+      {%- endif -%}
+    </div>
+  {%- endunless -%}
+
+  {%- if active_filter_count > 0 -%}
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 18px">
+      {%- for filter in collection.filters -%}
+        {%- for value in filter.active_values -%}
+          <a href="{{ value.url_to_remove }}" class="bw-filter-chip">{{ value.label }} ✕</a>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- for filter in collection.filters -%}
+    <div class="bw-filter-group-label">{{ filter.label }}</div>
+
+    {%- case filter.type -%}
+      {%- when 'price_range' -%}
+        <div style="display:flex;gap:8px;margin-bottom:18px">
+          <input type="number" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value }}" placeholder="{{ filter.range_min | money_without_currency }}" class="bw-field" style="padding:8px">
+          <input type="number" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value }}" placeholder="{{ filter.range_max | money_without_currency }}" class="bw-field" style="padding:8px">
+        </div>
+
+      {%- when 'boolean' -%}
+        <div style="display:flex;flex-direction:column;gap:7px;font:600 12px var(--font-ui);margin-bottom:18px">
+          {%- for value in filter.values -%}
+            <label class="bw-filter-option">
+              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+              {{ value.label }} ({{ value.count }})
+            </label>
+          {%- endfor -%}
+        </div>
+
+      {%- else -%}
+        {%- if filter.label == 'Size' -%}
+          <div class="bw-size-grid" style="margin-bottom:18px">
+            {%- for value in filter.values -%}
+              <label class="bw-size-chip{% if value.active %} is-selected{% endif %}{% if value.count == 0 and value.active == false %} is-disabled{% endif %}" style="cursor:pointer">
+                <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} class="bw-visually-hidden">
+                {{ value.label }}
+              </label>
+            {%- endfor -%}
+          </div>
+        {%- elsif filter.label == 'Colour' or filter.label == 'Color' -%}
+          <div style="display:flex;flex-direction:column;gap:7px;font:600 12px var(--font-ui);margin-bottom:18px">
+            {%- for value in filter.values -%}
+              <label class="bw-filter-option">
+                <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} class="bw-visually-hidden">
+                <span class="bw-swatch-mini" data-color="{{ value.label | downcase }}"></span>
+                {{ value.label }} ({{ value.count }})
+              </label>
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <div style="display:flex;flex-direction:column;gap:7px;font:600 12px var(--font-ui);margin-bottom:18px">
+            {%- for value in filter.values -%}
+              <label class="bw-filter-option">
+                <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                {{ value.label }} ({{ value.count }})
+              </label>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+    {%- endcase -%}
+  {%- endfor -%}
+
+  {%- if mobile -%}
+    <button type="submit" class="bw-btn bw-btn--block" style="margin-top:18px">Show results</button>
+  {%- else -%}
+    <button type="submit" class="bw-visually-hidden">Apply</button>
+  {%- endif -%}
+</form>

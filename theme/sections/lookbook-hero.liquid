@@ -1,0 +1,15 @@
+<div class="bw-editorial-hero">
+  <div class="bw-label-mono">{{ section.settings.eyebrow }}</div>
+  <div class="bw-display" style="font-size:clamp(40px,8vw,82px);margin-top:10px">{{ section.settings.heading }}</div>
+</div>
+
+{% schema %}
+{
+  "name": "Lookbook hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Drop 04 · shot in Lagos, September" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "No colour, no excuses" }
+  ],
+  "presets": [{ "name": "Lookbook hero" }]
+}
+{% endschema %}

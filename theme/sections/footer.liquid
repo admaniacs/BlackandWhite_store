@@ -1,0 +1,64 @@
+<footer class="bw-footer">
+  <div class="bw-footer__grid">
+    <div>
+      <div class="bw-header__logo" style="font-size:30px">{{ shop.name | default: 'B/W' }}</div>
+      <p style="font:13px/1.5 var(--font-ui);color:#aaa;max-width:260px;margin:8px 0 14px">{{ section.settings.tagline }}</p>
+      {%- form 'customer', id: 'footer-newsletter' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="bw-footer__signup">
+          <input type="email" name="contact[email]" placeholder="email address" required aria-label="Email address">
+          <button type="submit">Join</button>
+        </div>
+      {%- endform -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      <div class="bw-footer__col">
+        <span class="bw-footer__col-title">{{ block.settings.title }}</span>
+        {%- for i in (1..6) -%}
+          {%- assign link_key = 'link_' | append: i -%}
+          {%- assign link = block.settings[link_key] -%}
+          {%- if link != blank -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Two colours, done properly. Join the list for drop alerts."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_column",
+      "name": "Link column",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Column title", "default": "Shop" },
+        { "type": "url", "id": "link_1", "label": "Link 1" },
+        { "type": "url", "id": "link_2", "label": "Link 2" },
+        { "type": "url", "id": "link_3", "label": "Link 3" },
+        { "type": "url", "id": "link_4", "label": "Link 4" },
+        { "type": "url", "id": "link_5", "label": "Link 5" },
+        { "type": "url", "id": "link_6", "label": "Link 6" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "link_column", "settings": { "title": "Shop" } },
+      { "type": "link_column", "settings": { "title": "Help" } },
+      { "type": "link_column", "settings": { "title": "B/W" } }
+    ]
+  }
+}
+{% endschema %}

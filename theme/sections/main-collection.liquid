@@ -1,0 +1,90 @@
+<div class="bw-collection-hero">
+  <div>
+    <div class="bw-label-mono" style="color:#999">Home / {{ collection.title }}</div>
+    <div class="bw-display" style="font-size:clamp(32px,5vw,56px);margin-top:8px">{{ collection.title }}</div>
+  </div>
+  {%- if collection.description != blank -%}
+    <p style="font:14px/1.5 var(--font-ui);color:#bbb;max-width:340px;margin:0">{{ collection.description }}</p>
+  {%- endif -%}
+</div>
+
+{%- assign active_filter_count = 0 -%}
+{%- for filter in collection.filters -%}
+  {%- for value in filter.active_values -%}{%- assign active_filter_count = active_filter_count | plus: 1 -%}{%- endfor -%}
+  {%- if filter.min_value.value or filter.max_value.value -%}{%- assign active_filter_count = active_filter_count | plus: 1 -%}{%- endif -%}
+{%- endfor -%}
+
+<div class="bw-filter-tabs bw-hide-desktop">
+  <button type="button" data-filter-sheet-open>{{ 'collections.general.filter' | t }} ({{ active_filter_count }})</button>
+  <form method="get" action="{{ collection.url }}" style="flex:1">
+    {%- for filter in collection.filters -%}
+      {%- for value in filter.active_values -%}<input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">{%- endfor -%}
+    {%- endfor -%}
+    <select name="sort_by" style="width:100%;height:100%;border:0;background:#fff;text-align:center;font:600 11px var(--font-ui);letter-spacing:.1em;text-transform:uppercase" onchange="this.form.submit()">
+      {%- for option in collection.sort_options -%}
+        <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ 'collections.general.sort' | t }}: {{ option.name }}</option>
+      {%- endfor -%}
+    </select>
+  </form>
+</div>
+
+<div class="bw-collection-layout">
+  <aside class="bw-filters bw-hide-mobile" id="bw-filters-desktop">
+    {%- render 'collection-filters', collection: collection, active_filter_count: active_filter_count -%}
+  </aside>
+
+  <div>
+    {%- paginate collection.products by: 12 -%}
+      <div class="bw-collection-toolbar">
+        <span>{{ 'collections.general.showing' | t: count: collection.products.size, total: collection.products_count }}</span>
+        <div class="bw-collection-toolbar__actions bw-hide-mobile">
+          <form method="get" action="{{ collection.url }}" data-sort-form>
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}<input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">{%- endfor -%}
+            {%- endfor -%}
+            <select name="sort_by" class="bw-nav-link" style="border:0;background:transparent" onchange="this.form.submit()">
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>Sort: {{ option.name }}</option>
+              {%- endfor -%}
+            </select>
+          </form>
+        </div>
+      </div>
+
+      <div class="bw-grid bw-grid--3 bw-grid--flush" data-collection-grid>
+        {%- if collection.products.size == 0 -%}
+          <p class="bw-body" style="padding:40px">{{ 'collections.general.no_products' | t }}</p>
+        {%- endif -%}
+        {%- for product in collection.products -%}
+          {%- render 'product-card', product: product, show_sizes: false, quick_add: true -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.next -%}
+        <div class="bw-load-more">
+          <a href="{{ paginate.next.url }}" class="bw-btn bw-btn--outline">{{ 'collections.general.load_more' | t }}</a>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+<div class="bw-filter-sheet bw-hide-desktop" data-filter-sheet>
+  <div style="display:flex;justify-content:space-between;align-items:baseline">
+    <span class="bw-h2" style="font-size:22px">{{ 'collections.general.filter' | t }}</span>
+    <div style="display:flex;gap:14px;align-items:baseline">
+      {%- if active_filter_count > 0 -%}
+        <a href="{{ collection.url }}" class="bw-label-mono" style="text-decoration:underline">{{ 'collections.general.clear_all' | t }}</a>
+      {%- endif -%}
+      <button type="button" class="bw-label-mono" style="text-decoration:underline" data-filter-sheet-close aria-label="Close filters">✕</button>
+    </div>
+  </div>
+  {%- render 'collection-filters', collection: collection, active_filter_count: active_filter_count, mobile: true -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": []
+}
+{% endschema %}

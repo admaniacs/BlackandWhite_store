@@ -1,0 +1,45 @@
+<div class="bw-split-media" style="border-top:1px solid #000">
+  {%- for block in section.blocks -%}
+    <a href="{{ block.settings.link }}" class="bw-media-placeholder{% if block.settings.dark %} bw-media-placeholder--dark{% endif %}" style="height:380px;position:relative{% if forloop.index0 == 1 %};border-left:1px solid #000{% endif %}">
+      {%- if block.settings.image -%}
+        <img src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+      {%- else -%}
+        {{ block.settings.placeholder_label }}
+      {%- endif -%}
+      <div style="position:absolute;left:24px;bottom:24px;{% if block.settings.dark or block.settings.image %}color:#fff{% endif %}">
+        <div class="bw-h2" style="font-size:34px">{{ block.settings.title }}</div>
+        <span class="bw-nav-link" style="{% if block.settings.dark or block.settings.image %}color:#fff{% endif %}">{{ block.settings.cta_text }} →</span>
+      </div>
+    </a>
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Split promo",
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "All black" },
+        { "type": "text", "id": "cta_text", "label": "Link label", "default": "See the edit" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "placeholder_label", "label": "Placeholder label", "default": "lookbook · 1200×760" },
+        { "type": "checkbox", "id": "dark", "label": "Dark placeholder", "default": true }
+      ]
+    }
+  ],
+  "max_blocks": 2,
+  "presets": [
+    {
+      "name": "Split promo",
+      "blocks": [
+        { "type": "tile", "settings": { "title": "All black", "dark": true, "placeholder_label": "lookbook — black on black · 1200×760" } },
+        { "type": "tile", "settings": { "title": "All white", "dark": false, "placeholder_label": "lookbook — white on white · 1200×760" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
