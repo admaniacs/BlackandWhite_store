@@ -1,5 +1,6 @@
-<footer class="bw-footer" style="--ink:{{ section.settings.background_color }};--paper:{{ section.settings.text_color }}">
-  <div class="bw-footer__grid">
+<footer class="bw-footer" style="--ink:{{ section.settings.background_color }};--paper:{{ section.settings.text_color }};position:relative">
+  {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
+  <div class="bw-footer__grid" style="position:relative">
     <div>
       <div class="bw-header__logo" style="font-size:30px">{{ shop.name | default: 'B/W' }}</div>
       <p style="font:13px/1.5 var(--font-ui);color:#aaa;max-width:260px;margin:8px 0 14px">{{ section.settings.tagline }}</p>
@@ -39,7 +40,11 @@
     },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "background_color", "label": "Background color", "default": "#000000" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" }
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" },
+    { "type": "header", "content": "Background image or video" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Used when no background video is set." },
+    { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },
+    { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
   ],
   "blocks": [
     {

@@ -1,0 +1,17 @@
+{%- comment -%}
+  Renders an absolutely-positioned image or video layer behind a section's
+  content, plus a darkening overlay. The section's root element must have
+  position:relative, and its content wrapper position:relative;z-index:1
+  (or use the `.bw-section-media` sibling ordering already handled here).
+  Accepts: image, video, overlay_opacity (0-100, default 0)
+{%- endcomment -%}
+{%- if video != blank or image != blank -%}
+  {%- assign overlay = overlay_opacity | default: 0 | times: 1.0 | divided_by: 100 -%}
+  <div class="bw-section-media" aria-hidden="true" style="--bw-media-overlay:{{ overlay }}">
+    {%- if video != blank -%}
+      {{ video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'bw-section-media__el', image_size: '1920x' }}
+    {%- elsif image != blank -%}
+      <img src="{{ image | image_url: width: 1920 }}" alt="" class="bw-section-media__el" loading="lazy">
+    {%- endif -%}
+  </div>
+{%- endif -%}

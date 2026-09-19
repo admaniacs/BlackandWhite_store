@@ -1,5 +1,7 @@
 {%- assign product_form_id = 'product-form-' | append: product.id -%}
-<div style="--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink)">
+<div style="--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink);position:relative;overflow:hidden">
+{%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
+<div class="bw-section-content">
 <nav class="bw-breadcrumb">Home / {{ product.collections.first.title | default: 'Shop' }} / {{ product.title }}</nav>
 
 <div class="bw-product-layout" data-product-section data-product-id="{{ product.id }}">
@@ -118,6 +120,7 @@
 
 {% render 'product-reviews', product: product %}
 </div>
+</div>
 
 {% schema %}
 {
@@ -126,7 +129,11 @@
     { "type": "text", "id": "shipping_note", "label": "Shipping note", "default": "Free shipping over $75 · ships in 1–2 days" },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" },
+    { "type": "header", "content": "Background image or video" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Used when no background video is set." },
+    { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },
+    { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
   ]
 }
 {% endschema %}

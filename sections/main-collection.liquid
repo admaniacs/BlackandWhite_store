@@ -1,4 +1,5 @@
-<div class="bw-collection-hero" style="--ink:{{ section.settings.hero_background_color }};--paper:{{ section.settings.hero_text_color }}">
+<div class="bw-collection-hero" style="--ink:{{ section.settings.hero_background_color }};--paper:{{ section.settings.hero_text_color }};position:relative;overflow:hidden">
+  {%- render 'section-media-background', image: section.settings.hero_background_image, video: section.settings.hero_background_video, overlay_opacity: section.settings.hero_background_overlay_opacity -%}
   <div>
     <div class="bw-label-mono" style="color:#999">Home / {{ collection.title }}</div>
     <div class="bw-display" style="font-size:clamp(32px,5vw,56px);margin-top:8px">{{ collection.title }}</div>
@@ -88,7 +89,11 @@
   "settings": [
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "hero_background_color", "label": "Hero background color", "default": "#000000" },
-    { "type": "color", "id": "hero_text_color", "label": "Hero text color", "default": "#ffffff" }
+    { "type": "color", "id": "hero_text_color", "label": "Hero text color", "default": "#ffffff" },
+    { "type": "header", "content": "Hero background image or video" },
+    { "type": "image_picker", "id": "hero_background_image", "label": "Background image", "info": "Used when no background video is set." },
+    { "type": "video", "id": "hero_background_video", "label": "Background video", "info": "Takes priority over the background image." },
+    { "type": "range", "id": "hero_background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
   ]
 }
 {% endschema %}

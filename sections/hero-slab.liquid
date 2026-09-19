@@ -1,9 +1,5 @@
 <div class="bw-hero" style="position:relative;overflow:hidden;--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink)">
-  {%- if section.settings.background_video != blank -%}
-    <div class="bw-hero__video-wrap" aria-hidden="true" style="--bw-hero-overlay:{{ section.settings.video_overlay_opacity | default: 45 | times: 1.0 | divided_by: 100 }}">
-      {{ section.settings.background_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'bw-hero__video', image_size: '1920x' }}
-    </div>
-  {%- endif -%}
+  {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.video_overlay_opacity -%}
 
   <div class="bw-hero__content" style="padding:60px 24px 40px">
     <div class="bw-container" style="padding:0">
@@ -40,18 +36,24 @@
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" },
     {
       "type": "header",
-      "content": "Background video"
+      "content": "Background image or video"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Used when no background video is set."
     },
     {
       "type": "video",
       "id": "background_video",
       "label": "Background video",
-      "info": "Muted, looped, autoplays behind the text. Leave empty to keep the plain black background."
+      "info": "Muted, looped, autoplays behind the text. Takes priority over the background image. Leave both empty to keep the plain background color."
     },
     {
       "type": "range",
       "id": "video_overlay_opacity",
-      "label": "Video darkening overlay",
+      "label": "Darkening overlay",
       "min": 0,
       "max": 80,
       "step": 5,

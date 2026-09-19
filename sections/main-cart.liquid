@@ -1,4 +1,6 @@
-<div class="bw-container" style="padding-top:24px;padding-bottom:40px;--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink)">
+<div class="bw-container" style="padding-top:24px;padding-bottom:40px;--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink);position:relative;overflow:hidden">
+  {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
+  <div class="bw-section-content">
   <div class="bw-h2">{{ 'general.cart.title' | t }} ({{ cart.item_count }})</div>
 
   {%- if cart.item_count == 0 -%}
@@ -40,6 +42,7 @@
       </div>
     {%- endform -%}
   {%- endif -%}
+  </div>
 </div>
 
 {% schema %}
@@ -48,7 +51,11 @@
   "settings": [
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" },
+    { "type": "header", "content": "Background image or video" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Used when no background video is set." },
+    { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },
+    { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
   ]
 }
 {% endschema %}

@@ -1,5 +1,6 @@
-<div style="background:{{ section.settings.background_color }};color:{{ section.settings.text_color }};padding:52px 24px">
-  <div class="bw-container" style="padding:0">
+<div style="background:{{ section.settings.background_color }};color:{{ section.settings.text_color }};padding:52px 24px;position:relative;overflow:hidden">
+  {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
+  <div class="bw-container" style="padding:0;position:relative">
     <div class="bw-display" style="font-size:clamp(44px,9vw,92px)">{{ section.settings.heading }}</div>
     <p style="font:16px/1.55 var(--font-ui);color:#bbb;max-width:520px;margin:24px 0 0">{{ section.settings.body }}</p>
   </div>
@@ -13,7 +14,11 @@
     { "type": "textarea", "id": "body", "label": "Body", "default": "B/W started because getting dressed shouldn't be a decision. Two colours, heavy fabric, prices that don't need a sale to look reasonable." },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "background_color", "label": "Background color", "default": "#000000" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" }
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" },
+    { "type": "header", "content": "Background image or video" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Used when no background video is set." },
+    { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },
+    { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
   ],
   "presets": [{ "name": "About hero" }]
 }

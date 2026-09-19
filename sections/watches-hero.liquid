@@ -1,6 +1,6 @@
 <div class="bw-media-placeholder" style="position:relative;height:420px">
-  {%- if section.settings.image -%}
-    <img src="{{ section.settings.image | image_url: width: 2400 }}" alt="{{ section.settings.heading | escape }}" loading="lazy">
+  {%- if section.settings.background_video != blank or section.settings.image != blank -%}
+    {%- render 'section-media-background', image: section.settings.image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
   {%- else -%}
     watch hero — wrist shot on black · 2400×840
   {%- endif -%}
@@ -26,7 +26,10 @@
   "name": "Watches hero",
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Tell the time. Stop." },
-    { "type": "image_picker", "id": "image", "label": "Hero image" },
+    { "type": "header", "content": "Background image or video" },
+    { "type": "image_picker", "id": "image", "label": "Background image", "info": "Used when no background video is set." },
+    { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },
+    { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "caption_text_color", "label": "Caption text color", "default": "#ffffff" },
     { "type": "color", "id": "tab_background_color", "label": "Tab background color", "default": "#ffffff" },
