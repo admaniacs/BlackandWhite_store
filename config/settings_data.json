@@ -33,7 +33,7 @@
             "type": "link_column",
             "settings": {
               "title": "Shop",
-              "link_1": "shopify://collections/hat",
+              "link_1": "shopify://pages/contact",
               "link_2": "shopify://collections/hoodies",
               "link_3": "shopify://collections/t-shirts",
               "link_4": "shopify://collections/sneakers",
