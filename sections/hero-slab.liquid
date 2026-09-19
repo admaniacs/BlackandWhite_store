@@ -1,12 +1,12 @@
 <div class="bw-hero" style="position:relative;overflow:hidden;--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink)">
   {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.video_overlay_opacity -%}
 
-  <div class="bw-hero__content" style="padding:60px 24px 40px">
+  <div class="bw-hero__content" style="padding:60px 24px 40px;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;text-align:{{ section.settings.text_alignment }}">
     <div class="bw-container" style="padding:0">
       <div class="bw-label-mono" style="color:#9a9a9a">{{ section.settings.eyebrow }}</div>
       <div class="bw-display" style="margin-top:14px">{{ section.settings.heading }}</div>
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-top:34px;border-top:1px solid #333;padding-top:20px;flex-wrap:wrap">
-        <p style="max-width:420px;font:15px/1.5 var(--font-ui);color:#c9c9c9;margin:0">{{ section.settings.subtext }}</p>
+      <div style="display:flex;align-items:flex-end;justify-content:{% if section.settings.text_alignment == 'center' %}center{% else %}space-between{% endif %};gap:40px;margin-top:34px;border-top:1px solid #333;padding-top:20px;flex-wrap:wrap">
+        <p style="max-width:420px;font:15px/1.5 var(--font-ui);color:#c9c9c9;margin:0{% if section.settings.text_alignment == 'center' %};margin-left:auto;margin-right:auto{% endif %}">{{ section.settings.subtext }}</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
           {%- if section.settings.cta_1_text != blank -%}
             <a href="{{ section.settings.cta_1_link }}" class="bw-btn">{{ section.settings.cta_1_text }}</a>
@@ -31,6 +31,10 @@
     { "type": "url", "id": "cta_1_link", "label": "Primary button link" },
     { "type": "text", "id": "cta_2_text", "label": "Secondary button label", "default": "Watches" },
     { "type": "url", "id": "cta_2_link", "label": "Secondary button link" },
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "text_alignment", "label": "Text alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "left" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 60 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 40 },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "background_color", "label": "Background color", "default": "#000000" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" },

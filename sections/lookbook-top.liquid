@@ -1,4 +1,4 @@
-<div style="display:grid;grid-template-columns:1.4fr 1fr;gap:1px;background:{{ section.settings.divider_color }}">
+<div style="display:grid;grid-template-columns:1.4fr 1fr;gap:1px;background:{{ section.settings.divider_color }};margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px">
   {%- assign looks = section.blocks -%}
   {%- if looks.size > 0 -%}
     {%- assign first_look = looks[0] -%}
@@ -44,6 +44,9 @@
     }
   ],
   "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "divider_color", "label": "Divider color", "default": "#000000" }
   ],

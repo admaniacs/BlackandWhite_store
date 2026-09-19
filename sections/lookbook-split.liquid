@@ -1,4 +1,4 @@
-<div class="bw-split-media" style="border-top:1px solid {{ section.settings.divider_color }}">
+<div class="bw-split-media" style="border-top:1px solid {{ section.settings.divider_color }};margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px">
   {%- for block in section.blocks -%}
     <a href="{{ block.settings.link }}" class="bw-media-placeholder{% if block.settings.dark %} bw-media-placeholder--dark{% endif %}" style="height:380px;position:relative{% if forloop.index0 == 1 %};border-left:1px solid {{ section.settings.divider_color }}{% endif %}">
       {%- if block.settings.image -%}
@@ -33,6 +33,9 @@
     }
   ],
   "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "divider_color", "label": "Divider color", "default": "#000000" }
   ],

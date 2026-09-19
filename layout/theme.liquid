@@ -11,6 +11,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet">
   {{ content_for_header }}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
+  {{ settings.type_heading_font | font_face: font_display: 'swap' }}
+  {{ settings.type_body_font | font_face: font_display: 'swap' }}
+  {{ settings.type_mono_font | font_face: font_display: 'swap' }}
+  {%- if settings.type_heading_font or settings.type_body_font or settings.type_mono_font -%}
+  <style>
+    :root {
+      {%- if settings.type_heading_font -%}
+      --font-display: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+      {%- endif -%}
+      {%- if settings.type_body_font -%}
+      --font-ui: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+      {%- endif -%}
+      {%- if settings.type_mono_font -%}
+      --font-mono: {{ settings.type_mono_font.family }}, {{ settings.type_mono_font.fallback_families }};
+      {%- endif -%}
+    }
+  </style>
+  {%- endif -%}
 </head>
 <body class="bw-body-{{ request.page_type }}">
   <a class="bw-visually-hidden" href="#bw-main">Skip to content</a>

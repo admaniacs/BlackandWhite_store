@@ -1,4 +1,4 @@
-<div style="display:grid;grid-template-columns:1fr 1.2fr;border-top:1px solid {{ section.settings.text_color }};background:{{ section.settings.background_color }};color:{{ section.settings.text_color }}" class="bw-split-media">
+<div style="display:grid;grid-template-columns:1fr 1.2fr;border-top:1px solid {{ section.settings.text_color }};background:{{ section.settings.background_color }};color:{{ section.settings.text_color }};margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px" class="bw-split-media">
   <div class="bw-media-placeholder" style="height:400px">
     {%- if section.settings.image -%}
       <img src="{{ section.settings.image | image_url: width: 1000 }}" alt="" loading="lazy">
@@ -29,6 +29,9 @@
     { "type": "textarea", "id": "body", "label": "Body", "default": "We make one fabric in bulk and cut everything from it. No seasonal dyes, no colour minimums, no dead stock to discount. That's why a 420gsm hoodie is $58 and stays $58." },
     { "type": "text", "id": "total_label", "label": "Total row label", "default": "You pay" },
     { "type": "text", "id": "total_amount", "label": "Total row amount", "default": "$58" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" },

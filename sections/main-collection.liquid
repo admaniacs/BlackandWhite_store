@@ -1,4 +1,4 @@
-<div class="bw-collection-hero" style="--ink:{{ section.settings.hero_background_color }};--paper:{{ section.settings.hero_text_color }};position:relative;overflow:hidden">
+<div class="bw-collection-hero" style="--ink:{{ section.settings.hero_background_color }};--paper:{{ section.settings.hero_text_color }};position:relative;overflow:hidden;padding-top:{{ section.settings.hero_padding_top }}px;padding-bottom:{{ section.settings.hero_padding_bottom }}px">
   {%- render 'section-media-background', image: section.settings.hero_background_image, video: section.settings.hero_background_video, overlay_opacity: section.settings.hero_background_overlay_opacity -%}
   <div>
     <div class="bw-label-mono" style="color:#999">Home / {{ collection.title }}</div>
@@ -93,7 +93,10 @@
     { "type": "header", "content": "Hero background image or video" },
     { "type": "image_picker", "id": "hero_background_image", "label": "Background image", "info": "Used when no background video is set." },
     { "type": "video", "id": "hero_background_video", "label": "Background video", "info": "Takes priority over the background image." },
-    { "type": "range", "id": "hero_background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
+    { "type": "range", "id": "hero_background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 },
+    { "type": "header", "content": "Hero layout" },
+    { "type": "range", "id": "hero_padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 },
+    { "type": "range", "id": "hero_padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 }
   ]
 }
 {% endschema %}

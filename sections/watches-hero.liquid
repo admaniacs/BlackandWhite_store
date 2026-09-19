@@ -1,4 +1,4 @@
-<div class="bw-media-placeholder" style="position:relative;height:420px">
+<div class="bw-media-placeholder" style="position:relative;height:{{ section.settings.hero_height }}px">
   {%- if section.settings.background_video != blank or section.settings.image != blank -%}
     {%- render 'section-media-background', image: section.settings.image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
   {%- else -%}
@@ -30,6 +30,8 @@
     { "type": "image_picker", "id": "image", "label": "Background image", "info": "Used when no background video is set." },
     { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },
     { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "hero_height", "label": "Hero height", "min": 240, "max": 720, "step": 20, "unit": "px", "default": 420 },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "caption_text_color", "label": "Caption text color", "default": "#ffffff" },
     { "type": "color", "id": "tab_background_color", "label": "Tab background color", "default": "#ffffff" },

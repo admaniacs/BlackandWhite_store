@@ -8,6 +8,29 @@
     "theme_support_url": ""
   },
   {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Headline font",
+        "info": "Used for all large uppercase headlines. Leave unset to keep the default (Archivo Black)."
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body / UI font",
+        "info": "Used for nav, buttons, prices, and body copy. Leave unset to keep the default (Archivo)."
+      },
+      {
+        "type": "font_picker",
+        "id": "type_mono_font",
+        "label": "Meta / label font",
+        "info": "Used for small uppercase meta labels (SKU-style tags, breadcrumbs). Leave unset to keep the default (monospace)."
+      }
+    ]
+  },
+  {
     "name": "Announcement bar",
     "settings": [
       {
