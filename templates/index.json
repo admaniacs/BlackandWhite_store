@@ -88,11 +88,115 @@
     },
     "split_promo": {
       "type": "lookbook-split",
+      "blocks": {
+        "tile_6knbQn": {
+          "type": "tile",
+          "settings": {
+            "title": "All White",
+            "cta_text": "See the edit",
+            "link": "shopify://collections/all-white",
+            "image": "shopify://shop_images/all-white-outfit-people-on-black-background.png",
+            "placeholder_label": "lookbook · 1200×760",
+            "dark": true
+          }
+        },
+        "tile_9WpfQM": {
+          "type": "tile",
+          "settings": {
+            "title": "All black",
+            "cta_text": "See the edit",
+            "link": "shopify://collections/all-black",
+            "image": "shopify://shop_images/all-black-outfits-fashion-editorial.png",
+            "placeholder_label": "lookbook · 1200×760",
+            "dark": true
+          }
+        }
+      },
+      "block_order": [
+        "tile_6knbQn",
+        "tile_9WpfQM"
+      ],
       "settings": {}
     },
-    "features": {
+    "features_bar_g9JtLP": {
       "type": "features-bar",
+      "blocks": {
+        "feature_nLD6nE": {
+          "type": "feature",
+          "settings": {
+            "title": "Free over $75",
+            "body": "$5 flat under that."
+          }
+        },
+        "feature_qpUgtM": {
+          "type": "feature",
+          "settings": {
+            "title": "30-day returns",
+            "body": "Unworn, tags on."
+          }
+        },
+        "feature_XTywHj": {
+          "type": "feature",
+          "settings": {
+            "title": "True sizing",
+            "body": "Measurements on every page."
+          }
+        },
+        "feature_L98WA3": {
+          "type": "feature",
+          "settings": {
+            "title": "4.6 / 5",
+            "body": "From 3,410 reviews."
+          }
+        }
+      },
+      "block_order": [
+        "feature_nLD6nE",
+        "feature_qpUgtM",
+        "feature_XTywHj",
+        "feature_L98WA3"
+      ],
+      "name": "Features bar",
       "settings": {}
+    },
+    "about_pricing_TQNBBt": {
+      "type": "about-pricing",
+      "blocks": {
+        "line_idMUE6": {
+          "type": "line",
+          "settings": {
+            "label": "Fabric & make",
+            "amount": "$21"
+          }
+        },
+        "line_hXAake": {
+          "type": "line",
+          "settings": {
+            "label": "Shipping & duty",
+            "amount": "$6"
+          }
+        },
+        "line_4B3hbH": {
+          "type": "line",
+          "settings": {
+            "label": "Team & overhead",
+            "amount": "$19"
+          }
+        }
+      },
+      "block_order": [
+        "line_idMUE6",
+        "line_hXAake",
+        "line_4B3hbH"
+      ],
+      "name": "About pricing breakdown",
+      "settings": {
+        "image": "shopify://shop_images/black-white-fashion.png",
+        "heading": "How we price it",
+        "body": "We make one fabric in bulk and cut everything from it. No seasonal dyes, no colour minimums, no dead stock to discount. That's why a 420gsm hoodie is $58 and stays $58.",
+        "total_label": "You pay",
+        "total_amount": "$58"
+      }
     }
   },
   "order": [
@@ -100,6 +204,7 @@
     "categories",
     "best_sellers",
     "split_promo",
-    "features"
+    "features_bar_g9JtLP",
+    "about_pricing_TQNBBt"
   ]
 }
