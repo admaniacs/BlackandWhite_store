@@ -158,45 +158,6 @@
       ],
       "name": "Features bar",
       "settings": {}
-    },
-    "about_pricing_TQNBBt": {
-      "type": "about-pricing",
-      "blocks": {
-        "line_idMUE6": {
-          "type": "line",
-          "settings": {
-            "label": "Fabric & make",
-            "amount": "$21"
-          }
-        },
-        "line_hXAake": {
-          "type": "line",
-          "settings": {
-            "label": "Shipping & duty",
-            "amount": "$6"
-          }
-        },
-        "line_4B3hbH": {
-          "type": "line",
-          "settings": {
-            "label": "Team & overhead",
-            "amount": "$19"
-          }
-        }
-      },
-      "block_order": [
-        "line_idMUE6",
-        "line_hXAake",
-        "line_4B3hbH"
-      ],
-      "name": "About pricing breakdown",
-      "settings": {
-        "image": "shopify://shop_images/black-white-fashion.png",
-        "heading": "How we price it",
-        "body": "We make one fabric in bulk and cut everything from it. No seasonal dyes, no colour minimums, no dead stock to discount. That's why a 420gsm hoodie is $58 and stays $58.",
-        "total_label": "You pay",
-        "total_amount": "$58"
-      }
     }
   },
   "order": [
@@ -204,7 +165,6 @@
     "categories",
     "best_sellers",
     "split_promo",
-    "features_bar_g9JtLP",
-    "about_pricing_TQNBBt"
+    "features_bar_g9JtLP"
   ]
 }
