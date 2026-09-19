@@ -19,8 +19,10 @@
         "cta_1_link": "",
         "cta_2_text": "Watches",
         "cta_2_link": "",
+        "background_color": "#000000",
+        "text_color": "#F7F7F7",
         "background_video": "shopify://files/videos/8443731-uhd_4096_2160_25fps.mp4",
-        "video_overlay_opacity": 45
+        "video_overlay_opacity": 60
       }
     },
     "categories": {
@@ -77,7 +79,10 @@
         "hats",
         "watches"
       ],
-      "settings": {}
+      "settings": {
+        "background_color": "#ffffff",
+        "text_color": "#000000"
+      }
     },
     "best_sellers": {
       "type": "best-sellers",
@@ -85,7 +90,9 @@
         "heading": "Best sellers",
         "view_all_label": "View all",
         "collection": "best-sellers",
-        "products_to_show": 4
+        "products_to_show": 4,
+        "background_color": "#ffffff",
+        "text_color": "#000000"
       }
     },
     "split_promo": {
@@ -99,7 +106,8 @@
             "link": "shopify://collections/all-white",
             "image": "shopify://shop_images/all-white-outfit-people-on-black-background.png",
             "placeholder_label": "lookbook · 1200×760",
-            "dark": true
+            "dark": true,
+            "text_color": "#ffffff"
           }
         },
         "tile_9WpfQM": {
@@ -110,7 +118,8 @@
             "link": "shopify://collections/all-black",
             "image": "shopify://shop_images/all-black-outfits-fashion-editorial.png",
             "placeholder_label": "lookbook · 1200×760",
-            "dark": true
+            "dark": true,
+            "text_color": "#ffffff"
           }
         }
       },
@@ -118,7 +127,9 @@
         "tile_6knbQn",
         "tile_9WpfQM"
       ],
-      "settings": {}
+      "settings": {
+        "divider_color": "#000000"
+      }
     },
     "features_bar_g9JtLP": {
       "type": "features-bar",
@@ -159,7 +170,11 @@
         "feature_L98WA3"
       ],
       "name": "Features bar",
-      "settings": {}
+      "settings": {
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "divider_color": "#000000"
+      }
     }
   },
   "order": [
