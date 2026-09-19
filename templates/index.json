@@ -1,19 +1,81 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
-      "type": "hero-slab"
+      "type": "hero-slab",
+      "settings": {
+        "eyebrow": "Autumn drop 04 — live now",
+        "heading": "Two colours. Nothing else.",
+        "subtext": "Heavyweight cotton, honest prices. Every piece is black, white, or both — so everything works with everything.",
+        "cta_1_text": "Shop all",
+        "cta_1_link": "",
+        "cta_2_text": "Watches",
+        "cta_2_link": ""
+      }
     },
     "categories": {
       "type": "category-strip",
       "blocks": {
-        "hoodies": { "type": "category", "settings": { "collection": "hoodies" } },
-        "tees": { "type": "category", "settings": { "collection": "tees" } },
-        "shirts": { "type": "category", "settings": { "collection": "shirts" } },
-        "shoes": { "type": "category", "settings": { "collection": "shoes" } },
-        "hats": { "type": "category", "settings": { "collection": "hats" } },
-        "watches": { "type": "category", "settings": { "collection": "watches" } }
+        "category_UnefKN": {
+          "type": "category",
+          "settings": {
+            "collection": "t-shirts",
+            "label": ""
+          }
+        },
+        "hoodies": {
+          "type": "category",
+          "settings": {
+            "collection": "hoodies",
+            "label": ""
+          }
+        },
+        "shirts": {
+          "type": "category",
+          "settings": {
+            "collection": "shirts",
+            "label": ""
+          }
+        },
+        "shoes": {
+          "type": "category",
+          "settings": {
+            "collection": "sneakers",
+            "label": ""
+          }
+        },
+        "hats": {
+          "type": "category",
+          "settings": {
+            "collection": "hat",
+            "label": ""
+          }
+        },
+        "watches": {
+          "type": "category",
+          "settings": {
+            "collection": "watches",
+            "label": ""
+          }
+        }
       },
-      "block_order": ["hoodies", "tees", "shirts", "shoes", "hats", "watches"]
+      "block_order": [
+        "category_UnefKN",
+        "hoodies",
+        "shirts",
+        "shoes",
+        "hats",
+        "watches"
+      ],
+      "settings": {}
     },
     "best_sellers": {
       "type": "best-sellers",
@@ -25,11 +87,19 @@
       }
     },
     "split_promo": {
-      "type": "lookbook-split"
+      "type": "lookbook-split",
+      "settings": {}
     },
     "features": {
-      "type": "features-bar"
+      "type": "features-bar",
+      "settings": {}
     }
   },
-  "order": ["hero", "categories", "best_sellers", "split_promo", "features"]
+  "order": [
+    "hero",
+    "categories",
+    "best_sellers",
+    "split_promo",
+    "features"
+  ]
 }

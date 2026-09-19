@@ -1,7 +1,85 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "announcement_message": "FREE SHIPPING OVER $75 · 30-DAY RETURNS · NEW DROP FRIDAY 9AM",
     "announcement_enable": true,
-    "free_shipping_threshold": 75
+    "free_shipping_threshold": 75,
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "announcement_enable": true,
+          "announcement_message": "FREE SHIPPING OVER $75 · 30-DAY RETURNS · NEW DROP FRIDAY 9AM"
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "menu": "main-menu"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "footer-0": {
+            "type": "link_column",
+            "settings": {
+              "title": "Shop",
+              "link_1": "shopify://collections/hat",
+              "link_2": "shopify://collections/hoodies",
+              "link_3": "shopify://collections/t-shirts",
+              "link_4": "shopify://collections/sneakers",
+              "link_5": "shopify://collections/the-boss-sneakers",
+              "link_6": "shopify://collections/shirts"
+            }
+          },
+          "footer-1": {
+            "type": "link_column",
+            "settings": {
+              "title": "Help",
+              "link_1": "",
+              "link_2": "",
+              "link_3": "",
+              "link_4": "",
+              "link_5": "",
+              "link_6": ""
+            }
+          },
+          "footer-2": {
+            "type": "link_column",
+            "settings": {
+              "title": "B/W",
+              "link_1": "",
+              "link_2": "",
+              "link_3": "",
+              "link_4": "",
+              "link_5": "",
+              "link_6": ""
+            }
+          }
+        },
+        "block_order": [
+          "footer-0",
+          "footer-1",
+          "footer-2"
+        ],
+        "settings": {
+          "tagline": "Two colours, done properly. Join the list for drop alerts."
+        }
+      },
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {}
+      }
+    },
+    "content_for_index": []
   }
 }
