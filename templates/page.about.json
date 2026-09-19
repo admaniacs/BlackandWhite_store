@@ -1,8 +1,79 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "hero": { "type": "about-hero" },
-    "stats": { "type": "about-stats" },
-    "pricing": { "type": "about-pricing" }
+    "hero": {
+      "type": "about-hero",
+      "settings": {
+        "heading": "We deleted the colour chart.",
+        "body": "B/W started because getting dressed shouldn't be a decision. Two colours, heavy fabric, prices that don't need a sale to look reasonable.",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "background_overlay_opacity": 0
+      }
+    },
+    "stats": {
+      "type": "about-stats",
+      "settings": {
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "divider_color": "#000000"
+      }
+    },
+    "about_pricing_6bUnPF": {
+      "type": "about-pricing",
+      "blocks": {
+        "line_j6Ebrd": {
+          "type": "line",
+          "settings": {
+            "label": "Fabric & make",
+            "amount": "$21"
+          }
+        },
+        "line_wTP4CU": {
+          "type": "line",
+          "settings": {
+            "label": "Shipping & duty",
+            "amount": "$6"
+          }
+        },
+        "line_Anxaxh": {
+          "type": "line",
+          "settings": {
+            "label": "Team & overhead",
+            "amount": "$19"
+          }
+        }
+      },
+      "block_order": [
+        "line_j6Ebrd",
+        "line_wTP4CU",
+        "line_Anxaxh"
+      ],
+      "name": "About pricing breakdown",
+      "settings": {
+        "image": "shopify://shop_images/black-and-white-portrait-mens-fashion.jpg",
+        "heading": "How we price it",
+        "body": "We make one fabric in bulk and cut everything from it. No seasonal dyes, no colour minimums, no dead stock to discount. That's why a 420gsm hoodie is $58 and stays $58.",
+        "total_label": "You pay",
+        "total_amount": "$58",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "total_row_background_color": "#000000",
+        "total_row_text_color": "#ffffff"
+      }
+    }
   },
-  "order": ["hero", "stats", "pricing"]
+  "order": [
+    "hero",
+    "stats",
+    "about_pricing_6bUnPF"
+  ]
 }

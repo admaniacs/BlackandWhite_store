@@ -17,18 +17,35 @@
         "type": "announcement-bar",
         "settings": {
           "announcement_enable": true,
-          "announcement_message": "FREE SHIPPING OVER $75 · 30-DAY RETURNS · NEW DROP FRIDAY 9AM"
+          "announcement_message": "FREE SHIPPING OVER $75 · 30-DAY RETURNS · NEW DROP FRIDAY 9AM",
+          "background_color": "#000000",
+          "text_color": "#ffffff"
         }
       },
       "header": {
         "type": "header",
         "settings": {
-          "menu": "main-menu"
+          "menu": "main-menu",
+          "background_color": "#ffffff",
+          "text_color": "#000000",
+          "background_overlay_opacity": 0
         }
       },
       "footer": {
         "type": "footer",
         "blocks": {
+          "link_column_JQhE4n": {
+            "type": "link_column",
+            "settings": {
+              "title": "Shop",
+              "link_1": "",
+              "link_2": "",
+              "link_3": "",
+              "link_4": "",
+              "link_5": "",
+              "link_6": ""
+            }
+          },
           "link_column_eD3tJp": {
             "type": "link_column",
             "settings": {
@@ -55,16 +72,25 @@
           }
         },
         "block_order": [
+          "link_column_JQhE4n",
           "link_column_eD3tJp",
           "footer-0"
         ],
         "settings": {
-          "tagline": "Two colours, done properly. Join the list for drop alerts."
+          "tagline": "Two colours, done properly. Join the list for drop alerts.",
+          "background_color": "#000000",
+          "text_color": "#ffffff",
+          "background_overlay_opacity": 0
         }
       },
       "cart-drawer": {
         "type": "cart-drawer",
-        "settings": {}
+        "settings": {
+          "background_color": "#ffffff",
+          "text_color": "#000000",
+          "ship_bar_background_color": "#000000",
+          "ship_bar_text_color": "#ffffff"
+        }
       }
     },
     "content_for_index": []
