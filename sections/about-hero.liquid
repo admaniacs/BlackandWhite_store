@@ -3,6 +3,7 @@
   <div class="bw-container" style="padding:0;position:relative">
     <div class="bw-display" style="font-size:clamp(44px,9vw,92px)">{{ section.settings.heading }}</div>
     <p style="font:16px/1.55 var(--font-ui);color:#bbb;max-width:520px;margin:24px 0 0{% if section.settings.text_alignment == 'center' %};margin-left:auto;margin-right:auto{% endif %}">{{ section.settings.body }}</p>
+    {% content_for 'blocks' %}
   </div>
 </div>
 
@@ -23,6 +24,10 @@
     { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Used when no background video is set." },
     { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },
     { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
   ],
   "presets": [{ "name": "About hero" }]
 }

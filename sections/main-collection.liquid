@@ -7,6 +7,7 @@
   {%- if collection.description != blank -%}
     <p style="font:14px/1.5 var(--font-ui);color:#bbb;max-width:340px;margin:0">{{ collection.description }}</p>
   {%- endif -%}
+  {% content_for 'blocks' %}
 </div>
 
 {%- assign active_filter_count = 0 -%}
@@ -97,6 +98,10 @@
     { "type": "header", "content": "Hero layout" },
     { "type": "range", "id": "hero_padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 },
     { "type": "range", "id": "hero_padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
   ]
 }
 {% endschema %}

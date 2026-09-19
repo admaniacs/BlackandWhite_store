@@ -1,0 +1,12 @@
+<div {{ block.shopify_attributes }} style="height:{{ block.settings.height }}px" aria-hidden="true"></div>
+
+{% schema %}
+{
+  "name": "Spacer",
+  "tag": null,
+  "settings": [
+    { "type": "range", "id": "height", "label": "Height", "min": 4, "max": 200, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "presets": [{ "name": "Spacer" }]
+}
+{% endschema %}

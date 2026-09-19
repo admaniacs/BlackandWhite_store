@@ -1,0 +1,34 @@
+<div
+  {{ block.shopify_attributes }}
+  class="bw-body"
+  style="
+    text-align:{{ block.settings.alignment }};
+    color:{{ block.settings.text_color | default: 'inherit' }};
+    max-width:{{ block.settings.max_width }}px;
+    {% if block.settings.alignment == 'center' %}margin-left:auto;margin-right:auto;{% endif %}
+  "
+>{{ block.settings.text }}</div>
+
+{% schema %}
+{
+  "name": "Text",
+  "tag": null,
+  "settings": [
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Add your text here.</p>" },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    { "type": "range", "id": "max_width", "label": "Max width", "min": 200, "max": 800, "step": 20, "unit": "px", "default": 480 },
+    { "type": "color", "id": "text_color", "label": "Text color" }
+  ],
+  "presets": [{ "name": "Text" }]
+}
+{% endschema %}

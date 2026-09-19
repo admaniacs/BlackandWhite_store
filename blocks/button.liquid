@@ -1,0 +1,50 @@
+{%- liquid
+  assign classes = 'bw-btn'
+  if block.settings.style == 'outline'
+    assign classes = classes | append: ' bw-btn--outline'
+  endif
+-%}
+<div {{ block.shopify_attributes }} style="text-align:{{ block.settings.alignment }}">
+  {%- if block.settings.text != blank -%}
+    <a
+      href="{{ block.settings.link | default: '#' }}"
+      class="{{ classes }}"
+      style="--ink:{{ block.settings.color | default: '#000000' }};--paper:{{ block.settings.text_color | default: '#ffffff' }}"
+    >{{ block.settings.text }}</a>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Button",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "text", "label": "Label", "default": "Shop now" },
+    { "type": "url", "id": "link", "label": "Link" },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "outline", "label": "Outline" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    { "type": "color", "id": "color", "label": "Button color", "default": "#000000" },
+    { "type": "color", "id": "text_color", "label": "Label color", "default": "#ffffff" }
+  ],
+  "presets": [{ "name": "Button" }]
+}
+{% endschema %}

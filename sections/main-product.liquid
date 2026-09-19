@@ -119,6 +119,7 @@
 </script>
 
 {% render 'product-reviews', product: product %}
+{% content_for 'blocks' %}
 </div>
 </div>
 
@@ -137,6 +138,10 @@
     { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Used when no background video is set." },
     { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },
     { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
   ]
 }
 {% endschema %}

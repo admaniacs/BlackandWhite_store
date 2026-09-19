@@ -5,6 +5,7 @@
     {%- if section.settings.cta_text != blank -%}
       <a href="{{ section.settings.cta_link }}" class="bw-btn bw-btn--outline" style="margin-top:16px">{{ section.settings.cta_text }}</a>
     {%- endif -%}
+    {% content_for 'blocks' %}
   </div>
   <div class="bw-media-placeholder" style="height:260px;border-left:1px solid var(--ink)">
     {%- if section.settings.image -%}
@@ -31,6 +32,10 @@
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
   ],
   "presets": [{ "name": "Strap promo" }]
 }

@@ -24,6 +24,9 @@
       {%- endif -%}
     </div>
   </div>
+  <div class="bw-container">
+    {% content_for 'blocks' %}
+  </div>
 </div>
 
 {% schema %}
@@ -40,6 +43,10 @@
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
   ],
   "presets": [{ "name": "Best sellers" }]
 }

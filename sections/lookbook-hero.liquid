@@ -3,6 +3,7 @@
   <div class="bw-section-content">
     <div class="bw-label-mono">{{ section.settings.eyebrow }}</div>
     <div class="bw-display" style="font-size:clamp(40px,8vw,82px);margin-top:10px">{{ section.settings.heading }}</div>
+    {% content_for 'blocks' %}
   </div>
 </div>
 
@@ -23,6 +24,10 @@
     { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Used when no background video is set." },
     { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },
     { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
   ],
   "presets": [{ "name": "Lookbook hero" }]
 }

@@ -1,0 +1,56 @@
+{%- liquid
+  case block.settings.size
+    when 'sm'
+      assign font_size = '22px'
+    when 'md'
+      assign font_size = '34px'
+    when 'lg'
+      assign font_size = '56px'
+    else
+      assign font_size = 'clamp(48px,8vw,92px)'
+  endcase
+-%}
+<div
+  {{ block.shopify_attributes }}
+  class="bw-display"
+  style="
+    font-size:{{ font_size }};
+    text-align:{{ block.settings.alignment }};
+    color:{{ block.settings.text_color | default: 'inherit' }};
+  "
+>{{ block.settings.text }}</div>
+
+{% schema %}
+{
+  "name": "Heading",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "text", "label": "Text", "default": "Heading" },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Size",
+      "options": [
+        { "value": "sm", "label": "Small" },
+        { "value": "md", "label": "Medium" },
+        { "value": "lg", "label": "Large" },
+        { "value": "xl", "label": "Extra large" }
+      ],
+      "default": "lg"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    { "type": "color", "id": "text_color", "label": "Text color" }
+  ],
+  "presets": [{ "name": "Heading" }]
+}
+{% endschema %}

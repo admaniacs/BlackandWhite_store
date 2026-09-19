@@ -9,6 +9,7 @@
       {{ 'general.search.results_count' | t: count: search.results_count }}
     {%- endif -%}
   </p>
+  {% content_for 'blocks' %}
 </div>
 
 <form action="{{ routes.search_url }}" method="get" role="search" class="bw-container" style="padding-top:20px;padding-bottom:20px;display:flex;gap:8px">
@@ -53,6 +54,10 @@
     { "type": "header", "content": "Hero layout" },
     { "type": "range", "id": "hero_padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 },
     { "type": "range", "id": "hero_padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
   ]
 }
 {% endschema %}

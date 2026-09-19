@@ -1,0 +1,86 @@
+{%- comment -%}
+  Freeform container block. Nest any other theme block inside it (including
+  another group) to build custom layouts inside any section that accepts
+  "@theme" blocks.
+{%- endcomment -%}
+{%- liquid
+  assign direction = block.settings.content_direction
+  assign gap = block.settings.gap
+  assign h_align = block.settings.horizontal_alignment
+  assign v_align = block.settings.vertical_alignment
+  assign pad_y = block.settings.padding_block
+  assign pad_x = block.settings.padding_inline
+-%}
+<div
+  {{ block.shopify_attributes }}
+  class="bw-block-group{% if direction == 'row' %} bw-block-group--row{% endif %}"
+  style="
+    display:flex;
+    flex-direction:{% if direction == 'row' %}row{% else %}column{% endif %};
+    flex-wrap:{% if direction == 'row' %}wrap{% else %}nowrap{% endif %};
+    gap:{{ gap }}px;
+    align-items:{% if direction == 'row' %}{{ v_align }}{% else %}{{ h_align }}{% endif %};
+    justify-content:{% if direction == 'row' %}{{ h_align }}{% else %}{{ v_align }}{% endif %};
+    padding:{{ pad_y }}px {{ pad_x }}px;
+    background:{{ block.settings.background_color | default: 'transparent' }};
+    color:{{ block.settings.text_color | default: 'inherit' }};
+    {% if block.settings.max_width > 0 %}max-width:{{ block.settings.max_width }}px;margin-left:auto;margin-right:auto;{% endif %}
+  "
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Group",
+  "tag": null,
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
+  ],
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "content_direction",
+      "label": "Direction",
+      "options": [
+        { "value": "column", "label": "Vertical" },
+        { "value": "row", "label": "Horizontal" }
+      ],
+      "default": "column"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment",
+      "label": "Horizontal alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" },
+        { "value": "space-between", "label": "Space between" }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment",
+      "label": "Vertical alignment",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Bottom" }
+      ],
+      "default": "flex-start"
+    },
+    { "type": "range", "id": "gap", "label": "Gap between items", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 16 },
+    { "type": "range", "id": "padding_block", "label": "Top/bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_inline", "label": "Left/right padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "max_width", "label": "Max width (0 = full width)", "min": 0, "max": 1200, "step": 20, "unit": "px", "default": 0 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background color" },
+    { "type": "color", "id": "text_color", "label": "Text color" }
+  ],
+  "presets": [{ "name": "Group" }]
+}
+{% endschema %}

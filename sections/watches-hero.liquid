@@ -7,6 +7,7 @@
   <div style="position:absolute;left:24px;bottom:24px;color:{{ section.settings.caption_text_color }}">
     <div class="bw-label-mono" style="color:#999">{{ collection.products_count }} references</div>
     <div class="bw-display" style="font-size:clamp(38px,7vw,76px);margin-top:8px">{{ section.settings.heading }}</div>
+    {% content_for 'blocks' %}
   </div>
 </div>
 
@@ -37,6 +38,10 @@
     { "type": "color", "id": "tab_background_color", "label": "Tab background color", "default": "#ffffff" },
     { "type": "color", "id": "accent_color", "label": "Active tab / divider color", "default": "#000000" },
     { "type": "color", "id": "accent_text_color", "label": "Active tab text color", "default": "#ffffff" }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
   ],
   "presets": [{ "name": "Watches hero" }]
 }
