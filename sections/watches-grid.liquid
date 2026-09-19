@@ -1,4 +1,4 @@
-<div class="bw-grid bw-grid--3 bw-grid--flush" style="border-top:1px solid #000">
+<div class="bw-grid bw-grid--3 bw-grid--flush" style="border-top:1px solid {{ section.settings.divider_color }}">
   {%- paginate collection.products by: section.settings.products_per_page -%}
     {%- for product in collection.products -%}
       {%- render 'product-card', product: product, show_sizes: false -%}
@@ -15,7 +15,9 @@
 {
   "name": "Watches grid",
   "settings": [
-    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 3, "max": 24, "step": 3, "default": 9 }
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 3, "max": 24, "step": 3, "default": 9 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "divider_color", "label": "Divider color", "default": "#000000" }
   ],
   "presets": [{ "name": "Watches grid" }]
 }

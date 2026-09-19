@@ -1,4 +1,4 @@
-<footer class="bw-footer">
+<footer class="bw-footer" style="--ink:{{ section.settings.background_color }};--paper:{{ section.settings.text_color }}">
   <div class="bw-footer__grid">
     <div>
       <div class="bw-header__logo" style="font-size:30px">{{ shop.name | default: 'B/W' }}</div>
@@ -36,7 +36,10 @@
       "id": "tagline",
       "label": "Tagline",
       "default": "Two colours, done properly. Join the list for drop alerts."
-    }
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#000000" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" }
   ],
   "blocks": [
     {

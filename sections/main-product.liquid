@@ -1,4 +1,5 @@
 {%- assign product_form_id = 'product-form-' | append: product.id -%}
+<div style="--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink)">
 <nav class="bw-breadcrumb">Home / {{ product.collections.first.title | default: 'Shop' }} / {{ product.title }}</nav>
 
 <div class="bw-product-layout" data-product-section data-product-id="{{ product.id }}">
@@ -116,12 +117,16 @@
 </script>
 
 {% render 'product-reviews', product: product %}
+</div>
 
 {% schema %}
 {
   "name": "Product page",
   "settings": [
-    { "type": "text", "id": "shipping_note", "label": "Shipping note", "default": "Free shipping over $75 · ships in 1–2 days" }
+    { "type": "text", "id": "shipping_note", "label": "Shipping note", "default": "Free shipping over $75 · ships in 1–2 days" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
   ]
 }
 {% endschema %}

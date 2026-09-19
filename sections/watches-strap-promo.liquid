@@ -1,4 +1,4 @@
-<div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #000" class="bw-split-media">
+<div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid {{ section.settings.text_color }};--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink)" class="bw-split-media">
   <div style="padding:26px">
     <div class="bw-h2" style="font-size:26px">{{ section.settings.heading }}</div>
     <p class="bw-body" style="margin-top:8px;max-width:420px">{{ section.settings.body }}</p>
@@ -6,7 +6,7 @@
       <a href="{{ section.settings.cta_link }}" class="bw-btn bw-btn--outline" style="margin-top:16px">{{ section.settings.cta_text }}</a>
     {%- endif -%}
   </div>
-  <div class="bw-media-placeholder" style="height:260px;border-left:1px solid #000">
+  <div class="bw-media-placeholder" style="height:260px;border-left:1px solid var(--ink)">
     {%- if section.settings.image -%}
       <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.heading | escape }}" loading="lazy">
     {%- else -%}
@@ -23,7 +23,10 @@
     { "type": "textarea", "id": "body", "label": "Body", "default": "Every case takes a 20mm quick-release. Canvas, leather, steel — all black, all white, $28 each." },
     { "type": "text", "id": "cta_text", "label": "Button label", "default": "Shop straps" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
-    { "type": "image_picker", "id": "image", "label": "Image" }
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
   ],
   "presets": [{ "name": "Strap promo" }]
 }

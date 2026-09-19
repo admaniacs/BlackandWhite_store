@@ -14,19 +14,19 @@
   assign remaining_money = remaining_cents | money
 -%}
 <div class="bw-cart-overlay" data-cart-overlay></div>
-<aside class="bw-cart-drawer" data-cart-drawer aria-hidden="true" aria-label="Cart">
+<aside class="bw-cart-drawer" data-cart-drawer aria-hidden="true" aria-label="Cart" style="--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink)">
   <div class="bw-cart-drawer__head">
     <span class="bw-h3">{{ 'general.cart.title' | t }} ({{ cart.item_count }})</span>
     <button type="button" data-cart-close aria-label="Close cart">✕</button>
   </div>
 
-  <div class="bw-cart-drawer__ship">
+  <div class="bw-cart-drawer__ship" style="background:{{ section.settings.ship_bar_background_color }};color:{{ section.settings.ship_bar_text_color }}">
     {%- if remaining_cents > 0 -%}
-      <div class="bw-label-mono" style="color:#fff">{{ 'general.cart.free_shipping_remaining' | t: amount: remaining_money }}</div>
+      <div class="bw-label-mono" style="color:{{ section.settings.ship_bar_text_color }}">{{ 'general.cart.free_shipping_remaining' | t: amount: remaining_money }}</div>
     {%- else -%}
-      <div class="bw-label-mono" style="color:#fff">{{ 'general.cart.free_shipping_reached' | t }}</div>
+      <div class="bw-label-mono" style="color:{{ section.settings.ship_bar_text_color }}">{{ 'general.cart.free_shipping_reached' | t }}</div>
     {%- endif -%}
-    <div class="bw-cart-drawer__ship-bar"><div class="bw-cart-drawer__ship-fill" style="width:{{ progress }}%"></div></div>
+    <div class="bw-cart-drawer__ship-bar"><div class="bw-cart-drawer__ship-fill" style="width:{{ progress }}%;background:{{ section.settings.ship_bar_text_color }}"></div></div>
   </div>
 
   <div class="bw-cart-drawer__lines" data-cart-lines>
@@ -61,7 +61,7 @@
         {%- assign upsell_price = upsell.price | money -%}
         <div class="bw-cart-drawer__upsell">
           <div class="bw-label-mono">{{ 'general.cart.add_on_title' | t: title: upsell.title, price: upsell_price }}</div>
-          <div style="display:flex;align-items:center;gap:12px;border:1px solid #000;padding:10px">
+          <div style="display:flex;align-items:center;gap:12px;border:1px solid var(--ink);padding:10px">
             <div class="bw-media-placeholder" style="width:44px;height:44px;flex:none">
               {%- if upsell.featured_image -%}<img src="{{ upsell.featured_image | image_url: width: 100 }}" alt="{{ upsell.title | escape }}" loading="lazy">{%- endif -%}
             </div>
@@ -85,5 +85,14 @@
 </aside>
 
 {% schema %}
-{ "name": "Cart drawer", "settings": [] }
+{
+  "name": "Cart drawer",
+  "settings": [
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Drawer background color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Drawer text color", "default": "#000000" },
+    { "type": "color", "id": "ship_bar_background_color", "label": "Free-shipping bar background", "default": "#000000" },
+    { "type": "color", "id": "ship_bar_text_color", "label": "Free-shipping bar text", "default": "#ffffff" }
+  ]
+}
 {% endschema %}

@@ -1,4 +1,4 @@
-<div class="bw-container" style="padding-top:24px;padding-bottom:40px">
+<div class="bw-container" style="padding-top:24px;padding-bottom:40px;--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink)">
   <div class="bw-h2">{{ 'general.cart.title' | t }} ({{ cart.item_count }})</div>
 
   {%- if cart.item_count == 0 -%}
@@ -8,7 +8,7 @@
     {%- form 'cart', cart -%}
       <div style="display:flex;flex-direction:column;gap:1px;background:var(--grey-20);margin-top:20px">
         {%- for item in cart.items -%}
-          <div class="bw-cart-line" style="background:#fff;padding:16px" data-cart-line data-line-key="{{ item.key }}">
+          <div class="bw-cart-line" style="background:var(--paper);padding:16px" data-cart-line data-line-key="{{ item.key }}">
             <div class="bw-cart-line__media bw-media-placeholder">
               {%- if item.image -%}<img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.image.alt | escape }}" loading="lazy">{%- endif -%}
             </div>
@@ -43,5 +43,12 @@
 </div>
 
 {% schema %}
-{ "name": "Cart", "settings": [] }
+{
+  "name": "Cart",
+  "settings": [
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
+  ]
+}
 {% endschema %}

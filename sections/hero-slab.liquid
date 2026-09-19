@@ -1,4 +1,4 @@
-<div class="bw-hero" style="position:relative;background:#000;color:#fff;overflow:hidden">
+<div class="bw-hero" style="position:relative;overflow:hidden;--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink)">
   {%- if section.settings.background_video != blank -%}
     <div class="bw-hero__video-wrap" aria-hidden="true" style="--bw-hero-overlay:{{ section.settings.video_overlay_opacity | default: 45 | times: 1.0 | divided_by: 100 }}">
       {{ section.settings.background_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'bw-hero__video', image_size: '1920x' }}
@@ -13,10 +13,10 @@
         <p style="max-width:420px;font:15px/1.5 var(--font-ui);color:#c9c9c9;margin:0">{{ section.settings.subtext }}</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
           {%- if section.settings.cta_1_text != blank -%}
-            <a href="{{ section.settings.cta_1_link }}" class="bw-btn bw-btn--on-dark">{{ section.settings.cta_1_text }}</a>
+            <a href="{{ section.settings.cta_1_link }}" class="bw-btn">{{ section.settings.cta_1_text }}</a>
           {%- endif -%}
           {%- if section.settings.cta_2_text != blank -%}
-            <a href="{{ section.settings.cta_2_link }}" class="bw-btn bw-btn--on-dark bw-btn--outline">{{ section.settings.cta_2_text }}</a>
+            <a href="{{ section.settings.cta_2_link }}" class="bw-btn bw-btn--outline">{{ section.settings.cta_2_text }}</a>
           {%- endif -%}
         </div>
       </div>
@@ -35,6 +35,9 @@
     { "type": "url", "id": "cta_1_link", "label": "Primary button link" },
     { "type": "text", "id": "cta_2_text", "label": "Secondary button label", "default": "Watches" },
     { "type": "url", "id": "cta_2_link", "label": "Secondary button link" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#000000" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" },
     {
       "type": "header",
       "content": "Background video"

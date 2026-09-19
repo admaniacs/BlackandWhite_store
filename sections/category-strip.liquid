@@ -1,4 +1,4 @@
-<div class="bw-category-strip">
+<div class="bw-category-strip" style="--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink)">
   {%- for block in section.blocks -%}
     {%- assign coll = collections[block.settings.collection] -%}
     <a href="{{ coll.url | default: '#' }}">
@@ -20,6 +20,11 @@
         { "type": "text", "id": "label", "label": "Label override" }
       ]
     }
+  ],
+  "settings": [
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
   ],
   "max_blocks": 6,
   "presets": [

@@ -1,4 +1,5 @@
-<header class="bw-header" data-header>
+{%- assign header_style = '--ink:' | append: section.settings.text_color | append: ';--paper:' | append: section.settings.background_color | append: ';background:var(--paper);color:var(--ink)' -%}
+<header class="bw-header" data-header style="{{ header_style }}">
   <button type="button" class="bw-burger bw-hide-desktop" data-mobile-nav-toggle aria-label="Menu" aria-expanded="false">☰</button>
 
   <a href="{{ routes.root_url }}" class="bw-header__logo">{{ shop.name | default: 'B/W' }}</a>
@@ -18,8 +19,8 @@
   </div>
 </header>
 
-<nav class="bw-mobile-nav" data-mobile-nav hidden>
-  <div class="bw-container" style="padding-top:16px;padding-bottom:16px;border-bottom:1px solid #000">
+<nav class="bw-mobile-nav" data-mobile-nav hidden style="{{ header_style }}">
+  <div class="bw-container" style="padding-top:16px;padding-bottom:16px;border-bottom:1px solid var(--ink)">
     {%- for link in linklists[section.settings.menu].links -%}
       <a href="{{ link.url }}" class="bw-nav-link" style="display:block;padding:10px 0">{{ link.title }}</a>
     {%- endfor -%}
@@ -36,7 +37,10 @@
       "id": "menu",
       "label": "Main menu",
       "default": "main-menu"
-    }
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
   ]
 }
 {% endschema %}

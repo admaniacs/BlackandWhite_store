@@ -1,4 +1,4 @@
-<div class="bw-collection-hero">
+<div class="bw-collection-hero" style="--ink:{{ section.settings.hero_background_color }};--paper:{{ section.settings.hero_text_color }}">
   <div>
     <div class="bw-label-mono" style="color:#999">Home / {{ collection.title }}</div>
     <div class="bw-display" style="font-size:clamp(32px,5vw,56px);margin-top:8px">{{ collection.title }}</div>
@@ -85,6 +85,10 @@
 {% schema %}
 {
   "name": "Collection",
-  "settings": []
+  "settings": [
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "hero_background_color", "label": "Hero background color", "default": "#000000" },
+    { "type": "color", "id": "hero_text_color", "label": "Hero text color", "default": "#ffffff" }
+  ]
 }
 {% endschema %}

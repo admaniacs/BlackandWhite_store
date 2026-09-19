@@ -1,4 +1,4 @@
-<div class="bw-stat-grid">
+<div class="bw-stat-grid" style="--ink:{{ section.settings.divider_color }};--paper:{{ section.settings.background_color }};color:{{ section.settings.text_color }}">
   {%- for block in section.blocks -%}
     <div class="bw-stat-grid__item">
       <div class="bw-stat-grid__number">{{ block.settings.number }}</div>
@@ -19,6 +19,12 @@
         { "type": "text", "id": "label", "label": "Label" }
       ]
     }
+  ],
+  "settings": [
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Cell background color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" },
+    { "type": "color", "id": "divider_color", "label": "Divider color", "default": "#000000" }
   ],
   "max_blocks": 3,
   "presets": [
