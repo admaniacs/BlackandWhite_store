@@ -18,7 +18,9 @@
         "cta_1_text": "Shop all",
         "cta_1_link": "",
         "cta_2_text": "Watches",
-        "cta_2_link": ""
+        "cta_2_link": "",
+        "background_video": "shopify://files/videos/8443731-uhd_4096_2160_25fps.mp4",
+        "video_overlay_opacity": 45
       }
     },
     "categories": {
