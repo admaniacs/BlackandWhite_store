@@ -29,47 +29,34 @@
       "footer": {
         "type": "footer",
         "blocks": {
+          "link_column_eD3tJp": {
+            "type": "link_column",
+            "settings": {
+              "title": "Shop",
+              "link_1": "",
+              "link_2": "",
+              "link_3": "",
+              "link_4": "",
+              "link_5": "",
+              "link_6": ""
+            }
+          },
           "footer-0": {
             "type": "link_column",
             "settings": {
               "title": "Shop",
-              "link_1": "shopify://pages/contact",
+              "link_1": "shopify://products/checkered-shirt-black",
               "link_2": "shopify://collections/hoodies",
               "link_3": "shopify://collections/t-shirts",
               "link_4": "shopify://collections/sneakers",
               "link_5": "shopify://collections/the-boss-sneakers",
               "link_6": "shopify://collections/shirts"
             }
-          },
-          "footer-1": {
-            "type": "link_column",
-            "settings": {
-              "title": "Help",
-              "link_1": "",
-              "link_2": "",
-              "link_3": "",
-              "link_4": "",
-              "link_5": "",
-              "link_6": ""
-            }
-          },
-          "footer-2": {
-            "type": "link_column",
-            "settings": {
-              "title": "B/W",
-              "link_1": "",
-              "link_2": "",
-              "link_3": "",
-              "link_4": "",
-              "link_5": "",
-              "link_6": ""
-            }
           }
         },
         "block_order": [
-          "footer-0",
-          "footer-1",
-          "footer-2"
+          "link_column_eD3tJp",
+          "footer-0"
         ],
         "settings": {
           "tagline": "Two colours, done properly. Join the list for drop alerts."
