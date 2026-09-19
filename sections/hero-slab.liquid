@@ -1,16 +1,24 @@
-<div style="background:#000;color:#fff;padding:60px 24px 40px">
-  <div class="bw-container" style="padding:0">
-    <div class="bw-label-mono" style="color:#9a9a9a">{{ section.settings.eyebrow }}</div>
-    <div class="bw-display" style="margin-top:14px">{{ section.settings.heading }}</div>
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-top:34px;border-top:1px solid #333;padding-top:20px;flex-wrap:wrap">
-      <p style="max-width:420px;font:15px/1.5 var(--font-ui);color:#c9c9c9;margin:0">{{ section.settings.subtext }}</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap">
-        {%- if section.settings.cta_1_text != blank -%}
-          <a href="{{ section.settings.cta_1_link }}" class="bw-btn bw-btn--on-dark">{{ section.settings.cta_1_text }}</a>
-        {%- endif -%}
-        {%- if section.settings.cta_2_text != blank -%}
-          <a href="{{ section.settings.cta_2_link }}" class="bw-btn bw-btn--on-dark bw-btn--outline">{{ section.settings.cta_2_text }}</a>
-        {%- endif -%}
+<div class="bw-hero" style="position:relative;background:#000;color:#fff;overflow:hidden">
+  {%- if section.settings.background_video != blank -%}
+    <div class="bw-hero__video-wrap" aria-hidden="true" style="--bw-hero-overlay:{{ section.settings.video_overlay_opacity | default: 45 | times: 1.0 | divided_by: 100 }}">
+      {{ section.settings.background_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'bw-hero__video', image_size: '1920x' }}
+    </div>
+  {%- endif -%}
+
+  <div class="bw-hero__content" style="padding:60px 24px 40px">
+    <div class="bw-container" style="padding:0">
+      <div class="bw-label-mono" style="color:#9a9a9a">{{ section.settings.eyebrow }}</div>
+      <div class="bw-display" style="margin-top:14px">{{ section.settings.heading }}</div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-top:34px;border-top:1px solid #333;padding-top:20px;flex-wrap:wrap">
+        <p style="max-width:420px;font:15px/1.5 var(--font-ui);color:#c9c9c9;margin:0">{{ section.settings.subtext }}</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          {%- if section.settings.cta_1_text != blank -%}
+            <a href="{{ section.settings.cta_1_link }}" class="bw-btn bw-btn--on-dark">{{ section.settings.cta_1_text }}</a>
+          {%- endif -%}
+          {%- if section.settings.cta_2_text != blank -%}
+            <a href="{{ section.settings.cta_2_link }}" class="bw-btn bw-btn--on-dark bw-btn--outline">{{ section.settings.cta_2_text }}</a>
+          {%- endif -%}
+        </div>
       </div>
     </div>
   </div>
@@ -26,7 +34,28 @@
     { "type": "text", "id": "cta_1_text", "label": "Primary button label", "default": "Shop all" },
     { "type": "url", "id": "cta_1_link", "label": "Primary button link" },
     { "type": "text", "id": "cta_2_text", "label": "Secondary button label", "default": "Watches" },
-    { "type": "url", "id": "cta_2_link", "label": "Secondary button link" }
+    { "type": "url", "id": "cta_2_link", "label": "Secondary button link" },
+    {
+      "type": "header",
+      "content": "Background video"
+    },
+    {
+      "type": "video",
+      "id": "background_video",
+      "label": "Background video",
+      "info": "Muted, looped, autoplays behind the text. Leave empty to keep the plain black background."
+    },
+    {
+      "type": "range",
+      "id": "video_overlay_opacity",
+      "label": "Video darkening overlay",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 45,
+      "info": "Keeps the headline readable over busy footage."
+    }
   ],
   "presets": [{ "name": "Hero slab" }]
 }
