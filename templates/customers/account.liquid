@@ -7,7 +7,7 @@
       <span class="bw-label-mono">Last 12 months ▾</span>
     </div>
 
-    {%- paginate customer.orders by: 10 -%}
+    {%- paginate customer.orders by 10 -%}
       {%- if customer.orders.size == 0 -%}
         <p class="bw-body" style="margin-top:18px">No orders yet.</p>
       {%- else -%}

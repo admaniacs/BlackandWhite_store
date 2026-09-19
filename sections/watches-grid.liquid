@@ -1,5 +1,5 @@
 <div class="bw-grid bw-grid--3 bw-grid--flush" style="border-top:1px solid {{ section.settings.divider_color }};margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px">
-  {%- paginate collection.products by: section.settings.products_per_page -%}
+  {%- paginate collection.products by section.settings.products_per_page -%}
     {%- for product in collection.products -%}
       {%- render 'product-card', product: product, show_sizes: false -%}
     {%- endfor -%}

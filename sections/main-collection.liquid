@@ -36,7 +36,7 @@
   </aside>
 
   <div>
-    {%- paginate collection.products by: 12 -%}
+    {%- paginate collection.products by 12 -%}
       <div class="bw-collection-toolbar">
         <span>{{ 'collections.general.showing' | t: count: collection.products.size, total: collection.products_count }}</span>
         <div class="bw-collection-toolbar__actions bw-hide-mobile">

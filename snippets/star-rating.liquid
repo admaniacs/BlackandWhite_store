@@ -3,6 +3,7 @@
 {%- assign has_half = false -%}
 {%- assign remainder = rating | minus: full_stars -%}
 {%- if remainder >= 0.5 -%}{%- assign has_half = true -%}{%- endif -%}
+{%- assign half_star_index = full_stars | plus: 1 -%}
 {%- for i in (1..5) -%}
-  {%- if i <= full_stars -%}★{%- elsif has_half and i == full_stars | plus: 1 -%}★{%- else -%}☆{%- endif -%}
+  {%- if i <= full_stars -%}★{%- elsif has_half and i == half_star_index -%}★{%- else -%}☆{%- endif -%}
 {%- endfor -%}
