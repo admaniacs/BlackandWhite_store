@@ -304,11 +304,13 @@ h1, h2, h3, h4, p { margin: 0; }
 .bw-grid { display: grid; gap: 20px; }
 .bw-grid--4 { grid-template-columns: repeat(4, 1fr); }
 .bw-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.bw-grid--2 { grid-template-columns: repeat(2, 1fr); }
 .bw-grid--flush { gap: 1px; background: var(--grey-20); border: 1px solid var(--grey-20); }
 .bw-grid--flush > * { background: var(--paper); }
 @media (max-width: 749px) {
   .bw-grid--4 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .bw-grid--3 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .bw-grid--2 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
 
 /* ===== Swatches ===== */
