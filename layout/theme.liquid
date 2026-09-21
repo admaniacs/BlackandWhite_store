@@ -52,16 +52,17 @@
 <body class="bw-body-{{ request.page_type }}">
   <a class="bw-visually-hidden" href="#bw-main">Skip to content</a>
 
-  {% sections 'header-group' %}
+  {%- unless request.page_type == 'password' -%}{% sections 'header-group' %}{%- endunless -%}
 
   <main id="bw-main">
     {{ content_for_layout }}
   </main>
 
-  {% sections 'footer-group' %}
-
-  {% section 'cart-drawer' %}
-  {% render 'search-overlay' %}
+  {%- unless request.page_type == 'password' -%}
+    {% sections 'footer-group' %}
+    {% section 'cart-drawer' %}
+    {% render 'search-overlay' %}
+  {%- endunless -%}
 
   {{ 'theme.js' | asset_url | script_tag }}
 </body>

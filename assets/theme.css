@@ -467,5 +467,34 @@ h1, h2, h3, h4, p { margin: 0; }
 .bw-stat-grid__number { font: 400 44px var(--font-display); }
 @media (max-width: 749px) { .bw-split-media, .bw-stat-grid { grid-template-columns: 1fr; } }
 
+/* ===== Blog / article ===== */
+.bw-blog-card { border: 1px solid var(--ink); background: var(--paper); display: flex; flex-direction: column; }
+.bw-blog-card__media { height: 240px; }
+.bw-blog-card__body { padding: 16px; border-top: 1px solid var(--ink); flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.bw-blog-card__title { font: 400 20px var(--font-display); text-transform: uppercase; line-height: 1.05; }
+.bw-blog-card__excerpt { font: 13px/1.5 var(--font-ui); color: var(--grey-90); flex: 1; }
+.bw-article { max-width: 720px; margin: 0 auto; padding: 44px var(--gutter-desktop) 60px; }
+.bw-article__media { margin: 0 calc(var(--gutter-desktop) * -1) 28px; }
+.bw-article__body { font: 15px/1.7 var(--font-ui); color: var(--grey-100); }
+.bw-article__body p { margin: 0 0 18px; }
+.bw-article__body h2 { font: 400 26px var(--font-display); text-transform: uppercase; margin: 34px 0 14px; }
+.bw-article__body h3 { font: 400 20px var(--font-display); text-transform: uppercase; margin: 28px 0 12px; }
+.bw-article__body img { margin: 22px 0; }
+.bw-article__body a { text-decoration: underline; }
+.bw-article__body blockquote { border-left: 2px solid var(--ink); padding-left: 18px; font-style: italic; color: var(--grey-90); margin: 22px 0; }
+.bw-article__nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--ink); }
+@media (max-width: 749px) { .bw-blog-card__media { height: 200px; } }
+
+/* ===== Password page ===== */
+.bw-password-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 24px; gap: 22px; }
+.bw-password-screen__form { display: flex; gap: 8px; max-width: 380px; width: 100%; }
+.bw-password-screen__signup { max-width: 380px; width: 100%; margin-top: 6px; }
+.bw-password-screen__errors { font: 12px var(--font-ui); color: var(--grey-90); }
+
+/* ===== Gift card page ===== */
+.bw-gift-card { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 24px; gap: 20px; }
+.bw-gift-card__code { font: 700 22px/1 var(--font-mono); letter-spacing: .08em; border: 1px solid var(--ink); padding: 18px 22px; }
+.bw-gift-card__balance { font: 400 clamp(40px,8vw,72px) var(--font-display); text-transform: uppercase; }
+
 /* ===== Utility ===== */
 .bw-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }

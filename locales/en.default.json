@@ -56,7 +56,42 @@
       "showing": "Showing {{ count }} of {{ total }}",
       "load_more": "Load more",
       "no_products": "No products found"
+    },
+    "list": {
+      "title": "Collections",
+      "products_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      }
     }
+  },
+  "blogs": {
+    "article": {
+      "read_more": "Read more",
+      "back_to_blog": "Back to {{ title }}",
+      "older_post": "Older post",
+      "newer_post": "Newer post",
+      "by_author": "By {{ author }}"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Here's your gift card!",
+      "subtext": "{{ value }} to spend at {{ shop }}.",
+      "disabled": "This gift card is no longer active",
+      "expired": "This gift card expired on {{ expiry }}",
+      "how_to_redeem": "Use this code at checkout to redeem your gift card",
+      "add_to_apple_wallet": "Add to Apple Wallet",
+      "print": "Print",
+      "shop_link": "Start shopping"
+    }
+  },
+  "password": {
+    "login_form_heading": "Enter store using password",
+    "signup_form_heading": "Notify me when the store is available",
+    "signup_form_email_label": "Email",
+    "signup_form_button_label": "Notify me",
+    "password_link": "Enter using password"
   },
   "customer": {
     "account": {

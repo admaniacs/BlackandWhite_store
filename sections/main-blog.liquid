@@ -1,0 +1,74 @@
+<div class="bw-collection-hero color-{{ section.settings.hero_color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.hero_padding_top }}px;padding-bottom:{{ section.settings.hero_padding_bottom }}px">
+  {%- render 'section-media-background', image: section.settings.hero_background_image, video: section.settings.hero_background_video, overlay_opacity: section.settings.hero_background_overlay_opacity -%}
+  <div>
+    <div class="bw-label-mono" style="color:#999">Home / {{ blog.title }}</div>
+    <div class="bw-display" style="font-size:clamp(32px,5vw,56px);margin-top:8px">{{ blog.title }}</div>
+  </div>
+  {% content_for 'blocks' %}
+</div>
+
+<div class="bw-container" style="padding-top:34px;padding-bottom:34px">
+  {%- paginate blog.articles by 9 -%}
+    {%- if blog.articles.size == 0 -%}
+      <p class="bw-body">{{ section.settings.empty_text }}</p>
+    {%- else -%}
+      <div class="bw-grid bw-grid--3">
+        {%- for article in blog.articles -%}
+          <a href="{{ article.url }}" class="bw-blog-card">
+            <div class="bw-media-placeholder bw-blog-card__media">
+              {%- if article.image -%}
+                <img src="{{ article.image | image_url: width: 900 }}" alt="{{ article.image.alt | escape }}" loading="lazy">
+              {%- else -%}article · 900×600{%- endif -%}
+            </div>
+            <div class="bw-blog-card__body">
+              {%- if section.settings.show_date or section.settings.show_author -%}
+                <div class="bw-label-mono">
+                  {%- if section.settings.show_date -%}{{ article.published_at | date: '%B %d, %Y' }}{%- endif -%}
+                  {%- if section.settings.show_date and section.settings.show_author -%} · {%- endif -%}
+                  {%- if section.settings.show_author -%}{{ 'blogs.article.by_author' | t: author: article.author }}{%- endif -%}
+                </div>
+              {%- endif -%}
+              <div class="bw-blog-card__title">{{ article.title }}</div>
+              {%- if section.settings.show_excerpt -%}
+                <p class="bw-blog-card__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</p>
+              {%- endif -%}
+              <span class="bw-nav-link" style="text-decoration:underline">{{ 'blogs.article.read_more' | t }} →</span>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if paginate.next -%}
+      <div class="bw-load-more">
+        <a href="{{ paginate.next.url }}" class="bw-btn bw-btn--outline">{{ 'collections.general.load_more' | t }}</a>
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "settings": [
+    { "type": "paragraph", "content": "Renders the article list for whichever blog this template is assigned to." },
+    { "type": "checkbox", "id": "show_date", "label": "Show date", "default": true },
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt", "default": true },
+    { "type": "text", "id": "empty_text", "label": "Empty state text", "default": "No posts yet — check back soon." },
+    { "type": "header", "content": "Colors" },
+    { "type": "color_scheme", "id": "hero_color_scheme", "label": "Hero color scheme", "default": "scheme-2" },
+    { "type": "header", "content": "Hero background image or video" },
+    { "type": "image_picker", "id": "hero_background_image", "label": "Background image", "info": "Used when no background video is set." },
+    { "type": "video", "id": "hero_background_video", "label": "Background video", "info": "Takes priority over the background image." },
+    { "type": "range", "id": "hero_background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 },
+    { "type": "header", "content": "Hero layout" },
+    { "type": "range", "id": "hero_padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 },
+    { "type": "range", "id": "hero_padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
+  ]
+}
+{% endschema %}

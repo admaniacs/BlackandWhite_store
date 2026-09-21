@@ -1,0 +1,94 @@
+<article class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink)">
+  <div class="bw-article">
+    <div class="bw-label-mono"><a href="{{ blog.url }}" style="text-decoration:underline">{{ 'blogs.article.back_to_blog' | t: title: blog.title }}</a></div>
+
+    {%- if section.settings.show_date or section.settings.show_author -%}
+      <div class="bw-label-mono" style="margin-top:18px">
+        {%- if section.settings.show_date -%}{{ article.published_at | date: '%B %d, %Y' }}{%- endif -%}
+        {%- if section.settings.show_date and section.settings.show_author -%} · {%- endif -%}
+        {%- if section.settings.show_author -%}{{ 'blogs.article.by_author' | t: author: article.author }}{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="bw-display" style="font-size:clamp(32px,6vw,64px);margin-top:10px">{{ article.title }}</div>
+
+    {%- if section.settings.show_image and article.image -%}
+      <div class="bw-article__media">
+        <img src="{{ article.image | image_url: width: 1400 }}" alt="{{ article.image.alt | escape }}" loading="eager" style="width:100%;height:auto">
+      </div>
+    {%- endif -%}
+
+    <div class="bw-article__body">
+      {{ article.content }}
+    </div>
+
+    {%- if section.settings.show_tags and article.tags.size > 0 -%}
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:30px">
+        {%- for tag in article.tags -%}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="bw-nav-link" style="border:1px solid var(--ink);padding:7px 12px">{{ tag }}</a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_share -%}
+      <div style="display:flex;gap:16px;margin-top:30px">
+        <a href="https://twitter.com/intent/tweet?url={{ shop.url | append: article.url | url_encode }}&text={{ article.title | url_encode }}" class="bw-nav-link" style="text-decoration:underline" target="_blank" rel="noopener">X</a>
+        <a href="https://www.facebook.com/sharer.php?u={{ shop.url | append: article.url | url_encode }}" class="bw-nav-link" style="text-decoration:underline" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    {%- endif -%}
+
+    <div class="bw-article__nav">
+      {%- if blog.previous_article -%}
+        <a href="{{ blog.previous_article }}" class="bw-nav-link" style="text-decoration:underline">← {{ 'blogs.article.newer_post' | t }}</a>
+      {%- else -%}<span></span>{%- endif -%}
+      {%- if blog.next_article -%}
+        <a href="{{ blog.next_article }}" class="bw-nav-link" style="text-decoration:underline">{{ 'blogs.article.older_post' | t }} →</a>
+      {%- endif -%}
+    </div>
+
+    {%- if blog.comments_enabled? -%}
+      <div style="margin-top:50px;padding-top:30px;border-top:1px solid var(--ink)">
+        <div class="bw-h3">{{ article.comments_count }} comments</div>
+
+        {%- if article.comments_count > 0 -%}
+          <div style="display:flex;flex-direction:column;gap:18px;margin-top:20px">
+            {%- for comment in article.comments -%}
+              <div style="border:1px solid var(--grey-20);padding:16px">
+                <div class="bw-label-mono">{{ comment.author }} · {{ comment.created_at | date: '%B %d, %Y' }}</div>
+                <p class="bw-body" style="margin-top:6px">{{ comment.content }}</p>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- form 'new_comment', article -%}
+          {{ form.errors | default_errors }}
+          {%- if blog.moderated? and form.posted_successfully? -%}
+            <p class="bw-body" style="margin-top:16px">Your comment was submitted and is awaiting approval.</p>
+          {%- endif -%}
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;max-width:460px">
+            <input type="text" name="comment[author]" class="bw-field" placeholder="Name" value="{{ form.author }}" required>
+            <input type="email" name="comment[email]" class="bw-field" placeholder="Email" value="{{ form.email }}" required>
+            <textarea name="comment[body]" class="bw-field" rows="4" placeholder="Comment" required>{{ form.body }}</textarea>
+            <button type="submit" class="bw-btn" style="align-self:flex-start">Post comment</button>
+          </div>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": [
+    { "type": "checkbox", "id": "show_date", "label": "Show date", "default": true },
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": true },
+    { "type": "checkbox", "id": "show_image", "label": "Show featured image", "default": true },
+    { "type": "checkbox", "id": "show_tags", "label": "Show tags", "default": true },
+    { "type": "checkbox", "id": "show_share", "label": "Show share links", "default": true },
+    { "type": "header", "content": "Colors" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" }
+  ]
+}
+{% endschema %}
