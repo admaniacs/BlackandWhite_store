@@ -12,6 +12,48 @@
     "announcement_message": "FREE SHIPPING OVER $75 · 30-DAY RETURNS · NEW DROP FRIDAY 9AM",
     "announcement_enable": true,
     "free_shipping_threshold": 75,
+    "color_schemes": {
+      "scheme-1": {
+        "settings": {
+          "background": "#FFFFFF",
+          "text": "#000000",
+          "button": "#000000",
+          "button_label": "#FFFFFF",
+          "secondary_button_label": "#000000",
+          "shadow": "#000000"
+        }
+      },
+      "scheme-2": {
+        "settings": {
+          "background": "#000000",
+          "text": "#FFFFFF",
+          "button": "#FFFFFF",
+          "button_label": "#000000",
+          "secondary_button_label": "#FFFFFF",
+          "shadow": "#FFFFFF"
+        }
+      },
+      "scheme-3": {
+        "settings": {
+          "background": "#F5F5F0",
+          "text": "#000000",
+          "button": "#000000",
+          "button_label": "#F5F5F0",
+          "secondary_button_label": "#000000",
+          "shadow": "#000000"
+        }
+      },
+      "scheme-4": {
+        "settings": {
+          "background": "#1A1A1A",
+          "text": "#FFFFFF",
+          "button": "#FFFFFF",
+          "button_label": "#1A1A1A",
+          "secondary_button_label": "#FFFFFF",
+          "shadow": "#FFFFFF"
+        }
+      }
+    },
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
@@ -34,50 +76,37 @@
       "footer": {
         "type": "footer",
         "blocks": {
-          "link_column_JQhE4n": {
+          "link_column_1": {
             "type": "link_column",
             "settings": {
               "title": "Shop",
-              "link_1": "",
-              "link_2": "",
-              "link_3": "",
-              "link_4": "",
-              "link_5": "",
-              "link_6": ""
+              "menu": "main-menu"
             }
           },
-          "link_column_eD3tJp": {
+          "link_column_2": {
             "type": "link_column",
             "settings": {
-              "title": "Shop",
-              "link_1": "",
-              "link_2": "",
-              "link_3": "",
-              "link_4": "",
-              "link_5": "",
-              "link_6": ""
+              "title": "Help"
             }
           },
-          "footer-0": {
+          "link_column_3": {
             "type": "link_column",
             "settings": {
-              "title": "Shop",
-              "link_1": "shopify://products/checkered-shirt-black",
-              "link_2": "shopify://collections/hoodies",
-              "link_3": "shopify://collections/t-shirts",
-              "link_4": "shopify://collections/sneakers",
-              "link_5": "shopify://collections/the-boss-sneakers",
-              "link_6": "shopify://collections/shirts"
+              "title": "B/W"
             }
           }
         },
         "block_order": [
-          "link_column_JQhE4n",
-          "link_column_eD3tJp",
-          "footer-0"
+          "link_column_1",
+          "link_column_2",
+          "link_column_3"
         ],
         "settings": {
+          "show_logo": true,
+          "logo_height": 30,
+          "invert_logo": true,
           "tagline": "Two colours, done properly. Join the list for drop alerts.",
+          "show_newsletter": true,
           "background_color": "#000000",
           "text_color": "#ffffff",
           "background_overlay_opacity": 0

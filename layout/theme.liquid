@@ -14,6 +14,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet">
   {{ content_for_header }}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
+  {%- if settings.color_schemes -%}
+  <style>
+    {%- for scheme in settings.color_schemes -%}
+    .color-{{ scheme.id }} {
+      --ink: {{ scheme.settings.text }};
+      --paper: {{ scheme.settings.background }};
+      --scheme-button-bg: {{ scheme.settings.button }};
+      --scheme-button-text: {{ scheme.settings.button_label }};
+      --scheme-secondary-text: {{ scheme.settings.secondary_button_label }};
+      --scheme-shadow: {{ scheme.settings.shadow }};
+      background: {{ scheme.settings.background_gradient | default: scheme.settings.background }};
+      color: var(--ink);
+    }
+    {%- endfor -%}
+  </style>
+  {%- endif -%}
   {%- if settings.type_heading_font or settings.type_body_font or settings.type_mono_font -%}
   <style>
     {{ settings.type_heading_font | font_face: font_display: 'swap' }}

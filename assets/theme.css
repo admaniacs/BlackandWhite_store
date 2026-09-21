@@ -103,13 +103,13 @@ h1, h2, h3, h4, p { margin: 0; }
   letter-spacing: .12em;
   text-transform: uppercase;
   padding: 17px 34px;
-  border: 1px solid var(--ink);
-  background: var(--ink);
-  color: var(--paper);
+  border: 1px solid var(--scheme-button-bg, var(--ink));
+  background: var(--scheme-button-bg, var(--ink));
+  color: var(--scheme-button-text, var(--paper));
   white-space: nowrap;
 }
-.bw-btn:hover { background: var(--grey-110); }
-.bw-btn--outline { background: transparent; color: var(--ink); }
+.bw-btn:hover { opacity: .85; }
+.bw-btn--outline { background: transparent; color: var(--scheme-button-bg, var(--ink)); border-color: var(--scheme-button-bg, var(--ink)); }
 .bw-btn--outline:hover { background: var(--ink); color: var(--paper); }
 .bw-btn--on-dark { background: var(--paper); color: var(--ink); border-color: var(--paper); }
 .bw-btn--on-dark.bw-btn--outline { background: transparent; color: var(--paper); }
