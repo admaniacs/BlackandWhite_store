@@ -1,21 +1,29 @@
+{%- if section.blocks.size > 0 or request.design_mode -%}
 <div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
   <div class="bw-container">
-    {%- if section.settings.heading != blank -%}
-      <div class="bw-label-mono" style="text-align:center;margin-bottom:20px">{{ section.settings.heading }}</div>
+    {%- if section.blocks.size > 0 -%}
+      {%- if section.settings.heading != blank -%}
+        <div class="bw-label-mono" style="text-align:center;margin-bottom:20px">{{ section.settings.heading }}</div>
+      {%- endif -%}
+      <div class="bw-logo-list">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="bw-logo-list__item" {{ block.shopify_attributes }}>{%- else -%}<div class="bw-logo-list__item" {{ block.shopify_attributes }}>{%- endif -%}
+            {%- if block.settings.image -%}
+              <img src="{{ block.settings.image | image_url: width: 300 }}" alt="{{ block.settings.alt | escape }}" loading="lazy">
+            {%- else -%}
+              <span class="bw-label-mono">logo</span>
+            {%- endif -%}
+          {%- if block.settings.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="bw-empty-state">
+        <p class="bw-label-mono">Add logos to this section from the theme editor.</p>
+      </div>
     {%- endif -%}
-    <div class="bw-logo-list">
-      {%- for block in section.blocks -%}
-        {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="bw-logo-list__item" {{ block.shopify_attributes }}>{%- else -%}<div class="bw-logo-list__item" {{ block.shopify_attributes }}>{%- endif -%}
-          {%- if block.settings.image -%}
-            <img src="{{ block.settings.image | image_url: width: 300 }}" alt="{{ block.settings.alt | escape }}" loading="lazy">
-          {%- else -%}
-            <span class="bw-label-mono">logo</span>
-          {%- endif -%}
-        {%- if block.settings.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
-      {%- endfor -%}
-    </div>
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {

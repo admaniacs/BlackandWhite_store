@@ -1,21 +1,29 @@
+{%- if section.blocks.size > 0 or request.design_mode -%}
 <div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
   <div class="bw-container">
-    {%- if section.settings.heading != blank -%}
-      <div class="bw-h2" style="text-align:{{ section.settings.text_alignment }};margin-bottom:24px">{{ section.settings.heading }}</div>
+    {%- if section.blocks.size > 0 -%}
+      {%- if section.settings.heading != blank -%}
+        <div class="bw-h2" style="text-align:{{ section.settings.text_alignment }};margin-bottom:24px">{{ section.settings.heading }}</div>
+      {%- endif -%}
+      <div class="bw-grid bw-grid--3">
+        {%- for block in section.blocks -%}
+          <div class="bw-review-card" {{ block.shopify_attributes }}>
+            {%- if block.settings.rating > 0 -%}
+              <div class="bw-review-card__stars">{% render 'star-rating', rating: block.settings.rating %}</div>
+            {%- endif -%}
+            <p class="bw-review-card__body" style="margin-top:8px">{{ block.settings.quote }}</p>
+            <div class="bw-review-card__meta">{{ block.settings.author }}{% if block.settings.role != blank %} · {{ block.settings.role }}{% endif %}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="bw-empty-state">
+        <p class="bw-label-mono">Add testimonials to this section from the theme editor.</p>
+      </div>
     {%- endif -%}
-    <div class="bw-grid bw-grid--3">
-      {%- for block in section.blocks -%}
-        <div class="bw-review-card" {{ block.shopify_attributes }}>
-          {%- if block.settings.rating > 0 -%}
-            <div class="bw-review-card__stars">{% render 'star-rating', rating: block.settings.rating %}</div>
-          {%- endif -%}
-          <p class="bw-review-card__body" style="margin-top:8px">{{ block.settings.quote }}</p>
-          <div class="bw-review-card__meta">{{ block.settings.author }}{% if block.settings.role != blank %} · {{ block.settings.role }}{% endif %}</div>
-        </div>
-      {%- endfor -%}
-    </div>
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {

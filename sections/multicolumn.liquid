@@ -1,30 +1,38 @@
+{%- if section.blocks.size > 0 or request.design_mode -%}
 <div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
   <div class="bw-container">
-    {%- if section.settings.heading != blank -%}
-      <div class="bw-h2" style="text-align:{{ section.settings.text_alignment }};margin-bottom:30px">{{ section.settings.heading }}</div>
+    {%- if section.blocks.size > 0 -%}
+      {%- if section.settings.heading != blank -%}
+        <div class="bw-h2" style="text-align:{{ section.settings.text_alignment }};margin-bottom:30px">{{ section.settings.heading }}</div>
+      {%- endif -%}
+      <div class="bw-multicolumn" style="--bw-multicolumn-cols:{{ section.settings.columns_desktop }};text-align:{{ section.settings.text_alignment }}">
+        {%- for block in section.blocks -%}
+          <div class="bw-multicolumn__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.image -%}
+              <div class="bw-multicolumn__icon">
+                <img src="{{ block.settings.image | image_url: width: 120 }}" alt="" loading="lazy" width="48" height="48">
+              </div>
+            {%- elsif block.settings.emoji != blank -%}
+              <div class="bw-multicolumn__icon bw-multicolumn__icon--emoji" aria-hidden="true">{{ block.settings.emoji }}</div>
+            {%- endif -%}
+            <div class="bw-h3" style="font-size:18px;margin-top:14px">{{ block.settings.title }}</div>
+            {%- if block.settings.text != blank -%}
+              <p class="bw-body" style="margin-top:8px">{{ block.settings.text }}</p>
+            {%- endif -%}
+            {%- if block.settings.link_text != blank -%}
+              <a href="{{ block.settings.link }}" class="bw-nav-link" style="text-decoration:underline;display:inline-block;margin-top:12px">{{ block.settings.link_text }} →</a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="bw-empty-state">
+        <p class="bw-label-mono">Add columns to this section from the theme editor.</p>
+      </div>
     {%- endif -%}
-    <div class="bw-multicolumn" style="--bw-multicolumn-cols:{{ section.settings.columns_desktop }};text-align:{{ section.settings.text_alignment }}">
-      {%- for block in section.blocks -%}
-        <div class="bw-multicolumn__item" {{ block.shopify_attributes }}>
-          {%- if block.settings.image -%}
-            <div class="bw-multicolumn__icon">
-              <img src="{{ block.settings.image | image_url: width: 120 }}" alt="" loading="lazy" width="48" height="48">
-            </div>
-          {%- elsif block.settings.emoji != blank -%}
-            <div class="bw-multicolumn__icon bw-multicolumn__icon--emoji" aria-hidden="true">{{ block.settings.emoji }}</div>
-          {%- endif -%}
-          <div class="bw-h3" style="font-size:18px;margin-top:14px">{{ block.settings.title }}</div>
-          {%- if block.settings.text != blank -%}
-            <p class="bw-body" style="margin-top:8px">{{ block.settings.text }}</p>
-          {%- endif -%}
-          {%- if block.settings.link_text != blank -%}
-            <a href="{{ block.settings.link }}" class="bw-nav-link" style="text-decoration:underline;display:inline-block;margin-top:12px">{{ block.settings.link_text }} →</a>
-          {%- endif -%}
-        </div>
-      {%- endfor -%}
-    </div>
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {
