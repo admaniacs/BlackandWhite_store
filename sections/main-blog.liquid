@@ -2,7 +2,7 @@
   {%- render 'section-media-background', image: section.settings.hero_background_image, video: section.settings.hero_background_video, overlay_opacity: section.settings.hero_background_overlay_opacity -%}
   <div>
     <div class="bw-label-mono" style="color:#999">Home / {{ blog.title }}</div>
-    <div class="bw-display" style="font-size:clamp(32px,5vw,56px);margin-top:8px">{{ blog.title }}</div>
+    <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(32px,5vw,56px));margin-top:8px">{{ blog.title }}</div>
   </div>
   {% content_for 'blocks' %}
 </div>

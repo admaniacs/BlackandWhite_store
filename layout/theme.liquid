@@ -30,7 +30,6 @@
     {%- endfor -%}
   </style>
   {%- endif -%}
-  {%- if settings.type_heading_font or settings.type_body_font or settings.type_mono_font -%}
   <style>
     {{ settings.type_heading_font | font_face: font_display: 'swap' }}
     {{ settings.type_body_font | font_face: font_display: 'swap' }}
@@ -45,9 +44,10 @@
       {%- if settings.type_mono_font -%}
       --font-mono: {{ settings.type_mono_font.family }}, {{ settings.type_mono_font.fallback_families }};
       {%- endif -%}
+      --heading-transform: {{ settings.heading_case | default: 'uppercase' }};
+      --heading-scale: {{ settings.heading_scale | default: 100 | times: 1.0 | divided_by: 100 }};
     }
   </style>
-  {%- endif -%}
 </head>
 <body class="bw-body-{{ request.page_type }}">
   <a class="bw-visually-hidden" href="#bw-main">Skip to content</a>

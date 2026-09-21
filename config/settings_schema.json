@@ -96,6 +96,27 @@
         "id": "type_mono_font",
         "label": "Meta / label font",
         "info": "Used for small uppercase meta labels (SKU-style tags, breadcrumbs). Leave unset to keep the default (monospace)."
+      },
+      {
+        "type": "select",
+        "id": "heading_case",
+        "label": "Heading case",
+        "options": [
+          { "value": "uppercase", "label": "Uppercase" },
+          { "value": "none", "label": "Normal case" }
+        ],
+        "default": "uppercase",
+        "info": "Applies to large display headings (bw-display / bw-h2 / bw-h3), not nav or meta labels."
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "label": "Heading size scale",
+        "min": 85,
+        "max": 120,
+        "step": 5,
+        "unit": "%",
+        "default": 100
       }
     ]
   },

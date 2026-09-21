@@ -1,7 +1,7 @@
 <div class="bw-collection-hero color-{{ section.settings.hero_color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.hero_padding_top }}px;padding-bottom:{{ section.settings.hero_padding_bottom }}px">
   <div>
     <div class="bw-label-mono" style="color:#999">Home / {{ 'collections.list.title' | t }}</div>
-    <div class="bw-display" style="font-size:clamp(32px,5vw,56px);margin-top:8px">{{ 'collections.list.title' | t }}</div>
+    <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(32px,5vw,56px));margin-top:8px">{{ 'collections.list.title' | t }}</div>
   </div>
   {% content_for 'blocks' %}
 </div>

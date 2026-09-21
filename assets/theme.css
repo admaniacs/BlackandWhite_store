@@ -23,6 +23,8 @@
   --font-display: 'Archivo Black', Archivo, system-ui, sans-serif;
   --font-ui: Archivo, system-ui, sans-serif;
   --font-mono: ui-monospace, Menlo, 'SFMono-Regular', monospace;
+  --heading-transform: uppercase;
+  --heading-scale: 1;
 }
 
 /* ===== Reset ===== */
@@ -61,18 +63,27 @@ h1, h2, h3, h4, p { margin: 0; }
 
 /* ===== Type ===== */
 .bw-display {
-  font: 400 clamp(40px, 8vw, 118px)/.9 var(--font-display);
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: .9;
+  font-size: calc(var(--heading-scale) * clamp(40px, 8vw, 118px));
+  text-transform: var(--heading-transform);
   letter-spacing: -.03em;
 }
 .bw-h2 {
-  font: 400 clamp(28px, 4vw, 40px)/1 var(--font-display);
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1;
+  font-size: calc(var(--heading-scale) * clamp(28px, 4vw, 40px));
+  text-transform: var(--heading-transform);
   letter-spacing: -.025em;
 }
 .bw-h3 {
-  font: 400 22px/1.1 var(--font-display);
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.1;
+  font-size: calc(var(--heading-scale) * 22px);
+  text-transform: var(--heading-transform);
 }
 .bw-label-mono {
   font: 500 10px var(--font-mono);

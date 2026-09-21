@@ -2,7 +2,7 @@
   {%- render 'section-media-background', image: section.settings.hero_background_image, video: section.settings.hero_background_video, overlay_opacity: section.settings.hero_background_overlay_opacity -%}
   <div>
     <div class="bw-label-mono" style="color:#999">Home / {{ collection.title }}</div>
-    <div class="bw-display" style="font-size:clamp(32px,5vw,56px);margin-top:8px">{{ collection.title }}</div>
+    <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(32px,5vw,56px));margin-top:8px">{{ collection.title }}</div>
   </div>
   {%- if collection.description != blank -%}
     <p style="font:14px/1.5 var(--font-ui);color:#bbb;max-width:340px;margin:0">{{ collection.description }}</p>

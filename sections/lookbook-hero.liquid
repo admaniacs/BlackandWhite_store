@@ -2,7 +2,7 @@
   {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
   <div class="bw-section-content">
     <div class="bw-label-mono">{{ section.settings.eyebrow }}</div>
-    <div class="bw-display" style="font-size:clamp(40px,8vw,82px);margin-top:10px">{{ section.settings.heading }}</div>
+    <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(40px,8vw,82px));margin-top:10px">{{ section.settings.heading }}</div>
     {% content_for 'blocks' %}
   </div>
 </div>

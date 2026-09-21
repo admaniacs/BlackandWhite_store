@@ -2,7 +2,7 @@
   {%- render 'section-media-background', image: section.settings.hero_background_image, video: section.settings.hero_background_video, overlay_opacity: section.settings.hero_background_overlay_opacity -%}
   <div>
     <div class="bw-label-mono" style="color:#999">Home / Search</div>
-    <div class="bw-display" style="font-size:clamp(32px,5vw,56px);margin-top:8px">{% if search.terms != blank %}"{{ search.terms }}"{% else %}Search{% endif %}</div>
+    <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(32px,5vw,56px));margin-top:8px">{% if search.terms != blank %}"{{ search.terms }}"{% else %}Search{% endif %}</div>
   </div>
   <p style="font:14px/1.5 var(--font-ui);color:#bbb;max-width:340px;margin:0">
     {%- if search.performed -%}
