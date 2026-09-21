@@ -562,5 +562,40 @@ h1, h2, h3, h4, p { margin: 0; }
 .bw-countdown__unit { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .bw-countdown__number { font: 400 40px var(--font-mono); }
 
+/* ===== Custom cursor ===== */
+.bw-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--bw-cursor-size, 28px);
+  height: var(--bw-cursor-size, 28px);
+  border-radius: 50%;
+  background: #fff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: width .18s ease, height .18s ease, opacity .15s ease;
+}
+.bw-cursor.is-active { opacity: 1; }
+.bw-cursor.is-hover { width: calc(var(--bw-cursor-size, 28px) * 1.8); height: calc(var(--bw-cursor-size, 28px) * 1.8); }
+.bw-cursor.is-down { width: calc(var(--bw-cursor-size, 28px) * 0.7); height: calc(var(--bw-cursor-size, 28px) * 0.7); }
+body[data-custom-cursor="true"] { cursor: none; }
+body[data-custom-cursor="true"] a,
+body[data-custom-cursor="true"] button,
+body[data-custom-cursor="true"] input,
+body[data-custom-cursor="true"] textarea,
+body[data-custom-cursor="true"] select,
+body[data-custom-cursor="true"] [role="button"] {
+  cursor: none;
+}
+@media (hover: none), (pointer: coarse) {
+  .bw-cursor { display: none !important; }
+  body[data-custom-cursor="true"] { cursor: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bw-cursor { transition: none; }
+}
+
 /* ===== Utility ===== */
 .bw-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }

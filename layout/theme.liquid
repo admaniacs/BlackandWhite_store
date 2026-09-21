@@ -40,7 +40,7 @@
     }
   </style>
 </head>
-<body class="bw-body-{{ request.page_type }}">
+<body class="bw-body-{{ request.page_type }}" data-custom-cursor="{{ settings.custom_cursor_enabled }}" style="--bw-cursor-size: {{ settings.custom_cursor_size | default: 28 }}px">
   <a class="bw-visually-hidden" href="#bw-main">Skip to content</a>
 
   {%- unless request.page_type == 'password' -%}{% sections 'header-group' %}{%- endunless -%}

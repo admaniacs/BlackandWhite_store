@@ -162,5 +162,27 @@
       { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
       { "type": "text", "id": "social_tiktok", "label": "TikTok URL" }
     ]
+  },
+  {
+    "name": "Cursor",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "custom_cursor_enabled",
+        "label": "Enable custom cursor",
+        "default": true,
+        "info": "Replaces the pointer with a trailing circle that inverts the colors beneath it. Desktop only — touch devices are unaffected."
+      },
+      {
+        "type": "range",
+        "id": "custom_cursor_size",
+        "label": "Cursor size",
+        "min": 16,
+        "max": 44,
+        "step": 2,
+        "unit": "px",
+        "default": 28
+      }
+    ]
   }
 ]

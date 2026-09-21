@@ -417,4 +417,49 @@
     tick();
     const interval = setInterval(tick, 1000);
   });
+
+  /* ===== Custom cursor ===== */
+  if (
+    document.body.dataset.customCursor === "true" &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches
+  ) {
+    const dot = document.createElement("div");
+    dot.className = "bw-cursor";
+    dot.setAttribute("aria-hidden", "true");
+    document.body.appendChild(dot);
+
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let x = targetX;
+    let y = targetY;
+
+    document.addEventListener("mousemove", (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      dot.classList.add("is-active");
+    });
+    document.addEventListener("mousedown", () => dot.classList.add("is-down"));
+    document.addEventListener("mouseup", () => dot.classList.remove("is-down"));
+    document.documentElement.addEventListener("mouseleave", () => dot.classList.remove("is-active"));
+
+    const hoverSelector = "a, button, input, textarea, select, [role='button'], .bw-swatch, .bw-size-chip, .bw-checkbox";
+    document.addEventListener(
+      "mouseover",
+      (e) => { if (e.target.closest(hoverSelector)) dot.classList.add("is-hover"); },
+      true
+    );
+    document.addEventListener(
+      "mouseout",
+      (e) => { if (e.target.closest(hoverSelector)) dot.classList.remove("is-hover"); },
+      true
+    );
+
+    function render() {
+      x += (targetX - x) * 0.2;
+      y += (targetY - y) * 0.2;
+      dot.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+  }
 })();
