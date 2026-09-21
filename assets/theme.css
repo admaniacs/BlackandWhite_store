@@ -359,7 +359,7 @@ h1, h2, h3, h4, p { margin: 0; }
 }
 
 /* ===== Collection layout ===== */
-.bw-collection-hero { background: var(--ink); color: var(--paper); padding: 28px var(--gutter-desktop); display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.bw-collection-hero { background: var(--paper); color: var(--ink); padding: 28px var(--gutter-desktop); display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .bw-collection-layout { display: grid; grid-template-columns: 240px 1fr; }
 .bw-filters { border-right: 1px solid var(--ink); padding: 20px; }
 .bw-filters__head { font: 600 11px var(--font-ui); letter-spacing: .12em; text-transform: uppercase; padding-bottom: 10px; border-bottom: 1px solid var(--ink); display: flex; justify-content: space-between; }
