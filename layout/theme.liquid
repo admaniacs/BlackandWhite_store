@@ -36,8 +36,7 @@
 <body class="bw-body-{{ request.page_type }}">
   <a class="bw-visually-hidden" href="#bw-main">Skip to content</a>
 
-  {% section 'announcement-bar' %}
-  {% section 'header' %}
+  {% sections 'header-group' %}
 
   <main id="bw-main">
     {{ content_for_layout }}
