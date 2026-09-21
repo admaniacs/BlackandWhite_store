@@ -1,0 +1,53 @@
+<div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+  <div class="bw-container" style="max-width:760px">
+    {%- if section.settings.heading != blank -%}
+      <div class="bw-h2" style="margin-bottom:20px">{{ section.settings.heading }}</div>
+    {%- endif -%}
+    <div class="bw-faq">
+      {%- for block in section.blocks -%}
+        <details class="bw-faq__item" {{ block.shopify_attributes }}>
+          <summary class="bw-faq__question">
+            {{ block.settings.question }}
+            <span class="bw-faq__icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="bw-faq__answer bw-body">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "What's the fabric?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>420gsm heavyweight cotton, brushed on the inside. One quality, every piece.</p>" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Questions, answered" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "question" },
+        { "type": "question", "settings": { "question": "How does sizing run?", "answer": "<p>True to size, boxy fit. Check the size guide on each product page.</p>" } },
+        { "type": "question", "settings": { "question": "What's your returns policy?", "answer": "<p>30 days, unworn, tags on. Free returns over $75.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,49 @@
+<div class="bw-marquee bw-marquee--standalone color-{{ section.settings.color_scheme }}{% if section.settings.size == 'large' %} bw-marquee--lg{% endif %}" style="--bw-marquee-duration:{{ section.settings.speed }}s;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+  <div class="bw-marquee__track" aria-hidden="true">
+    {%- for i in (1..6) -%}
+      {%- for block in section.blocks -%}
+        <span {{ block.shopify_attributes }}>
+          {{ block.settings.text }}
+          {%- if section.settings.show_separator %}<span class="bw-marquee__sep">{{ section.settings.separator }}</span>{%- endif -%}
+        </span>
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Marquee",
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Drop 04 out now" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "size", "label": "Text size", "options": [{ "value": "small", "label": "Small" }, { "value": "large", "label": "Large" }], "default": "small" },
+    { "type": "range", "id": "speed", "label": "Scroll speed", "min": 5, "max": 60, "step": 1, "unit": "s", "default": 22, "info": "Lower is faster." },
+    { "type": "checkbox", "id": "show_separator", "label": "Show separator between items", "default": true },
+    { "type": "text", "id": "separator", "label": "Separator", "default": "✦" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 60, "step": 2, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 60, "step": 2, "unit": "px", "default": 8 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-2" }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Marquee",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Free shipping over $75" } },
+        { "type": "item", "settings": { "text": "New drop every Friday" } },
+        { "type": "item", "settings": { "text": "30-day returns" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

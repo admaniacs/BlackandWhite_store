@@ -1,0 +1,36 @@
+<div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+  <div class="bw-container">
+    {%- if section.settings.heading != blank -%}
+      <div class="bw-h2" style="text-align:{{ section.settings.text_alignment }};margin-bottom:24px">{{ section.settings.heading }}</div>
+    {%- endif -%}
+    <div class="bw-video-section">
+      {%- if section.settings.video != blank -%}
+        {{ section.settings.video | video_tag: image_size: '1920x', autoplay: section.settings.autoplay, loop: section.settings.autoplay, muted: section.settings.autoplay, controls: section.settings.autoplay == false, class: 'bw-video-section__el' }}
+      {%- elsif section.settings.video_url != blank -%}
+        <div class="bw-video-section__embed">{{ section.settings.video_url | external_video_tag: class: 'bw-video-section__el' }}</div>
+      {%- else -%}
+        <div class="bw-media-placeholder bw-media-placeholder--dark bw-video-section__el">video · 1920×1080</div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Video",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "select", "id": "text_alignment", "label": "Heading alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "left" },
+    { "type": "header", "content": "Video" },
+    { "type": "video", "id": "video", "label": "Video", "info": "Upload a video, or use the URL field below for YouTube / Vimeo." },
+    { "type": "video_url", "id": "video_url", "label": "Video URL", "accept": ["youtube", "vimeo"], "info": "Used when no video is uploaded above." },
+    { "type": "checkbox", "id": "autoplay", "label": "Autoplay, muted and looped", "default": false, "info": "Only applies to an uploaded video, not YouTube / Vimeo." },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 60 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 60 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" }
+  ],
+  "presets": [{ "name": "Video" }]
+}
+{% endschema %}

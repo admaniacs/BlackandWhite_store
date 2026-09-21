@@ -1,0 +1,72 @@
+<div class="bw-slideshow" data-slideshow data-autoplay="{{ section.settings.autoplay }}" data-autoplay-speed="{{ section.settings.autoplay_speed | times: 1000 }}">
+  <div class="bw-slideshow__track" data-slideshow-track>
+    {%- for block in section.blocks -%}
+      <div class="bw-slideshow__slide color-{{ block.settings.color_scheme }}" data-slideshow-slide {{ block.shopify_attributes }}>
+        {%- if block.settings.image -%}
+          <img src="{{ block.settings.image | image_url: width: 2000 }}" alt="" class="bw-slideshow__image" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+        {%- else -%}
+          <div class="bw-media-placeholder bw-media-placeholder--dark bw-slideshow__image" style="position:absolute;inset:0">slide {{ forloop.index }} · 2000×1100</div>
+        {%- endif -%}
+        <div class="bw-slideshow__overlay" style="--bw-media-overlay:{{ block.settings.overlay_opacity | default: 0 | times: 1.0 | divided_by: 100 }}"></div>
+        <div class="bw-slideshow__content" style="text-align:{{ block.settings.text_alignment }}">
+          {%- if block.settings.eyebrow != blank -%}<div class="bw-label-mono">{{ block.settings.eyebrow }}</div>{%- endif -%}
+          <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(36px,7vw,88px));margin-top:10px">{{ block.settings.heading }}</div>
+          {%- if block.settings.subtext != blank -%}
+            <p style="font:16px/1.5 var(--font-ui);max-width:480px;margin:16px 0 0{% if block.settings.text_alignment == 'center' %};margin-left:auto;margin-right:auto{% endif %}">{{ block.settings.subtext }}</p>
+          {%- endif -%}
+          {%- if block.settings.cta_text != blank -%}
+            <a href="{{ block.settings.cta_link }}" class="bw-btn" style="margin-top:22px">{{ block.settings.cta_text }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if section.blocks.size > 1 -%}
+    <button type="button" class="bw-slideshow__arrow bw-slideshow__arrow--prev" data-slideshow-prev aria-label="Previous slide">←</button>
+    <button type="button" class="bw-slideshow__arrow bw-slideshow__arrow--next" data-slideshow-next aria-label="Next slide">→</button>
+    <div class="bw-slideshow__dots" data-slideshow-dots>
+      {%- for block in section.blocks -%}
+        <button type="button" class="bw-slideshow__dot{% if forloop.first %} is-active{% endif %}" data-slideshow-dot data-index="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "range", "id": "overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 30 },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "New arrivals" },
+        { "type": "textarea", "id": "subtext", "label": "Subtext" },
+        { "type": "text", "id": "cta_text", "label": "Button label" },
+        { "type": "url", "id": "cta_link", "label": "Button link" },
+        { "type": "select", "id": "text_alignment", "label": "Text alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "left" },
+        { "type": "color_scheme", "id": "color_scheme", "label": "Text color scheme", "default": "scheme-2" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "header", "content": "Autoplay" },
+    { "type": "checkbox", "id": "autoplay", "label": "Auto-rotate slides", "default": true },
+    { "type": "range", "id": "autoplay_speed", "label": "Seconds per slide", "min": 3, "max": 12, "step": 1, "default": 6 }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Slideshow",
+      "blocks": [
+        { "type": "slide", "settings": { "heading": "Autumn drop 04", "eyebrow": "Live now", "cta_text": "Shop all" } },
+        { "type": "slide", "settings": { "heading": "Two colours. Nothing else.", "eyebrow": "The idea", "cta_text": "Read more" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

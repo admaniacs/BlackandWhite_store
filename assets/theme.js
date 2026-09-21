@@ -354,4 +354,67 @@
       document.querySelector("[data-size-guide]")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   });
+
+  /* ===== Slideshow ===== */
+  document.querySelectorAll("[data-slideshow]").forEach((root) => {
+    const track = root.querySelector("[data-slideshow-track]");
+    const slides = root.querySelectorAll("[data-slideshow-slide]");
+    const dots = root.querySelectorAll("[data-slideshow-dot]");
+    if (!track || slides.length < 2) return;
+    let index = 0;
+    let timer = null;
+
+    function goTo(i) {
+      index = (i + slides.length) % slides.length;
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((dot, di) => dot.classList.toggle("is-active", di === index));
+    }
+
+    function startAutoplay() {
+      if (root.dataset.autoplay !== "true") return;
+      const speed = parseInt(root.dataset.autoplaySpeed, 10) || 6000;
+      clearInterval(timer);
+      timer = setInterval(() => goTo(index + 1), speed);
+    }
+
+    root.querySelector("[data-slideshow-prev]")?.addEventListener("click", () => { goTo(index - 1); startAutoplay(); });
+    root.querySelector("[data-slideshow-next]")?.addEventListener("click", () => { goTo(index + 1); startAutoplay(); });
+    dots.forEach((dot) => dot.addEventListener("click", () => { goTo(parseInt(dot.dataset.index, 10)); startAutoplay(); }));
+
+    goTo(0);
+    startAutoplay();
+  });
+
+  /* ===== Countdown ===== */
+  document.querySelectorAll("[data-countdown]").forEach((root) => {
+    const target = new Date(root.dataset.countdownTarget).getTime();
+    if (isNaN(target)) return;
+    const display = root.querySelector("[data-countdown-display]");
+    const expired = root.querySelector("[data-countdown-expired]");
+    const daysEl = root.querySelector("[data-countdown-days]");
+    const hoursEl = root.querySelector("[data-countdown-hours]");
+    const minutesEl = root.querySelector("[data-countdown-minutes]");
+    const secondsEl = root.querySelector("[data-countdown-seconds]");
+
+    function tick() {
+      const diff = target - Date.now();
+      if (diff <= 0) {
+        if (display) display.hidden = true;
+        if (expired) expired.hidden = false;
+        clearInterval(interval);
+        return;
+      }
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      if (daysEl) daysEl.textContent = String(days).padStart(2, "0");
+      if (hoursEl) hoursEl.textContent = String(hours).padStart(2, "0");
+      if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, "0");
+      if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, "0");
+    }
+
+    tick();
+    const interval = setInterval(tick, 1000);
+  });
 })();
