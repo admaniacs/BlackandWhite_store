@@ -1,10 +1,10 @@
 <div style="display:grid;grid-template-columns:1fr 1.2fr;border-top:1px solid var(--ink);background:var(--paper);color:var(--ink);margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px" class="bw-split-media color-{{ section.settings.color_scheme }}">
-  <div class="bw-media-placeholder" style="height:400px">
+  <div class="bw-media-placeholder" style="height:400px;order:{% if section.settings.image_position == 'right' %}2{% else %}1{% endif %};{% if section.settings.image_position == 'right' %}border-left:1px solid var(--ink){% endif %}">
     {%- if section.settings.image -%}
       <img src="{{ section.settings.image | image_url: width: 1000 }}" alt="" loading="lazy">
     {%- else -%}studio / mill photo · 1000×800{%- endif -%}
   </div>
-  <div style="padding:30px 28px;border-left:1px solid var(--ink)">
+  <div style="padding:30px 28px;order:{% if section.settings.image_position == 'right' %}1{% else %}2{% endif %};{% unless section.settings.image_position == 'right' %}border-left:1px solid var(--ink){% endunless %}">
     <div class="bw-h2" style="font-size:28px">{{ section.settings.heading }}</div>
     <p class="bw-body" style="margin:10px 0 18px;color:#444">{{ section.settings.body }}</p>
     <div style="display:flex;flex-direction:column;gap:1px;background:#e3e3e3;border:1px solid #e3e3e3">
@@ -30,6 +30,7 @@
     { "type": "text", "id": "total_label", "label": "Total row label", "default": "You pay" },
     { "type": "text", "id": "total_amount", "label": "Total row amount", "default": "$58" },
     { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "image_position", "label": "Image position", "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }], "default": "left" },
     { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "header", "content": "Colors" },

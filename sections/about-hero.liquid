@@ -1,7 +1,12 @@
+{%- case section.settings.heading_size -%}
+  {%- when 'small' -%}{%- assign heading_clamp = '32px,6vw,60px' -%}
+  {%- when 'large' -%}{%- assign heading_clamp = '52px,11vw,128px' -%}
+  {%- else -%}{%- assign heading_clamp = '44px,9vw,92px' -%}
+{%- endcase -%}
 <div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);padding:52px 24px;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;position:relative;overflow:hidden;text-align:{{ section.settings.text_alignment }}">
   {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
   <div class="bw-container" style="padding:0;position:relative">
-    <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(44px,9vw,92px))">{{ section.settings.heading }}</div>
+    <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp({{ heading_clamp }}))">{{ section.settings.heading }}</div>
     <p style="font:16px/1.55 var(--font-ui);color:#bbb;max-width:520px;margin:24px 0 0{% if section.settings.text_alignment == 'center' %};margin-left:auto;margin-right:auto{% endif %}">{{ section.settings.body }}</p>
     {% content_for 'blocks' %}
   </div>
@@ -15,6 +20,7 @@
     { "type": "textarea", "id": "body", "label": "Body", "default": "B/W started because getting dressed shouldn't be a decision. Two colours, heavy fabric, prices that don't need a sale to look reasonable." },
     { "type": "header", "content": "Layout" },
     { "type": "select", "id": "text_alignment", "label": "Text alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "left" },
+    { "type": "select", "id": "heading_size", "label": "Heading size", "options": [{ "value": "small", "label": "Small" }, { "value": "medium", "label": "Medium" }, { "value": "large", "label": "Large" }], "default": "medium" },
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 52 },
     { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 52 },
     { "type": "header", "content": "Colors" },

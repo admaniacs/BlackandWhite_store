@@ -1,5 +1,5 @@
 <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ink);background:var(--paper);color:var(--ink);margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px" class="bw-split-media color-{{ section.settings.color_scheme }}">
-  <div style="padding:26px;text-align:{{ section.settings.text_alignment }}">
+  <div style="padding:26px;text-align:{{ section.settings.text_alignment }};order:{% if section.settings.image_position == 'left' %}2{% else %}1{% endif %};{% if section.settings.image_position == 'left' %}border-left:1px solid var(--ink){% endif %}">
     <div class="bw-h2" style="font-size:26px">{{ section.settings.heading }}</div>
     <p class="bw-body" style="margin-top:8px;max-width:420px{% if section.settings.text_alignment == 'center' %};margin-left:auto;margin-right:auto{% endif %}">{{ section.settings.body }}</p>
     {%- if section.settings.cta_text != blank -%}
@@ -7,7 +7,7 @@
     {%- endif -%}
     {% content_for 'blocks' %}
   </div>
-  <div class="bw-media-placeholder" style="height:260px;border-left:1px solid var(--ink)">
+  <div class="bw-media-placeholder" style="height:260px;order:{% if section.settings.image_position == 'left' %}1{% else %}2{% endif %};{% unless section.settings.image_position == 'left' %}border-left:1px solid var(--ink){% endunless %}">
     {%- if section.settings.image -%}
       <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.heading | escape }}" loading="lazy">
     {%- else -%}
@@ -27,6 +27,7 @@
     { "type": "image_picker", "id": "image", "label": "Image" },
     { "type": "header", "content": "Layout" },
     { "type": "select", "id": "text_alignment", "label": "Text alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "left" },
+    { "type": "select", "id": "image_position", "label": "Image position", "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }], "default": "right" },
     { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "header", "content": "Colors" },
