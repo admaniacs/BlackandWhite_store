@@ -5,7 +5,9 @@
     {%- endif -%}
     <div class="bw-video-section">
       {%- if section.settings.video != blank -%}
-        {{ section.settings.video | video_tag: image_size: '1920x', autoplay: section.settings.autoplay, loop: section.settings.autoplay, muted: section.settings.autoplay, controls: section.settings.autoplay == false, class: 'bw-video-section__el' }}
+        {%- assign show_controls = true -%}
+        {%- if section.settings.autoplay -%}{%- assign show_controls = false -%}{%- endif -%}
+        {{ section.settings.video | video_tag: image_size: '1920x', autoplay: section.settings.autoplay, loop: section.settings.autoplay, muted: section.settings.autoplay, controls: show_controls, class: 'bw-video-section__el' }}
       {%- elsif section.settings.video_url != blank -%}
         <div class="bw-video-section__embed">{{ section.settings.video_url | external_video_tag: class: 'bw-video-section__el' }}</div>
       {%- else -%}
