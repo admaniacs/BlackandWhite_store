@@ -580,18 +580,16 @@ h1, h2, h3, h4, p { margin: 0; }
 .bw-cursor.is-active { opacity: 1; }
 .bw-cursor.is-hover { width: calc(var(--bw-cursor-size, 28px) * 1.8); height: calc(var(--bw-cursor-size, 28px) * 1.8); }
 .bw-cursor.is-down { width: calc(var(--bw-cursor-size, 28px) * 0.7); height: calc(var(--bw-cursor-size, 28px) * 0.7); }
-body[data-custom-cursor="true"] { cursor: none; }
-body[data-custom-cursor="true"] a,
-body[data-custom-cursor="true"] button,
-body[data-custom-cursor="true"] input,
-body[data-custom-cursor="true"] textarea,
-body[data-custom-cursor="true"] select,
-body[data-custom-cursor="true"] [role="button"] {
-  cursor: none;
+body[data-custom-cursor="true"],
+body[data-custom-cursor="true"] * {
+  cursor: none !important;
 }
 @media (hover: none), (pointer: coarse) {
   .bw-cursor { display: none !important; }
-  body[data-custom-cursor="true"] { cursor: auto; }
+  body[data-custom-cursor="true"],
+  body[data-custom-cursor="true"] * {
+    cursor: auto !important;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .bw-cursor { transition: none; }
