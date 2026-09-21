@@ -3,9 +3,7 @@
     "name": "theme_info",
     "theme_name": "B/W",
     "theme_version": "1.0.0",
-    "theme_author": "B/W Store",
-    "theme_documentation_url": "",
-    "theme_support_url": ""
+    "theme_author": "B/W Store"
   },
   {
     "name": "Logo and favicon",
@@ -83,19 +81,22 @@
         "type": "font_picker",
         "id": "type_heading_font",
         "label": "Headline font",
-        "info": "Used for all large uppercase headlines. Leave unset to keep the default (Archivo Black)."
+        "default": "archivo_black_n4",
+        "info": "Used for all large uppercase headlines."
       },
       {
         "type": "font_picker",
         "id": "type_body_font",
         "label": "Body / UI font",
-        "info": "Used for nav, buttons, prices, and body copy. Leave unset to keep the default (Archivo)."
+        "default": "archivo_n4",
+        "info": "Used for nav, buttons, prices, and body copy."
       },
       {
         "type": "font_picker",
         "id": "type_mono_font",
         "label": "Meta / label font",
-        "info": "Used for small uppercase meta labels (SKU-style tags, breadcrumbs). Leave unset to keep the default (monospace)."
+        "default": "mono",
+        "info": "Used for small uppercase meta labels (SKU-style tags, breadcrumbs)."
       },
       {
         "type": "select",

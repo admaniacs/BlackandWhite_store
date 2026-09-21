@@ -9,9 +9,6 @@
   <title>{{ page_title }}{% unless page_title contains shop.name %} | {{ shop.name }}{% endunless %}</title>
   {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
   <link rel="canonical" href="{{ canonical_url }}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet">
   {{ content_for_header }}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
   {%- if settings.color_schemes -%}
@@ -35,15 +32,9 @@
     {{ settings.type_body_font | font_face: font_display: 'swap' }}
     {{ settings.type_mono_font | font_face: font_display: 'swap' }}
     :root {
-      {%- if settings.type_heading_font -%}
       --font-display: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
-      {%- endif -%}
-      {%- if settings.type_body_font -%}
       --font-ui: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-      {%- endif -%}
-      {%- if settings.type_mono_font -%}
       --font-mono: {{ settings.type_mono_font.family }}, {{ settings.type_mono_font.fallback_families }};
-      {%- endif -%}
       --heading-transform: {{ settings.heading_case | default: 'uppercase' }};
       --heading-scale: {{ settings.heading_scale | default: 100 | times: 1.0 | divided_by: 100 }};
     }
