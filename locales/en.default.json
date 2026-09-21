@@ -115,7 +115,27 @@
       "password": "Password",
       "sign_in": "Sign in",
       "forgot_password": "Forgot password?",
-      "create_account": "Create account"
+      "create_account": "Create account",
+      "recover_title": "Reset your password",
+      "recover_subtext": "We'll send a link to reset your password.",
+      "recover_success": "If that email address is in our system, you'll receive an email with instructions shortly.",
+      "recover_submit": "Send reset link",
+      "back_to_sign_in": "Back to sign in"
+    },
+    "activate_account": {
+      "title": "Activate account",
+      "subtext": "Create a password to activate your account.",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Activate account",
+      "decline": "Decline invitation"
+    },
+    "reset_password": {
+      "title": "Reset account password",
+      "subtext": "Enter a new password for {{ email }}.",
+      "password": "New password",
+      "password_confirm": "Confirm new password",
+      "submit": "Reset password"
     },
     "register": {
       "title": "Create account",
