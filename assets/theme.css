@@ -45,6 +45,31 @@ ul { list-style: none; margin: 0; padding: 0; }
 h1, h2, h3, h4, p { margin: 0; }
 * { border-radius: 0 !important; }
 
+/* ===== Seamless page transitions ===== */
+@view-transition {
+  navigation: auto;
+}
+html { scroll-behavior: smooth; }
+.bw-header { view-transition-name: bw-header; }
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) { animation: bw-page-out .32s cubic-bezier(.4,0,.2,1) both; }
+  ::view-transition-new(root) { animation: bw-page-in .32s cubic-bezier(.4,0,.2,1) both; }
+}
+@keyframes bw-page-out {
+  to { opacity: 0; transform: translateY(-10px); }
+}
+@keyframes bw-page-in {
+  from { opacity: 0; transform: translateY(10px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 .bw-container {
   max-width: var(--container);
   margin: 0 auto;
