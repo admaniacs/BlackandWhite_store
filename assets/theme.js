@@ -12,6 +12,16 @@
     });
   }
 
+  document.querySelectorAll(".bw-mobile-nav__trigger").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const submenu = trigger.nextElementSibling;
+      if (!submenu) return;
+      const isOpen = !submenu.hidden;
+      submenu.hidden = isOpen;
+      trigger.setAttribute("aria-expanded", String(!isOpen));
+    });
+  });
+
   /* ===== Cart drawer ===== */
   const cartDrawer = () => document.querySelector("[data-cart-drawer]");
   const cartOverlay = () => document.querySelector("[data-cart-overlay]");
