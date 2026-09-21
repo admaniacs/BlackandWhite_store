@@ -3,7 +3,9 @@
     "name": "theme_info",
     "theme_name": "B/W",
     "theme_version": "1.0.0",
-    "theme_author": "B/W Store"
+    "theme_author": "B/W Store",
+    "theme_documentation_url": "https://github.com/admaniacs/BlackandWhite_store",
+    "theme_support_email": "tech@admaniacs.io"
   },
   {
     "name": "Logo and favicon",
