@@ -463,6 +463,20 @@
     requestAnimationFrame(render);
   }
 
+  /* ===== Product recommendations ===== */
+  document.querySelectorAll("[data-product-recommendations]").forEach((root) => {
+    const url = root.dataset.url;
+    if (!url) return;
+    fetch(url)
+      .then((res) => res.text())
+      .then((html) => {
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        const newRoot = doc.querySelector("[data-product-recommendations]");
+        if (newRoot) root.outerHTML = newRoot.outerHTML;
+      })
+      .catch(() => {});
+  });
+
   /* ===== Scroll reveal: ink wipe ===== */
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
     const sections = document.querySelectorAll("main#bw-main > .shopify-section");

@@ -19,6 +19,18 @@
           </div>
         {%- endform -%}
       {%- endif -%}
+      {%- if section.settings.show_social_icons -%}
+        {%- if settings.social_instagram != blank or settings.social_tiktok != blank -%}
+          <div class="bw-footer__social">
+            {%- if settings.social_instagram != blank -%}
+              <a href="{{ settings.social_instagram }}" aria-label="Instagram" target="_blank" rel="noopener">{%- render 'icon-instagram' -%}</a>
+            {%- endif -%}
+            {%- if settings.social_tiktok != blank -%}
+              <a href="{{ settings.social_tiktok }}" aria-label="TikTok" target="_blank" rel="noopener">{%- render 'icon-tiktok' -%}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
     </div>
 
     {%- for block in section.blocks -%}
@@ -32,6 +44,26 @@
       </div>
     {%- endfor -%}
   </div>
+
+  {%- if section.settings.show_copyright or shop.policies.size > 0 or section.settings.show_payment_icons -%}
+    <div class="bw-footer__bottom" style="position:relative">
+      <div class="bw-footer__legal">
+        {%- if section.settings.show_copyright -%}
+          <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span>
+        {%- endif -%}
+        {%- for policy in shop.policies -%}
+          <a href="{{ policy.url }}">{{ policy.title }}</a>
+        {%- endfor -%}
+      </div>
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <ul class="bw-footer__payment-icons" aria-label="Payment methods">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'bw-footer__payment-icon' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
 </footer>
 
 {% schema %}
@@ -81,6 +113,26 @@
       "type": "checkbox",
       "id": "show_newsletter",
       "label": "Show email signup",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_icons",
+      "label": "Show social icons",
+      "default": true,
+      "info": "Add your links under Theme settings → Social."
+    },
+    { "type": "header", "content": "Legal & trust" },
+    {
+      "type": "checkbox",
+      "id": "show_copyright",
+      "label": "Show copyright line",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show accepted payment icons",
       "default": true
     },
     { "type": "header", "content": "Layout" },
