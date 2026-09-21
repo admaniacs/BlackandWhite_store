@@ -1,0 +1,44 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "link_column_1": {
+          "type": "link_column",
+          "settings": {
+            "title": "Shop",
+            "menu": "main-menu"
+          }
+        },
+        "link_column_2": {
+          "type": "link_column",
+          "settings": {
+            "title": "Help"
+          }
+        },
+        "link_column_3": {
+          "type": "link_column",
+          "settings": {
+            "title": "B/W"
+          }
+        }
+      },
+      "block_order": ["link_column_1", "link_column_2", "link_column_3"],
+      "settings": {
+        "show_logo": true,
+        "logo_height": 30,
+        "invert_logo": true,
+        "tagline": "Two colours, done properly. Join the list for drop alerts.",
+        "show_newsletter": true,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "background_overlay_opacity": 0
+      }
+    }
+  },
+  "order": ["footer"]
+}
