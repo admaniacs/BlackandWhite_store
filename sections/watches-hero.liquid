@@ -12,11 +12,11 @@
 </div>
 
 <div class="bw-filter-tabs" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:{{ section.settings.accent_color }};border-top:1px solid {{ section.settings.accent_color }}">
-  <a href="{{ collection.url }}" style="background:{{ section.settings.tab_background_color }};padding:14px 16px;font:600 11px var(--font-ui);letter-spacing:.1em;text-transform:uppercase">All {{ collection.products_count }}</a>
+  <a href="{{ collection.url }}" class="bw-nav-link" style="background:{{ section.settings.tab_background_color }};padding:14px 16px">All {{ collection.products_count }}</a>
   {%- for filter in collection.filters -%}
     {%- if filter.type == 'list' -%}
       {%- for value in filter.values limit: 3 -%}
-        <a href="{{ value.url_to_add }}" style="background:{{ section.settings.tab_background_color }};padding:14px 16px;font:600 11px var(--font-ui);letter-spacing:.1em;text-transform:uppercase;{% if value.active %}background:{{ section.settings.accent_color }};color:{{ section.settings.accent_text_color }}{% endif %}">{{ value.label }}</a>
+        <a href="{{ value.url_to_add }}" class="bw-nav-link" style="background:{{ section.settings.tab_background_color }};padding:14px 16px;{% if value.active %}background:{{ section.settings.accent_color }};color:{{ section.settings.accent_text_color }}{% endif %}">{{ value.label }}</a>
       {%- endfor -%}
     {%- endif -%}
   {%- endfor -%}

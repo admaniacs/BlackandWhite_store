@@ -22,7 +22,7 @@
     {%- for filter in collection.filters -%}
       {%- for value in filter.active_values -%}<input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">{%- endfor -%}
     {%- endfor -%}
-    <select name="sort_by" style="width:100%;height:100%;border:0;background:#fff;text-align:center;font:600 11px var(--font-ui);letter-spacing:.1em;text-transform:uppercase" onchange="this.form.submit()">
+    <select name="sort_by" class="bw-nav-link" style="width:100%;height:100%;border:0;background:#fff;text-align:center" onchange="this.form.submit()">
       {%- for option in collection.sort_options -%}
         <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ 'collections.general.sort' | t }}: {{ option.name }}</option>
       {%- endfor -%}

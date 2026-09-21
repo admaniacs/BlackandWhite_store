@@ -16,7 +16,7 @@
             </div>
             <div style="flex:1">
               <div style="display:flex;justify-content:space-between">
-                <a href="{{ item.url }}" style="font:600 13px var(--font-ui);text-transform:uppercase">{{ item.product.title }}</a>
+                <a href="{{ item.url }}" class="bw-nav-link" style="font-size:13px">{{ item.product.title }}</a>
                 <span style="font:700 13px var(--font-ui)">{{ item.final_line_price | money }}</span>
               </div>
               <div class="bw-label-mono" style="margin-top:4px">{{ item.variant.title }}</div>
