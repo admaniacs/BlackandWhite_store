@@ -1,9 +1,22 @@
-{%- assign header_style = '--ink:' | append: section.settings.text_color | append: ';--paper:' | append: section.settings.background_color | append: ';background:var(--paper);color:var(--ink);position:relative;padding-top:' | append: section.settings.padding_top | append: 'px;padding-bottom:' | append: section.settings.padding_bottom | append: 'px' -%}
+{%- assign header_style = '--ink:' | append: section.settings.text_color | append: ';--paper:' | append: section.settings.background_color | append: ';background:var(--paper);color:var(--ink);position:relative;padding-top:' | append: section.settings.padding_top | append: 'px;padding-bottom:' | append: section.settings.padding_bottom | append: 'px;--logo-h:' | append: settings.logo_height | append: 'px;--logo-h-mobile:' | append: settings.logo_height_mobile | append: 'px' -%}
 <header class="bw-header" data-header style="{{ header_style }}">
   {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
   <button type="button" class="bw-burger bw-hide-desktop" data-mobile-nav-toggle aria-label="Menu" aria-expanded="false">☰</button>
 
-  <a href="{{ routes.root_url }}" class="bw-header__logo">{{ shop.name | default: 'B/W' }}</a>
+  <a href="{{ routes.root_url }}" class="bw-header__logo">
+    {%- if settings.logo != blank -%}
+      <img
+        src="{{ settings.logo | image_url: width: 400 }}"
+        alt="{{ shop.name }}"
+        class="bw-header__logo-img"
+        width="{{ settings.logo.width }}"
+        height="{{ settings.logo.height }}"
+        loading="eager"
+      >
+    {%- else -%}
+      {{ shop.name | default: 'B/W' }}
+    {%- endif -%}
+  </a>
 
   <nav class="bw-header__nav bw-hide-mobile" aria-label="Main">
     {%- for link in linklists[section.settings.menu].links -%}

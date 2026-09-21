@@ -187,7 +187,8 @@ h1, h2, h3, h4, p { margin: 0; }
   position: relative;
   z-index: 20;
 }
-.bw-header__logo { font: 400 22px var(--font-display); letter-spacing: -.02em; }
+.bw-header__logo { font: 400 22px var(--font-display); letter-spacing: -.02em; display: flex; align-items: center; }
+.bw-header__logo-img { height: var(--logo-h, 36px); width: auto; display: block; }
 .bw-header__nav { display: flex; gap: 22px; }
 .bw-header__nav a.is-active { border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
 .bw-header__actions { display: flex; align-items: center; gap: 14px; font: 600 11px var(--font-ui); letter-spacing: .08em; text-transform: uppercase; }
@@ -198,6 +199,7 @@ h1, h2, h3, h4, p { margin: 0; }
   .bw-header { padding: 14px var(--gutter-mobile); }
   .bw-header__nav { display: none; }
   .bw-header__logo { font-size: 20px; }
+  .bw-header__logo-img { height: var(--logo-h-mobile, 28px); }
 }
 
 .bw-mobile-nav { background: var(--paper); border-bottom: 1px solid var(--ink); }
