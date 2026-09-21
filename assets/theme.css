@@ -70,6 +70,43 @@ html { scroll-behavior: smooth; }
   }
 }
 
+/* ===== Scroll reveal: ink wipe ===== */
+.bw-js .bw-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1);
+  transition-delay: var(--bw-reveal-delay, 0ms);
+}
+.bw-js .bw-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.bw-js .bw-ink-reveal {
+  position: relative;
+  overflow: hidden;
+}
+.bw-js .bw-ink-reveal::after {
+  content: "";
+  position: absolute;
+  inset: -2%;
+  background: var(--ink);
+  transform: translateX(0);
+  transition: transform .6s cubic-bezier(.65,0,.35,1);
+  transition-delay: var(--bw-reveal-delay, 0ms);
+  pointer-events: none;
+}
+.bw-js .bw-ink-reveal.is-visible::after {
+  transform: translateX(101%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .bw-js .bw-reveal,
+  .bw-js .bw-ink-reveal::after {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 .bw-container {
   max-width: var(--container);
   margin: 0 auto;

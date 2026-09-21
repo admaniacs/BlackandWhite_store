@@ -462,4 +462,36 @@
     }
     requestAnimationFrame(render);
   }
+
+  /* ===== Scroll reveal: ink wipe ===== */
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+    const sections = document.querySelectorAll("main#bw-main > .shopify-section");
+    const headings = document.querySelectorAll("main#bw-main .bw-display, main#bw-main .bw-h2");
+    const cards = document.querySelectorAll(
+      "main#bw-main .bw-product-card, main#bw-main .bw-multicolumn > *, main#bw-main .bw-stat-grid__item, main#bw-main .bw-features-bar__item, main#bw-main .bw-review-card, main#bw-main .bw-blog-card, main#bw-main .bw-logo-list__item"
+    );
+
+    sections.forEach((el) => el.classList.add("bw-reveal"));
+    headings.forEach((el) => el.classList.add("bw-ink-reveal"));
+    cards.forEach((el, i) => {
+      el.classList.add("bw-reveal");
+      el.style.setProperty("--bw-reveal-delay", `${Math.min(i % 6, 5) * 60}ms`);
+    });
+
+    const targets = [...sections, ...headings, ...cards];
+    if (targets.length) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: "0px 0px -6% 0px" }
+      );
+      targets.forEach((el) => io.observe(el));
+    }
+  }
 })();
