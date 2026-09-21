@@ -14,17 +14,14 @@
       "settings": {
         "heading": "We deleted the colour chart.",
         "body": "B/W started because getting dressed shouldn't be a decision. Two colours, heavy fabric, prices that don't need a sale to look reasonable.",
-        "background_color": "#000000",
-        "text_color": "#ffffff",
+        "color_scheme": "scheme-2",
         "background_overlay_opacity": 0
       }
     },
     "stats": {
       "type": "about-stats",
       "settings": {
-        "background_color": "#ffffff",
-        "text_color": "#000000",
-        "divider_color": "#000000"
+        "color_scheme": "scheme-1"
       }
     },
     "about_pricing_6bUnPF": {
@@ -64,8 +61,7 @@
         "body": "We make one fabric in bulk and cut everything from it. No seasonal dyes, no colour minimums, no dead stock to discount. That's why a 420gsm hoodie is $58 and stays $58.",
         "total_label": "You pay",
         "total_amount": "$58",
-        "background_color": "#ffffff",
-        "text_color": "#000000",
+        "color_scheme": "scheme-1",
         "total_row_background_color": "#000000",
         "total_row_text_color": "#ffffff"
       }

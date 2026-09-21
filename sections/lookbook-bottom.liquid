@@ -8,10 +8,10 @@
           {%- else -%}{{ block.settings.placeholder_label }}{%- endif -%}
         </div>
       {%- when 'text' -%}
-        <div style="background:{{ block.settings.background_color }};color:{{ block.settings.text_color }};padding:26px;display:flex;flex-direction:column;justify-content:center;text-align:{{ block.settings.text_alignment }}">
+        <div class="color-{{ block.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);padding:26px;display:flex;flex-direction:column;justify-content:center;text-align:{{ block.settings.text_alignment }}">
           <div class="bw-h2" style="font-size:24px;line-height:1.1">{{ block.settings.title }}</div>
           <p class="bw-body" style="margin-top:10px">{{ block.settings.body }}</p>
-          <a href="{{ block.settings.link }}" class="bw-nav-link" style="text-decoration:underline;margin-top:14px;color:{{ block.settings.text_color }}">{{ block.settings.cta_text }} →</a>
+          <a href="{{ block.settings.link }}" class="bw-nav-link" style="text-decoration:underline;margin-top:14px;color:var(--ink)">{{ block.settings.cta_text }} →</a>
         </div>
     {%- endcase -%}
   {%- endfor -%}
@@ -39,8 +39,7 @@
         { "type": "text", "id": "cta_text", "label": "Link label", "default": "Shop the edit" },
         { "type": "url", "id": "link", "label": "Link" },
         { "type": "select", "id": "text_alignment", "label": "Text alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "left" },
-        { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
-        { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
+        { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" }
       ]
     }
   ],

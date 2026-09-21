@@ -1,5 +1,5 @@
 {%- assign product_form_id = 'product-form-' | append: product.id -%}
-<div style="--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+<div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
 {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
 <div class="bw-section-content">
 <nav class="bw-breadcrumb">Home / {{ product.collections.first.title | default: 'Shop' }} / {{ product.title }}</nav>
@@ -132,8 +132,7 @@
     { "type": "range", "id": "padding_top", "label": "Extra space above", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "range", "id": "padding_bottom", "label": "Extra space below", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
     { "type": "header", "content": "Background image or video" },
     { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Used when no background video is set." },
     { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },

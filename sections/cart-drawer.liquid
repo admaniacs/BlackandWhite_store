@@ -14,7 +14,7 @@
   assign remaining_money = remaining_cents | money
 -%}
 <div class="bw-cart-overlay" data-cart-overlay></div>
-<aside class="bw-cart-drawer" data-cart-drawer aria-hidden="true" aria-label="Cart" style="--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink)">
+<aside class="bw-cart-drawer color-{{ section.settings.color_scheme }}" data-cart-drawer aria-hidden="true" aria-label="Cart" style="background:var(--paper);color:var(--ink)">
   <div class="bw-cart-drawer__head">
     <span class="bw-h3">{{ 'general.cart.title' | t }} ({{ cart.item_count }})</span>
     <button type="button" data-cart-close aria-label="Close cart">✕</button>
@@ -89,8 +89,7 @@
   "name": "Cart drawer",
   "settings": [
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "background_color", "label": "Drawer background color", "default": "#ffffff" },
-    { "type": "color", "id": "text_color", "label": "Drawer text color", "default": "#000000" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Drawer color scheme", "default": "scheme-1" },
     { "type": "color", "id": "ship_bar_background_color", "label": "Free-shipping bar background", "default": "#000000" },
     { "type": "color", "id": "ship_bar_text_color", "label": "Free-shipping bar text", "default": "#ffffff" }
   ]

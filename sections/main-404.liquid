@@ -1,4 +1,4 @@
-<div style="background:{{ section.settings.background_color }};color:{{ section.settings.text_color }};padding:{{ section.settings.padding_top }}px 24px {{ section.settings.padding_bottom }}px;text-align:center">
+<div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);padding:{{ section.settings.padding_top }}px 24px {{ section.settings.padding_bottom }}px;text-align:center">
   <div class="bw-container" style="padding:0">
     <div class="bw-label-mono">{{ section.settings.eyebrow }}</div>
     <div class="bw-display" style="font-size:clamp(48px,10vw,100px);margin-top:14px">{{ section.settings.heading }}</div>
@@ -7,10 +7,10 @@
     <form action="{{ routes.search_url }}" method="get" role="search" style="display:flex;gap:8px;max-width:420px;margin:28px auto 0">
       <input type="search" name="q" class="bw-field" placeholder="{{ 'general.search.placeholder' | t }}">
       <input type="hidden" name="type" value="product">
-      <button type="submit" class="bw-btn" style="--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }}">{{ 'general.search.placeholder' | t }}</button>
+      <button type="submit" class="bw-btn">{{ 'general.search.placeholder' | t }}</button>
     </form>
 
-    <a href="{{ routes.root_url }}" class="bw-nav-link" style="display:inline-block;margin-top:24px;text-decoration:underline;color:{{ section.settings.text_color }}">{{ section.settings.back_link_text }} →</a>
+    <a href="{{ routes.root_url }}" class="bw-nav-link" style="display:inline-block;margin-top:24px;text-decoration:underline;color:var(--ink)">{{ section.settings.back_link_text }} →</a>
   </div>
 </div>
 
@@ -26,8 +26,7 @@
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 40, "max": 200, "step": 8, "unit": "px", "default": 100 },
     { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 40, "max": 200, "step": 8, "unit": "px", "default": 100 },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "background_color", "label": "Background color", "default": "#000000" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" }
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-2" }
   ]
 }
 {% endschema %}

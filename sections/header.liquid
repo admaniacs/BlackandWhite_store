@@ -1,5 +1,5 @@
-{%- assign header_style = '--ink:' | append: section.settings.text_color | append: ';--paper:' | append: section.settings.background_color | append: ';background:var(--paper);color:var(--ink);position:relative;padding-top:' | append: section.settings.padding_top | append: 'px;padding-bottom:' | append: section.settings.padding_bottom | append: 'px;--logo-h:' | append: settings.logo_height | append: 'px;--logo-h-mobile:' | append: settings.logo_height_mobile | append: 'px' -%}
-<header class="bw-header" data-header style="{{ header_style }}">
+{%- assign header_style = 'background:var(--paper);color:var(--ink);position:relative;padding-top:' | append: section.settings.padding_top | append: 'px;padding-bottom:' | append: section.settings.padding_bottom | append: 'px;--logo-h:' | append: settings.logo_height | append: 'px;--logo-h-mobile:' | append: settings.logo_height_mobile | append: 'px' -%}
+<header class="bw-header color-{{ section.settings.color_scheme }}" data-header style="{{ header_style }}">
   {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
   <button type="button" class="bw-burger bw-hide-desktop" data-mobile-nav-toggle aria-label="Menu" aria-expanded="false">☰</button>
 
@@ -33,7 +33,7 @@
   </div>
 </header>
 
-<nav class="bw-mobile-nav" data-mobile-nav hidden style="{{ header_style }}">
+<nav class="bw-mobile-nav color-{{ section.settings.color_scheme }}" data-mobile-nav hidden style="{{ header_style }}">
   <div class="bw-container" style="padding-top:16px;padding-bottom:16px;border-bottom:1px solid var(--ink)">
     {%- for link in linklists[section.settings.menu].links -%}
       <a href="{{ link.url }}" class="bw-nav-link" style="display:block;padding:10px 0">{{ link.title }}</a>
@@ -59,8 +59,7 @@
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 60, "step": 2, "unit": "px", "default": 16 },
     { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 60, "step": 2, "unit": "px", "default": 16 },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
     { "type": "header", "content": "Background image or video" },
     { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Used when no background video is set." },
     { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },

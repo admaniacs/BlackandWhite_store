@@ -1,4 +1,4 @@
-<div class="bw-stat-grid" style="--ink:{{ section.settings.divider_color }};--paper:{{ section.settings.background_color }};color:{{ section.settings.text_color }};margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px;text-align:{{ section.settings.text_alignment }}">
+<div class="bw-stat-grid color-{{ section.settings.color_scheme }}" style="color:var(--ink);margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px;text-align:{{ section.settings.text_alignment }}">
   {%- for block in section.blocks -%}
     <div class="bw-stat-grid__item">
       <div class="bw-stat-grid__number">{{ block.settings.number }}</div>
@@ -26,9 +26,7 @@
     { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "background_color", "label": "Cell background color", "default": "#ffffff" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" },
-    { "type": "color", "id": "divider_color", "label": "Divider color", "default": "#000000" }
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" }
   ],
   "max_blocks": 3,
   "presets": [

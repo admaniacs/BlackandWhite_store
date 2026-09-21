@@ -1,5 +1,5 @@
 {%- if section.settings.announcement_enable -%}
-<div class="bw-marquee" style="--ink:{{ section.settings.background_color }};--paper:{{ section.settings.text_color }}">
+<div class="bw-marquee color-{{ section.settings.color_scheme }}">
   <div class="bw-marquee__track" aria-hidden="true">
     {%- for i in (1..6) -%}
       <span>{{ section.settings.announcement_message }}</span>
@@ -28,8 +28,7 @@
       "default": "FREE SHIPPING OVER $75 · 30-DAY RETURNS · NEW DROP FRIDAY 9AM"
     },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "background_color", "label": "Background color", "default": "#000000" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" }
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-2" }
   ]
 }
 {% endschema %}

@@ -7,8 +7,7 @@
       "settings": {
         "announcement_enable": true,
         "announcement_message": "FREE SHIPPING OVER $75 · 30-DAY RETURNS · NEW DROP FRIDAY 9AM",
-        "background_color": "#000000",
-        "text_color": "#ffffff"
+        "color_scheme": "scheme-2"
       }
     },
     "header": {
@@ -17,8 +16,7 @@
         "menu": "main-menu",
         "padding_top": 16,
         "padding_bottom": 16,
-        "background_color": "#ffffff",
-        "text_color": "#000000",
+        "color_scheme": "scheme-1",
         "background_overlay_opacity": 0
       }
     }

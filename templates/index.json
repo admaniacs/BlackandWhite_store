@@ -19,8 +19,7 @@
         "cta_1_link": "",
         "cta_2_text": "Watches",
         "cta_2_link": "",
-        "background_color": "#000000",
-        "text_color": "#F7F7F7",
+        "color_scheme": "scheme-2",
         "background_video": "shopify://files/videos/8443731-uhd_4096_2160_25fps.mp4",
         "video_overlay_opacity": 60
       }
@@ -80,8 +79,7 @@
         "watches"
       ],
       "settings": {
-        "background_color": "#ffffff",
-        "text_color": "#000000"
+        "color_scheme": "scheme-1"
       }
     },
     "best_sellers": {
@@ -91,8 +89,7 @@
         "view_all_label": "View all",
         "collection": "best-sellers",
         "products_to_show": 4,
-        "background_color": "#ffffff",
-        "text_color": "#000000"
+        "color_scheme": "scheme-1"
       }
     },
     "split_promo": {
@@ -171,9 +168,7 @@
       ],
       "name": "Features bar",
       "settings": {
-        "background_color": "#ffffff",
-        "text_color": "#000000",
-        "divider_color": "#000000"
+        "color_scheme": "scheme-1"
       }
     }
   },

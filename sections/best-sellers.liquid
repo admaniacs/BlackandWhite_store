@@ -1,4 +1,4 @@
-<div style="--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+<div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
   <div class="bw-container">
     <div style="display:flex;align-items:baseline;justify-content:space-between;padding:30px 0 16px;flex-wrap:wrap;gap:10px">
       <div class="bw-h2">{{ section.settings.heading }}</div>
@@ -41,8 +41,7 @@
     { "type": "range", "id": "padding_top", "label": "Extra space above", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "range", "id": "padding_bottom", "label": "Extra space below", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" }
   ],
   "blocks": [
     { "type": "@theme" },

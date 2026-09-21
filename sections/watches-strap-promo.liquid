@@ -1,4 +1,4 @@
-<div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid {{ section.settings.text_color }};--ink:{{ section.settings.text_color }};--paper:{{ section.settings.background_color }};background:var(--paper);color:var(--ink);margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px" class="bw-split-media">
+<div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ink);background:var(--paper);color:var(--ink);margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px" class="bw-split-media color-{{ section.settings.color_scheme }}">
   <div style="padding:26px;text-align:{{ section.settings.text_alignment }}">
     <div class="bw-h2" style="font-size:26px">{{ section.settings.heading }}</div>
     <p class="bw-body" style="margin-top:8px;max-width:420px{% if section.settings.text_alignment == 'center' %};margin-left:auto;margin-right:auto{% endif %}">{{ section.settings.body }}</p>
@@ -30,8 +30,7 @@
     { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" }
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" }
   ],
   "blocks": [
     { "type": "@theme" },
