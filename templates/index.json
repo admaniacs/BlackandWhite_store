@@ -17,7 +17,7 @@
         "subtext": "Heavyweight cotton, honest prices. Every piece is black, white, or both — so everything works with everything.",
         "cta_1_text": "Shop all",
         "cta_1_link": "",
-        "cta_2_text": "Watches",
+        "cta_2_text": "New arrivals",
         "cta_2_link": "",
         "color_scheme": "scheme-2",
         "background_video": "shopify://files/videos/8443731-uhd_4096_2160_25fps.mp4",
@@ -62,10 +62,10 @@
             "label": ""
           }
         },
-        "watches": {
+        "accessories": {
           "type": "category",
           "settings": {
-            "collection": "watches",
+            "collection": "accessories",
             "label": ""
           }
         }
@@ -76,7 +76,7 @@
         "shirts",
         "shoes",
         "hats",
-        "watches"
+        "accessories"
       ],
       "settings": {
         "color_scheme": "scheme-1"
