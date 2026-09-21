@@ -291,7 +291,7 @@ html { scroll-behavior: smooth; }
 .bw-footer__signup input { flex: 1; border: 1px solid var(--ink); background: transparent; color: var(--ink); padding: 12px; font: 500 11px var(--font-mono); text-transform: uppercase; }
 .bw-footer__signup input::placeholder { color: #888; }
 .bw-footer__signup button { background: var(--paper); color: var(--ink); padding: 12px 16px; font: 700 11px var(--font-ui); letter-spacing: .12em; text-transform: uppercase; }
-.bw-footer__social { display: flex; gap: 14px; margin-top: 14px; }
+.bw-footer__social { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; max-width: 260px; }
 .bw-footer__social a { color: inherit; display: inline-flex; opacity: .75; transition: opacity .15s; }
 .bw-footer__social a:hover { opacity: 1; }
 .bw-footer__bottom {

@@ -159,8 +159,18 @@
   {
     "name": "Social",
     "settings": [
-      { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
-      { "type": "text", "id": "social_tiktok", "label": "TikTok URL" }
+      { "type": "paragraph", "content": "Leave any of these blank to hide that icon. They appear everywhere social icons are shown (footer, password page)." },
+      { "type": "url", "id": "social_instagram", "label": "Instagram" },
+      { "type": "url", "id": "social_tiktok", "label": "TikTok" },
+      { "type": "url", "id": "social_facebook", "label": "Facebook" },
+      { "type": "url", "id": "social_twitter", "label": "X (Twitter)" },
+      { "type": "url", "id": "social_pinterest", "label": "Pinterest" },
+      { "type": "url", "id": "social_youtube", "label": "YouTube" },
+      { "type": "url", "id": "social_snapchat", "label": "Snapchat" },
+      { "type": "url", "id": "social_linkedin", "label": "LinkedIn" },
+      { "type": "url", "id": "social_tumblr", "label": "Tumblr" },
+      { "type": "url", "id": "social_vimeo", "label": "Vimeo" },
+      { "type": "url", "id": "social_threads", "label": "Threads" }
     ]
   },
   {
