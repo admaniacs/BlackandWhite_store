@@ -16,9 +16,8 @@
     trigger.addEventListener("click", () => {
       const submenu = trigger.nextElementSibling;
       if (!submenu) return;
-      const isOpen = !submenu.hidden;
-      submenu.hidden = isOpen;
-      trigger.setAttribute("aria-expanded", String(!isOpen));
+      const isOpen = submenu.classList.toggle("is-open");
+      trigger.setAttribute("aria-expanded", String(isOpen));
     });
   });
 

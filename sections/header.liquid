@@ -56,10 +56,12 @@
             {{ link.title }}
             <svg width="9" height="6" viewBox="0 0 9 6" fill="none" aria-hidden="true"><path d="M1 1l3.5 3.5L8 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
-          <div class="bw-mobile-nav__submenu" hidden>
-            {%- for child_link in link.links -%}
-              <a href="{{ child_link.url }}" class="bw-nav-link" style="display:block;padding:8px 0 8px 16px;font-size:12px">{{ child_link.title }}</a>
-            {%- endfor -%}
+          <div class="bw-mobile-nav__submenu">
+            <div class="bw-mobile-nav__submenu-inner">
+              {%- for child_link in link.links -%}
+                <a href="{{ child_link.url }}" class="bw-nav-link" style="display:block;padding:8px 0 8px 16px;font-size:12px">{{ child_link.title }}</a>
+              {%- endfor -%}
+            </div>
           </div>
         </div>
       {%- else -%}
