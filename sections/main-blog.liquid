@@ -1,43 +1,100 @@
 <div class="bw-collection-hero color-{{ section.settings.hero_color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.hero_padding_top }}px;padding-bottom:{{ section.settings.hero_padding_bottom }}px">
   {%- render 'section-media-background', image: section.settings.hero_background_image, video: section.settings.hero_background_video, overlay_opacity: section.settings.hero_background_overlay_opacity -%}
-  <div>
-    <div class="bw-label-mono" style="color:#999">Home / {{ blog.title }}</div>
+  <div style="position:relative">
+    <div class="bw-label-mono" style="opacity:.6">Home / {{ blog.title }}</div>
     <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(32px,5vw,56px));margin-top:8px">{{ blog.title }}</div>
+    {%- if section.settings.intro != blank -%}
+      <p style="font:15px/1.55 var(--font-ui);opacity:.7;max-width:460px;margin:12px 0 0">{{ section.settings.intro }}</p>
+    {%- endif -%}
   </div>
   {% content_for 'blocks' %}
 </div>
 
-<div class="bw-container" style="padding-top:34px;padding-bottom:34px">
-  {%- paginate blog.articles by 9 -%}
-    {%- if blog.articles.size == 0 -%}
-      <p class="bw-body">{{ section.settings.empty_text }}</p>
-    {%- else -%}
-      <div class="bw-grid bw-grid--3">
-        {%- for article in blog.articles -%}
-          <a href="{{ article.url }}" class="bw-blog-card">
-            <div class="bw-media-placeholder bw-blog-card__media">
-              {%- if article.image -%}
-                <img src="{{ article.image | image_url: width: 900 }}" alt="{{ article.image.alt | escape }}" loading="lazy">
-              {%- else -%}article · 900×600{%- endif -%}
-            </div>
-            <div class="bw-blog-card__body">
-              {%- if section.settings.show_date or section.settings.show_author -%}
-                <div class="bw-label-mono">
-                  {%- if section.settings.show_date -%}{{ article.published_at | date: '%B %d, %Y' }}{%- endif -%}
-                  {%- if section.settings.show_date and section.settings.show_author -%} · {%- endif -%}
-                  {%- if section.settings.show_author -%}{{ 'blogs.article.by_author' | t: author: article.author }}{%- endif -%}
-                </div>
+{%- if blog.articles.size == 0 -%}
+  <div class="bw-container" style="padding:40px var(--gutter-desktop)">
+    <p class="bw-body">{{ section.settings.empty_text }}</p>
+  </div>
+{%- else -%}
+
+  {%- comment -%}
+    Tag filters. current_tags is set when viewing /blogs/news/tagged/<tag>.
+  {%- endcomment -%}
+  {%- if section.settings.show_tag_filter and blog.all_tags.size > 0 -%}
+    <div class="bw-container" style="padding-top:18px">
+      <div class="bw-journal-tags">
+        <a href="{{ blog.url }}" class="bw-search-chip{% if current_tags.size == 0 %} is-active{% endif %}">{{ section.settings.all_tag_label }}</a>
+        {%- for tag in blog.all_tags -%}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="bw-search-chip{% if current_tags contains tag %} is-active{% endif %}">{{ tag }}</a>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- paginate blog.articles by section.settings.posts_per_page -%}
+    {%- comment -%}
+      The newest post leads the page at full width; everything after it is set
+      as a numbered index, the way a printed contents page would run.
+      On page two onwards every post joins the index — there is no new "latest".
+    {%- endcomment -%}
+    {%- assign lead_offset = 0 -%}
+    {%- if section.settings.show_lead and paginate.current_page == 1 and current_tags.size == 0 -%}
+      {%- assign lead = blog.articles.first -%}
+      {%- assign lead_offset = 1 -%}
+
+      <div class="bw-container" style="padding-top:22px">
+        <a href="{{ lead.url }}" class="bw-journal-lead">
+          <div class="bw-journal-lead__media">
+            {%- if lead.image -%}
+              <img src="{{ lead.image | image_url: width: 1200 }}" alt="{{ lead.image.alt | escape }}" loading="eager" fetchpriority="high">
+            {%- endif -%}
+          </div>
+          <div class="bw-journal-lead__body">
+            <div class="bw-label-mono bw-journal-lead__kicker">
+              {{ section.settings.lead_label }}
+              {%- if section.settings.show_date %} · {{ lead.published_at | date: '%b %d, %Y' }}{% endif -%}
+              {%- if section.settings.show_read_time -%}
+                {%- assign lead_words = lead.content | strip_html | number_of_words -%}
+                {%- assign lead_minutes = lead_words | divided_by: 200 | plus: 1 -%}
+                 · {{ lead_minutes }} min read
               {%- endif -%}
-              <div class="bw-blog-card__title">{{ article.title }}</div>
-              {%- if section.settings.show_excerpt -%}
-                <p class="bw-blog-card__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</p>
-              {%- endif -%}
-              <span class="bw-nav-link" style="text-decoration:underline">{{ 'blogs.article.read_more' | t }} →</span>
             </div>
+            <div class="bw-journal-lead__title">{{ lead.title }}</div>
+            <p class="bw-journal-lead__excerpt">{{ lead.excerpt_or_content | strip_html | truncatewords: 36 }}</p>
+            <span class="bw-journal-lead__cta">{{ 'blogs.article.read_more' | t }} →</span>
+          </div>
+        </a>
+      </div>
+    {%- endif -%}
+
+    <div class="bw-container" style="padding-top:34px;padding-bottom:10px">
+      <div class="bw-journal-index">
+        {%- for article in blog.articles offset: lead_offset -%}
+          {%- assign row_no = forloop.index | plus: lead_offset -%}
+          {%- if paginate.current_page > 1 -%}
+            {%- assign prior = paginate.current_page | minus: 1 | times: section.settings.posts_per_page -%}
+            {%- assign row_no = forloop.index | plus: prior -%}
+          {%- endif -%}
+          <a href="{{ article.url }}" class="bw-journal-row">
+            <span class="bw-journal-row__no">{{ row_no | prepend: '0' | slice: -2, 2 }}</span>
+            <span class="bw-journal-row__title">{{ article.title }}</span>
+            <span class="bw-journal-row__meta">
+              {%- if section.settings.show_date -%}{{ article.published_at | date: '%b %d, %Y' }}{%- endif -%}
+              {%- if section.settings.show_read_time -%}
+                {%- assign words = article.content | strip_html | number_of_words -%}
+                {%- assign minutes = words | divided_by: 200 | plus: 1 -%}
+                {% if section.settings.show_date %} · {% endif %}{{ minutes }} min
+              {%- endif -%}
+            </span>
+            <span class="bw-journal-row__arrow" aria-hidden="true">→</span>
+            {%- if article.image -%}
+              <span class="bw-journal-row__peek" aria-hidden="true">
+                <img src="{{ article.image | image_url: width: 400 }}" alt="" loading="lazy">
+              </span>
+            {%- endif -%}
           </a>
         {%- endfor -%}
       </div>
-    {%- endif -%}
+    </div>
 
     {%- if paginate.next -%}
       <div class="bw-load-more">
@@ -45,16 +102,23 @@
       </div>
     {%- endif -%}
   {%- endpaginate -%}
-</div>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Blog posts",
   "settings": [
     { "type": "paragraph", "content": "Renders the article list for whichever blog this template is assigned to." },
+    { "type": "textarea", "id": "intro", "label": "Intro text", "default": "Notes on fabric, fit and keeping two colours looking like two colours." },
+    { "type": "header", "content": "Lead post" },
+    { "type": "checkbox", "id": "show_lead", "label": "Feature the newest post", "default": true, "info": "Shown large at the top of page one. Hidden when filtering by tag." },
+    { "type": "text", "id": "lead_label", "label": "Lead label", "default": "Latest", "visible_if": "{{ section.settings.show_lead }}" },
+    { "type": "header", "content": "Index" },
     { "type": "checkbox", "id": "show_date", "label": "Show date", "default": true },
-    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false },
-    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt", "default": true },
+    { "type": "checkbox", "id": "show_read_time", "label": "Show reading time", "default": true, "info": "Estimated from the word count, at 200 words a minute." },
+    { "type": "checkbox", "id": "show_tag_filter", "label": "Show tag filter", "default": true },
+    { "type": "text", "id": "all_tag_label", "label": "All posts label", "default": "All", "visible_if": "{{ section.settings.show_tag_filter }}" },
+    { "type": "range", "id": "posts_per_page", "label": "Posts per page", "min": 6, "max": 24, "step": 2, "default": 12 },
     { "type": "text", "id": "empty_text", "label": "Empty state text", "default": "No posts yet — check back soon." },
     { "type": "header", "content": "Colors" },
     { "type": "color_scheme", "id": "hero_color_scheme", "label": "Hero color scheme", "default": "scheme-2" },
@@ -63,8 +127,8 @@
     { "type": "video", "id": "hero_background_video", "label": "Background video", "info": "Takes priority over the background image." },
     { "type": "range", "id": "hero_background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 },
     { "type": "header", "content": "Hero layout" },
-    { "type": "range", "id": "hero_padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 },
-    { "type": "range", "id": "hero_padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 }
+    { "type": "range", "id": "hero_padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "hero_padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 32 }
   ],
   "blocks": [
     { "type": "@theme" },

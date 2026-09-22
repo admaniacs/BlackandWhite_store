@@ -922,6 +922,65 @@ html { scroll-behavior: smooth; }
    landscape card would slice the top and bottom off the garment. */
 .bw-blog-card__media { height: 240px; background: var(--paper); background-image: none; }
 .bw-blog-card__media img { object-fit: contain; padding: 16px; }
+
+/* ===== Journal ===== */
+.bw-journal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.bw-search-chip.is-active { background: var(--ink); color: var(--paper); }
+
+.bw-journal-lead { display: grid; grid-template-columns: 1.15fr 1fr; border: 1px solid var(--ink); }
+.bw-journal-lead__media { position: relative; height: clamp(260px, 32vw, 440px); background: var(--paper); overflow: hidden; }
+.bw-journal-lead__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 22px; transition: transform .5s ease; }
+.bw-journal-lead:hover .bw-journal-lead__media img { transform: scale(1.03); }
+.bw-journal-lead__body { padding: 34px 32px; border-left: 1px solid var(--ink); display: flex; flex-direction: column; justify-content: center; }
+.bw-journal-lead__kicker { opacity: .6; }
+.bw-journal-lead__title { font: 400 clamp(26px, 3vw, 42px)/1.02 var(--font-display); text-transform: uppercase; letter-spacing: -.02em; margin-top: 12px; }
+.bw-journal-lead__excerpt { font: 15px/1.6 var(--font-ui); color: var(--grey-100); margin-top: 14px; }
+.bw-journal-lead__cta { font: 500 11px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; margin-top: 20px; }
+.bw-journal-lead:hover .bw-journal-lead__cta { text-decoration: underline; }
+
+/* The index reads as a printed contents page: number, title, date. The cover
+   image only appears on hover, overlapping the rows below it. */
+.bw-journal-index { position: relative; border-top: 1px solid var(--ink); }
+/* The peek gets a column of its own so it can never sit on top of the date. */
+.bw-journal-row {
+  position: relative;
+  display: grid; grid-template-columns: 54px 1fr 150px auto 28px; gap: 18px; align-items: baseline;
+  padding: 22px 4px; border-bottom: 1px solid var(--grey-20);
+  transition: padding-left .2s ease;
+}
+.bw-journal-row:hover { padding-left: 14px; }
+/* Columns are pinned rather than left to source order — the peek is emitted
+   last, and is absent entirely on a post with no image. */
+.bw-journal-row__no { grid-column: 1; font: 500 11px var(--font-mono); letter-spacing: .1em; opacity: .45; }
+.bw-journal-row__title { grid-column: 2; font: 400 clamp(19px, 2vw, 27px) var(--font-display); text-transform: uppercase; letter-spacing: -.01em; line-height: 1.08; }
+.bw-journal-row__meta { grid-column: 4; font: 500 10px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .55; white-space: nowrap; }
+.bw-journal-row__arrow { grid-column: 5; font: 400 16px var(--font-ui); opacity: 0; transform: translateX(-6px); transition: opacity .2s ease, transform .2s ease; }
+.bw-journal-row:hover .bw-journal-row__arrow { opacity: 1; transform: translateX(0); }
+/* Zero height so it never stretches the row — the image inside overflows it
+   and overlaps the neighbouring rows, which is the effect we want. */
+.bw-journal-row__peek { grid-column: 3; position: relative; height: 0; align-self: center; pointer-events: none; }
+.bw-journal-row__peek img {
+  position: absolute; top: 50%; left: 50%; z-index: 3;
+  width: 132px; height: 168px; object-fit: contain; padding: 10px;
+  background: var(--paper); border: 1px solid var(--ink);
+  opacity: 0; transform: translate(-50%, -50%) scale(.94);
+  transition: opacity .22s ease, transform .22s ease;
+}
+.bw-journal-row:hover .bw-journal-row__peek img { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+@media (hover: none), (pointer: coarse) {
+  .bw-journal-row__peek { display: none; }
+}
+@media (max-width: 749px) {
+  .bw-journal-lead { grid-template-columns: 1fr; }
+  .bw-journal-lead__body { border-left: 0; border-top: 1px solid var(--ink); padding: 24px 20px; }
+  .bw-journal-row { grid-template-columns: 38px 1fr; gap: 12px 12px; padding: 18px 2px; }
+  .bw-journal-row__peek { display: none; }
+  .bw-journal-row__title { grid-column: 2; }
+  .bw-journal-row__meta { grid-column: 2; }
+  .bw-journal-row__arrow { display: none; }
+  .bw-journal-row:hover { padding-left: 2px; }
+}
 .bw-blog-card__body { padding: 16px; border-top: 1px solid var(--ink); flex: 1; display: flex; flex-direction: column; gap: 8px; }
 .bw-blog-card__title { font: 400 20px var(--font-display); text-transform: uppercase; line-height: 1.05; }
 .bw-blog-card__excerpt { font: 13px/1.5 var(--font-ui); color: var(--grey-90); flex: 1; }
