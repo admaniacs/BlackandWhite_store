@@ -17,9 +17,11 @@
     endif
   endfor
 
-  # Only group by colour when the images actually carry a colour in their alt
-  # text. Untagged images fall back to the product title, which would otherwise
-  # match no colour and leave the gallery empty.
+  # Only group by colour when at least one image's alt text names one of the
+  # colour values. Untagged images fall back to the product title, which would
+  # otherwise match no colour and leave the gallery empty. Once grouping is on,
+  # every non-blank alt counts as a colour tag — a product can carry a photo of
+  # a colour it no longer sells, and that photo should stay hidden.
   assign gallery_grouped_by_color = false
   if color_option_index > 0
     for image in product.images
@@ -43,13 +45,9 @@
       {%- assign image_color = '' -%}
       {%- assign matches_color = true -%}
       {%- if gallery_grouped_by_color -%}
-        {%- assign candidate = image.alt | strip | handleize -%}
-        {%- assign needle = ',' | append: candidate | append: ',' -%}
-        {%- if color_values contains needle -%}
-          {%- assign image_color = candidate -%}
-          {%- if image_color != selected_color -%}
-            {%- assign matches_color = false -%}
-          {%- endif -%}
+        {%- assign image_color = image.alt | strip | handleize -%}
+        {%- if image_color != blank and image_color != selected_color -%}
+          {%- assign matches_color = false -%}
         {%- endif -%}
       {%- endif -%}
       {%- if matches_color -%}{%- assign shown = shown | plus: 1 -%}{%- endif -%}
