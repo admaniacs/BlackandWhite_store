@@ -281,9 +281,8 @@
       return;
     }
 
-    const optionEls = section.querySelectorAll("[data-option-index]");
     const selected = [];
-    optionEls.forEach((el) => {
+    section.querySelectorAll("[data-option-index]").forEach((el) => {
       const idx = Number(el.dataset.optionIndex);
       if (el.classList.contains("is-selected")) selected[idx] = el.dataset.optionValue;
     });
@@ -296,7 +295,7 @@
     }
 
     function updateAvailability() {
-      optionEls.forEach((el) => {
+      section.querySelectorAll("[data-option-index]").forEach((el) => {
         const idx = Number(el.dataset.optionIndex);
         const testSelection = selected.slice();
         testSelection[idx] = el.dataset.optionValue;
@@ -353,7 +352,7 @@
 
     section.addEventListener("click", (e) => {
       const opt = e.target.closest("[data-option-index]");
-      if (!opt || !optionEls.length || ![...optionEls].includes(opt)) return;
+      if (!opt) return;
       const idx = Number(opt.dataset.optionIndex);
       section.querySelectorAll(`[data-option-index="${idx}"]`).forEach((el) => el.classList.remove("is-selected"));
       opt.classList.add("is-selected");
