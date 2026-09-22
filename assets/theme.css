@@ -773,12 +773,15 @@ html { scroll-behavior: smooth; }
 
 /* ===== Blog / article ===== */
 .bw-blog-card { border: 1px solid var(--ink); background: var(--paper); display: flex; flex-direction: column; }
-.bw-blog-card__media { height: 240px; }
+/* Covers are product cut-outs on white, so contain them — cropping to fill a
+   landscape card would slice the top and bottom off the garment. */
+.bw-blog-card__media { height: 240px; background: var(--paper); background-image: none; }
+.bw-blog-card__media img { object-fit: contain; padding: 16px; }
 .bw-blog-card__body { padding: 16px; border-top: 1px solid var(--ink); flex: 1; display: flex; flex-direction: column; gap: 8px; }
 .bw-blog-card__title { font: 400 20px var(--font-display); text-transform: uppercase; line-height: 1.05; }
 .bw-blog-card__excerpt { font: 13px/1.5 var(--font-ui); color: var(--grey-90); flex: 1; }
 .bw-article { max-width: 720px; margin: 0 auto; padding: 44px var(--gutter-desktop) 60px; }
-.bw-article__media { margin: 0 calc(var(--gutter-desktop) * -1) 28px; }
+.bw-article__media { margin: 26px calc(var(--gutter-desktop) * -1) 28px; }
 .bw-article__body { font: 15px/1.7 var(--font-ui); color: var(--grey-100); }
 .bw-article__body p { margin: 0 0 18px; }
 .bw-article__body h2 { font: 400 26px var(--font-display); text-transform: uppercase; margin: 34px 0 14px; }
@@ -786,6 +789,16 @@ html { scroll-behavior: smooth; }
 .bw-article__body img { margin: 22px 0; }
 .bw-article__body a { text-decoration: underline; }
 .bw-article__body blockquote { border-left: 2px solid var(--ink); padding-left: 18px; font-style: italic; color: var(--grey-90); margin: 22px 0; }
+/* The reset strips list markers globally, which is right for nav and card
+   lists but wrong inside prose — a bulleted list written in the blog editor
+   would otherwise run together as unindented plain text. */
+.bw-article__body ul,
+.bw-article__body ol { margin: 0 0 18px; padding-left: 22px; }
+.bw-article__body ul { list-style: disc; }
+.bw-article__body ol { list-style: decimal; }
+.bw-article__body li { margin-bottom: 8px; }
+.bw-article__body strong { color: var(--ink); font-weight: 600; }
+.bw-article__body hr { border: 0; border-top: 1px solid var(--grey-20); margin: 30px 0; }
 .bw-article__nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--ink); }
 @media (max-width: 749px) { .bw-blog-card__media { height: 200px; } }
 
