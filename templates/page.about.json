@@ -13,15 +13,143 @@
       "type": "about-hero",
       "settings": {
         "heading": "We deleted the colour chart.",
-        "body": "B/W started because getting dressed shouldn't be a decision. Two colours, heavy fabric, prices that don't need a sale to look reasonable.",
+        "body": "B/W started because getting dressed shouldn't be a decision. Two colours, one fabric weight, and prices that don't need a sale to look reasonable.",
+        "heading_size": "large",
+        "text_alignment": "left",
         "color_scheme": "scheme-2",
+        "padding_top": 72,
+        "padding_bottom": 72,
         "background_overlay_opacity": 0
       }
     },
     "stats": {
       "type": "about-stats",
+      "blocks": {
+        "stat_weight": {
+          "type": "stat",
+          "settings": {
+            "number": "420",
+            "label": "GSM, every knit"
+          }
+        },
+        "stat_colours": {
+          "type": "stat",
+          "settings": {
+            "number": "2",
+            "label": "Colours, permanently"
+          }
+        },
+        "stat_sales": {
+          "type": "stat",
+          "settings": {
+            "number": "0",
+            "label": "Seasonal sales, ever"
+          }
+        }
+      },
+      "block_order": ["stat_weight", "stat_colours", "stat_sales"],
       "settings": {
+        "text_alignment": "left",
         "color_scheme": "scheme-1"
+      }
+    },
+    "manifesto": {
+      "type": "about-manifesto",
+      "blocks": {
+        "rule_colour": {
+          "type": "principle",
+          "settings": {
+            "title": "Two colours",
+            "body": "Black and white, permanently. Anything you buy works with anything you already own, including the piece you bought three years ago."
+          }
+        },
+        "rule_weight": {
+          "type": "principle",
+          "settings": {
+            "title": "One weight",
+            "body": "We buy a single 420gsm fabric in bulk and cut the whole range from it. Fewer choices upstream buys better cloth downstream."
+          }
+        },
+        "rule_seasons": {
+          "type": "principle",
+          "settings": {
+            "title": "No seasons",
+            "body": "Nothing gets discontinued to make room for next season, because there isn't one. If we still make it, you can still replace it."
+          }
+        },
+        "rule_price": {
+          "type": "principle",
+          "settings": {
+            "title": "One price",
+            "body": "The price on the tag is the price. We don't inflate it in order to mark it down later, and we don't run a sale to clear a colour nobody wanted."
+          }
+        },
+        "rule_wear": {
+          "type": "principle",
+          "settings": {
+            "title": "Made to outlast us",
+            "body": "If a piece doesn't survive a hundred washes still looking like itself, it doesn't go in the range. That test has killed more samples than it has passed."
+          }
+        }
+      },
+      "block_order": ["rule_colour", "rule_weight", "rule_seasons", "rule_price", "rule_wear"],
+      "settings": {
+        "eyebrow": "What we hold to",
+        "heading": "Five rules we don't break.",
+        "color_scheme": "scheme-1",
+        "padding_top": 60,
+        "padding_bottom": 20,
+        "background_overlay_opacity": 0
+      }
+    },
+    "timeline": {
+      "type": "about-timeline",
+      "blocks": {
+        "year_2023": {
+          "type": "moment",
+          "settings": {
+            "year": "2023",
+            "title": "One hoodie",
+            "body": "We made a single heavyweight hoodie because we couldn't find one that survived a year of actual wear. It sold out to friends before it ever reached a shop.",
+            "is_current": false
+          }
+        },
+        "year_2024": {
+          "type": "moment",
+          "settings": {
+            "year": "2024",
+            "title": "The rule arrives",
+            "body": "Adding colours meant dye minimums, dead stock and the discounts that follow. We dropped the colour chart instead — and the range got better, not narrower.",
+            "is_current": false
+          }
+        },
+        "year_2025": {
+          "type": "moment",
+          "settings": {
+            "year": "2025",
+            "title": "Shirts and tees",
+            "body": "Same fabric philosophy, different cuts. The green check shirt became the one exception we allow ourselves, because it layers over the system instead of competing with it.",
+            "is_current": false
+          }
+        },
+        "year_2026": {
+          "type": "moment",
+          "settings": {
+            "year": "2026",
+            "title": "A full wardrobe",
+            "body": "Footwear, hats and watches close the loop. Eight pieces now cover a week without repeating an outfit — which was the point from the beginning.",
+            "is_current": true
+          }
+        }
+      },
+      "block_order": ["year_2023", "year_2024", "year_2025", "year_2026"],
+      "settings": {
+        "eyebrow": "How it went",
+        "heading": "From one hoodie to a whole wardrobe.",
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 56,
+        "background_overlay_opacity": 0
       }
     },
     "about_pricing_6bUnPF": {
@@ -65,11 +193,62 @@
         "total_row_background_color": "#000000",
         "total_row_text_color": "#ffffff"
       }
+    },
+    "care_faq": {
+      "type": "faq",
+      "blocks": {
+        "q_sizing": {
+          "type": "question",
+          "settings": {
+            "question": "How do your cuts fit?",
+            "answer": "<p>Everything is cut boxy — straight through the body, dropped shoulder, no taper. Take your usual size for a close fit, or size up once if you want it oversized. Between sizes, go down for shirts and tees, up for hoodies.</p>"
+          }
+        },
+        "q_fabric": {
+          "type": "question",
+          "settings": {
+            "question": "What does 420gsm actually mean?",
+            "answer": "<p>Grams per square metre — the weight of the knit. A supermarket tee is around 150gsm. At 420 the fabric holds its shape, doesn't go see-through, and doesn't pill after a winter of wear.</p>"
+          }
+        },
+        "q_care": {
+          "type": "question",
+          "settings": {
+            "question": "How do I keep black from fading?",
+            "answer": "<p>Wash inside out, cold, and skip the dryer. Fading comes from abrasion and heat, not from washing as such. There's a longer guide in the Journal.</p>"
+          }
+        },
+        "q_green": {
+          "type": "question",
+          "settings": {
+            "question": "Why is there a green shirt?",
+            "answer": "<p>Because a check shirt is worn <em>over</em> everything else rather than alongside it, so it sits on top of the black-and-white system instead of competing with it. It's the only exception, and we intend to keep it that way.</p>"
+          }
+        }
+      },
+      "block_order": ["q_sizing", "q_fabric", "q_care", "q_green"],
+      "settings": {
+        "heading": "Questions we get asked",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "newsletter_about": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "No launches. No sales.",
+        "subtext": "We email rarely, and only when there's something worth reading.",
+        "success_text": "You're on the list.",
+        "color_scheme": "scheme-2"
+      }
     }
   },
   "order": [
     "hero",
     "stats",
-    "about_pricing_6bUnPF"
+    "manifesto",
+    "timeline",
+    "about_pricing_6bUnPF",
+    "care_faq",
+    "newsletter_about"
   ]
 }
