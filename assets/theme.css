@@ -448,25 +448,36 @@ html { scroll-behavior: smooth; }
    it reads as a printed masthead rather than a logo, and it gives the footer
    a bottom edge instead of trailing off into empty space. */
 .bw-footer__wordmark {
-  margin-top: 30px;
+  /* Held to the same container as the columns and the legal bar, so the
+     wordmark's edges line up with them on a wide display instead of running
+     past. */
+  max-width: var(--container);
+  margin: 30px auto 0;
   overflow: hidden;
   line-height: .72;
   user-select: none;
+  container-type: inline-size;
 }
 .bw-footer__wordmark span {
   display: block;
   font-family: var(--font-display);
   font-weight: 400;
-  /* Sized to fit the viewport rather than overflow it — a wordmark clipped
-     mid-letter reads as a bug, not as a crop. --bw-wordmark-size is set per
-     section so a longer store name can be dialled down. */
-  font-size: clamp(44px, var(--bw-wordmark-size, 13vw), 300px);
+  /* Sized against its own box, not the viewport — the box is capped at the
+     container, so a viewport-relative size overflowed on a wide display.
+     A wordmark clipped mid-letter reads as a bug, not as a crop.
+     --bw-wordmark-scale is set per section so a longer name can be dialled
+     down; the vw rule is the fallback where container units are missing. */
+  font-size: clamp(40px, calc(var(--bw-wordmark-scale, 13) * 1vw), 190px);
   letter-spacing: -.035em;
   text-transform: uppercase;
   white-space: nowrap;
   margin-bottom: -.14em;
   color: var(--ink);
   opacity: .12;
+}
+/* Must follow the rule above — same specificity, so source order decides. */
+@supports (width: 1cqw) {
+  .bw-footer__wordmark span { font-size: clamp(36px, calc(var(--bw-wordmark-scale, 13) * 1.04cqw), 260px); }
 }
 
 @media (max-width: 989px) {

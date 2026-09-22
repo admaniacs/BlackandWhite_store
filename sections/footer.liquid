@@ -112,7 +112,7 @@
   {%- endif -%}
 
   {%- if section.settings.show_wordmark -%}
-    <div class="bw-footer__wordmark" aria-hidden="true" style="--bw-wordmark-size:{{ section.settings.wordmark_size }}vw">
+    <div class="bw-footer__wordmark" aria-hidden="true" style="--bw-wordmark-scale:{{ section.settings.wordmark_size }}">
       <span>{{ section.settings.wordmark_text | default: shop.name }}</span>
     </div>
   {%- endif -%}
