@@ -272,7 +272,10 @@
 
   /* ===== Product variant picker ===== */
   document.querySelectorAll("[data-product-section]").forEach((section) => {
-    const jsonEl = section.querySelector("[data-product-json]");
+    const jsonEl =
+      section.querySelector("[data-product-json]") ||
+      (section.parentElement && section.parentElement.querySelector("[data-product-json]")) ||
+      document.querySelector("[data-product-json]");
     if (!jsonEl) return;
     let variants = [];
     try {

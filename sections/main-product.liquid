@@ -105,6 +105,10 @@
       {%- endif -%}
     </div>
   </div>
+
+  <script type="application/json" data-product-json>
+    {{ product.variants | json }}
+  </script>
 </div>
 
 <div class="bw-sticky-addbar" data-sticky-addbar>
@@ -114,10 +118,6 @@
   </div>
   <button type="submit" form="{{ product_form_id }}" class="bw-btn" style="flex:1" data-sticky-add-to-cart>{{ 'products.product.add_to_cart' | t }}</button>
 </div>
-
-<script type="application/json" data-product-json>
-  {{ product.variants | json }}
-</script>
 
 {% render 'product-reviews', product: product %}
 {% content_for 'blocks' %}
