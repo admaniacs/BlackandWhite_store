@@ -337,16 +337,38 @@
         el.textContent = selected[i] || "";
       });
 
-      if (variant.featured_image) {
-        const main = section.querySelector("[data-gallery-image]");
-        const img = main?.querySelector("img");
-        if (img) {
-          const src = variant.featured_image.src;
-          img.src = src + (src.includes("?") ? "&" : "?") + "width=1200";
-        }
-      }
-
+      updateGallery();
       updateAvailability();
+    }
+
+    /* Show only the photos belonging to the selected colour. Images opt in by
+       carrying their colour in the alt text; untagged ones always show. */
+    function handleize(value) {
+      return String(value || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    }
+
+    const gallery = section.querySelector("[data-product-gallery]");
+    const colorOptionIndex = (() => {
+      const swatch = section.querySelector('[data-option-name="color"], [data-option-name="colour"]');
+      return swatch ? Number(swatch.dataset.optionIndex) : -1;
+    })();
+
+    function updateGallery() {
+      if (!gallery || colorOptionIndex < 0) return;
+      const color = handleize(selected[colorOptionIndex]);
+      if (!color) return;
+      let isFirstVisible = true;
+      gallery.querySelectorAll("[data-gallery-image]").forEach((item) => {
+        const itemColor = item.dataset.galleryColor || "";
+        const matches = !itemColor || itemColor === color;
+        item.classList.toggle("is-hidden", !matches);
+        item.classList.toggle("bw-product-gallery__main", matches && isFirstVisible);
+        item.classList.toggle("bw-product-gallery__thumb", !(matches && isFirstVisible));
+        if (matches && isFirstVisible) isFirstVisible = false;
+      });
     }
 
     function formatMoney(cents) {

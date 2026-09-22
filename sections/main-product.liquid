@@ -1,4 +1,36 @@
 {%- assign product_form_id = 'product-form-' | append: product.id -%}
+{%- liquid
+  # Locate the colour option so the gallery can show only that colour's photos.
+  # Images opt in by setting their alt text to the colour name (e.g. "White").
+  assign color_option_index = 0
+  assign selected_color = ''
+  assign color_values = ''
+  for option in product.options_with_values
+    assign option_key = option.name | downcase
+    if option_key == 'color' or option_key == 'colour'
+      assign color_option_index = forloop.index
+      assign selected_color = option.selected_value | handleize
+      for value in option.values
+        assign color_values = color_values | append: ',' | append: value | handleize
+      endfor
+      assign color_values = color_values | append: ','
+    endif
+  endfor
+
+  # Only group by colour when the images actually carry a colour in their alt
+  # text. Untagged images fall back to the product title, which would otherwise
+  # match no colour and leave the gallery empty.
+  assign gallery_grouped_by_color = false
+  if color_option_index > 0
+    for image in product.images
+      assign needle = ',' | append: image.alt | strip | handleize | append: ','
+      if color_values contains needle
+        assign gallery_grouped_by_color = true
+        break
+      endif
+    endfor
+  endif
+-%}
 <div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
 {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
 <div class="bw-section-content">
@@ -6,9 +38,28 @@
 
 <div class="bw-product-layout" data-product-section data-product-id="{{ product.id }}">
   <div class="bw-product-gallery" data-product-gallery>
-    {%- for image in product.images limit: 4 -%}
-      <div class="bw-media-placeholder{% if forloop.first %} bw-product-gallery__main{% else %} bw-product-gallery__thumb{% endif %}" data-gallery-image data-media-id="{{ image.id }}">
-        <img src="{{ image | image_url: width: 1200 }}" alt="{{ image.alt | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+    {%- assign shown = 0 -%}
+    {%- for image in product.images -%}
+      {%- assign image_color = '' -%}
+      {%- assign matches_color = true -%}
+      {%- if gallery_grouped_by_color -%}
+        {%- assign candidate = image.alt | strip | handleize -%}
+        {%- assign needle = ',' | append: candidate | append: ',' -%}
+        {%- if color_values contains needle -%}
+          {%- assign image_color = candidate -%}
+          {%- if image_color != selected_color -%}
+            {%- assign matches_color = false -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+      {%- if matches_color -%}{%- assign shown = shown | plus: 1 -%}{%- endif -%}
+      <div
+        class="bw-media-placeholder bw-product-gallery__item{% if matches_color and shown == 1 %} bw-product-gallery__main{% else %} bw-product-gallery__thumb{% endif %}{% unless matches_color %} is-hidden{% endunless %}"
+        data-gallery-image
+        data-gallery-color="{{ image_color }}"
+        data-media-id="{{ image.id }}"
+      >
+        <img src="{{ image | image_url: width: 1200 }}" alt="{{ image.alt | escape }}" loading="{% if matches_color and shown == 1 %}eager{% else %}lazy{% endif %}">
       </div>
     {%- else -%}
       <div class="bw-media-placeholder bw-media-placeholder--dark bw-product-gallery__main">front · 1200×1600</div>
@@ -46,6 +97,7 @@
                   class="bw-swatch{% if value == option.selected_value %} is-selected{% endif %}"
                   data-color="{{ value | handleize }}"
                   data-option-index="{{ forloop.parentloop.index0 }}"
+                  data-option-name="{{ option.name | handleize }}"
                   data-option-value="{{ value | escape }}"
                   aria-label="{{ value }}"
                 ></button>
@@ -58,6 +110,7 @@
                   type="button"
                   class="bw-size-chip{% if value == option.selected_value %} is-selected{% endif %}"
                   data-option-index="{{ forloop.parentloop.index0 }}"
+                  data-option-name="{{ option.name | handleize }}"
                   data-option-value="{{ value | escape }}"
                 >{{ value }}</button>
               {%- endfor -%}
