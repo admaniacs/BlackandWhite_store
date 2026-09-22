@@ -52,9 +52,9 @@
         {%- elsif filter.label == 'Colour' or filter.label == 'Color' -%}
           <div style="display:flex;flex-direction:column;gap:7px;font:600 12px var(--font-ui);margin-bottom:18px">
             {%- for value in filter.values -%}
-              <label class="bw-filter-option">
-                <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} class="bw-visually-hidden">
-                <span class="bw-swatch-mini" data-color="{{ value.label | downcase }}"></span>
+              <label class="bw-filter-option{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %} class="bw-visually-hidden">
+                <span class="bw-swatch-mini" data-color="{{ value.label | handleize }}"></span>
                 {{ value.label }} ({{ value.count }})
               </label>
             {%- endfor -%}
