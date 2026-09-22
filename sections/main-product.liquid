@@ -41,24 +41,25 @@
           {%- if option.name == 'Color' or option.name == 'Colour' -%}
             <div style="display:flex;gap:10px">
               {%- for value in option.values -%}
-                <span
+                <button
+                  type="button"
                   class="bw-swatch{% if value == option.selected_value %} is-selected{% endif %}"
                   data-color="{{ value | handleize }}"
                   data-option-index="{{ forloop.parentloop.index0 }}"
                   data-option-value="{{ value | escape }}"
-                  role="button" tabindex="0" aria-label="{{ value }}"
-                ></span>
+                  aria-label="{{ value }}"
+                ></button>
               {%- endfor -%}
             </div>
           {%- else -%}
             <div class="bw-size-row">
               {%- for value in option.values -%}
-                <span
+                <button
+                  type="button"
                   class="bw-size-chip{% if value == option.selected_value %} is-selected{% endif %}"
                   data-option-index="{{ forloop.parentloop.index0 }}"
                   data-option-value="{{ value | escape }}"
-                  role="button" tabindex="0"
-                >{{ value }}</span>
+                >{{ value }}</button>
               {%- endfor -%}
             </div>
           {%- endif -%}
