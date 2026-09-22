@@ -351,31 +351,92 @@
     }
 
     const gallery = section.querySelector("[data-product-gallery]");
+    const track = gallery && gallery.querySelector("[data-gallery-track]");
+    const thumbsRow = gallery && gallery.querySelector("[data-gallery-thumbs]");
+    const counter = gallery && gallery.querySelector("[data-gallery-counter]");
+    const prevBtn = gallery && gallery.querySelector("[data-gallery-prev]");
+    const nextBtn = gallery && gallery.querySelector("[data-gallery-next]");
     const colorOptionIndex = (() => {
       const swatch = section.querySelector('[data-option-name="color"], [data-option-name="colour"]');
       return swatch ? Number(swatch.dataset.optionIndex) : -1;
     })();
 
+    let slides = [];
+    let thumbs = [];
+    let slideIndex = 0;
+
+    function goToSlide(i, smooth) {
+      if (!slides.length) return;
+      slideIndex = Math.max(0, Math.min(i, slides.length - 1));
+      const still = smooth === false || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      track.scrollTo({
+        left: slideIndex * track.clientWidth,
+        behavior: still ? "auto" : "smooth",
+      });
+      syncSlideState();
+    }
+
+    function syncSlideState() {
+      thumbs.forEach((thumb, i) => thumb.classList.toggle("is-active", i === slideIndex));
+      if (counter) counter.textContent = `${slideIndex + 1} / ${slides.length}`;
+      const single = slides.length < 2;
+      [prevBtn, nextBtn, counter, thumbsRow].forEach((el) => {
+        if (el) el.hidden = single;
+      });
+    }
+
+    /* Show only the photos belonging to the selected colour, then rebuild the
+       slider around what is left. Images opt in by carrying their colour in the
+       alt text; untagged ones always show. */
     function updateGallery() {
-      if (!gallery) return;
+      if (!gallery || !track) return;
       const color = colorOptionIndex < 0 ? "" : handleize(selected[colorOptionIndex]);
-      const visible = [];
-      gallery.querySelectorAll("[data-gallery-image]").forEach((item) => {
-        const itemColor = item.dataset.galleryColor || "";
-        const matches = !color || !itemColor || itemColor === color;
-        item.classList.toggle("is-hidden", !matches);
-        if (matches) visible.push(item);
+      const matchesColor = (el) => {
+        const itemColor = el.dataset.galleryColor || "";
+        return !color || !itemColor || itemColor === color;
+      };
+
+      slides = [];
+      track.querySelectorAll("[data-gallery-image]").forEach((slide) => {
+        const shown = matchesColor(slide);
+        slide.classList.toggle("is-hidden", !shown);
+        if (shown) slides.push(slide);
       });
-      /* The lead photo spans both columns, so the thumbs that follow it pair
-         up. An odd one out widens to fill its row instead of leaving a gap. */
-      const thumbCount = visible.length - 1;
-      visible.forEach((item, i) => {
-        const isLead = i === 0;
-        const isOrphan = !isLead && i === visible.length - 1 && thumbCount % 2 === 1;
-        item.classList.toggle("bw-product-gallery__main", isLead);
-        item.classList.toggle("bw-product-gallery__thumb", !isLead);
-        item.classList.toggle("bw-product-gallery__wide", isOrphan);
+
+      thumbs = [];
+      if (thumbsRow) {
+        thumbsRow.querySelectorAll("[data-gallery-thumb]").forEach((thumb) => {
+          const shown = matchesColor(thumb);
+          thumb.classList.toggle("is-hidden", !shown);
+          if (shown) thumbs.push(thumb);
+        });
+      }
+
+      goToSlide(0, false);
+    }
+
+    if (track) {
+      let scrollTimer = null;
+      track.addEventListener("scroll", () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          if (!track.clientWidth || !slides.length) return;
+          slideIndex = Math.max(0, Math.min(Math.round(track.scrollLeft / track.clientWidth), slides.length - 1));
+          syncSlideState();
+        }, 80);
       });
+      track.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") { e.preventDefault(); goToSlide(slideIndex - 1); }
+        if (e.key === "ArrowRight") { e.preventDefault(); goToSlide(slideIndex + 1); }
+      });
+      /* Wrap so the arrows stay useful at either end. */
+      prevBtn?.addEventListener("click", () => goToSlide(slideIndex === 0 ? slides.length - 1 : slideIndex - 1));
+      nextBtn?.addEventListener("click", () => goToSlide(slideIndex === slides.length - 1 ? 0 : slideIndex + 1));
+      thumbsRow?.addEventListener("click", (e) => {
+        const thumb = e.target.closest("[data-gallery-thumb]");
+        if (thumb) goToSlide(thumbs.indexOf(thumb));
+      });
+      window.addEventListener("resize", () => goToSlide(slideIndex, false));
     }
 
     function formatMoney(cents) {

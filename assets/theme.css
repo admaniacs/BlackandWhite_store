@@ -648,17 +648,49 @@ html { scroll-behavior: smooth; }
 
 /* ===== Product page ===== */
 .bw-breadcrumb { font: 500 10px var(--font-mono); color: var(--grey-70); text-transform: uppercase; padding: 12px var(--gutter-desktop); border-bottom: 1px solid var(--grey-20); }
-.bw-product-layout { display: grid; grid-template-columns: 1.25fr 1fr; }
-.bw-product-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--grey-20); border-right: 1px solid var(--ink); align-content: start; align-self: start; }
-/* Product shots are cut-outs on white, so contain them rather than cropping,
-   and drop the placeholder stripes that would otherwise show in the letterbox. */
-.bw-product-gallery__item { background: var(--paper); background-image: none; }
-.bw-product-gallery__item img { object-fit: contain; padding: 18px; }
-.bw-product-gallery__main { grid-column: span 2; aspect-ratio: 4 / 3; }
-.bw-product-gallery__thumb { aspect-ratio: 1 / 1; }
-/* Odd thumb out — fills the row so the grid never ends on a dead cell. */
-.bw-product-gallery__thumb.bw-product-gallery__wide { grid-column: span 2; aspect-ratio: 2 / 1; }
-.bw-product-gallery__item.is-hidden { display: none; }
+/* Photos on top, buy box beneath — both held to one column width so the
+   gallery does not blow up to the full page on a wide screen. */
+.bw-product-layout { display: block; }
+.bw-product-layout > * { max-width: 840px; margin-inline: auto; }
+/* ===== Product gallery slider ===== */
+.bw-gallery { display: grid; gap: 1px; background: var(--grey-20); border-bottom: 1px solid var(--ink); }
+.bw-gallery__stage { position: relative; background: var(--paper); }
+/* Scroll snapping carries the swipe on touch, so the buttons only have to
+   nudge scrollLeft — no transform bookkeeping, and hidden slides drop out
+   of the flow on their own. */
+.bw-gallery__track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.bw-gallery__track::-webkit-scrollbar { display: none; }
+.bw-gallery__track:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.bw-gallery__slide { position: relative; flex: 0 0 100%; aspect-ratio: 4 / 3; scroll-snap-align: start; background: var(--paper); }
+.bw-gallery__slide.is-hidden { display: none; }
+/* Product shots are cut-outs on white, so contain them rather than cropping. */
+.bw-gallery__slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 18px; }
+.bw-gallery__nav {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px;
+  border: 1px solid var(--ink); background: var(--paper); color: var(--ink);
+  transition: background .15s ease, color .15s ease, opacity .15s ease;
+}
+.bw-gallery__nav:hover { background: var(--ink); color: var(--paper); }
+.bw-gallery__nav[hidden] { display: none; }
+.bw-gallery__nav--prev { left: 14px; }
+.bw-gallery__nav--next { right: 14px; }
+.bw-gallery__counter { position: absolute; right: 14px; bottom: 14px; z-index: 2; padding: 5px 9px; border: 1px solid var(--ink); background: var(--paper); }
+.bw-gallery__counter[hidden] { display: none; }
+/* Fixed-width thumbs sit left-aligned and scroll, so a product with two
+   photos does not leave two empty tiles' worth of filler. */
+.bw-gallery__thumbs { display: flex; gap: 8px; padding: 10px 12px; background: var(--paper); overflow-x: auto; scrollbar-width: none; }
+.bw-gallery__thumbs::-webkit-scrollbar { display: none; }
+.bw-gallery__thumbs[hidden] { display: none; }
+.bw-gallery__thumb { flex: 0 0 84px; height: 84px; background: var(--paper); border: 1px solid var(--grey-20); transition: border-color .15s ease; }
+.bw-gallery__thumb.is-hidden { display: none; }
+.bw-gallery__thumb img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+.bw-gallery__thumb:hover { border-color: var(--grey-50); }
+.bw-gallery__thumb.is-active { border-color: var(--ink); }
+@media (prefers-reduced-motion: reduce) {
+  .bw-gallery__track { scroll-behavior: auto; }
+}
 .bw-buybox { padding: 28px 26px; }
 .bw-buybox__title { font: 400 38px/1 var(--font-display); text-transform: uppercase; letter-spacing: -.02em; }
 .bw-buybox__meta { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
@@ -680,8 +712,11 @@ html { scroll-behavior: smooth; }
 .bw-spec-cell__value { font: 600 12px var(--font-ui); margin-top: 3px; }
 .bw-sticky-addbar { display: none; }
 @media (max-width: 749px) {
-  .bw-product-layout { display: block; }
-  .bw-product-gallery { border-right: 0; }
+  .bw-gallery__slide { aspect-ratio: 1 / 1; }
+  .bw-gallery__nav { width: 32px; height: 32px; }
+  .bw-gallery__nav--prev { left: 8px; }
+  .bw-gallery__nav--next { right: 8px; }
+  .bw-gallery__thumb { flex-basis: 64px; height: 64px; }
   .bw-sticky-addbar { position: sticky; bottom: 0; display: flex; align-items: center; gap: 10px; border-top: 1px solid var(--ink); background: var(--paper); padding: 12px var(--gutter-mobile); z-index: 10; }
 }
 

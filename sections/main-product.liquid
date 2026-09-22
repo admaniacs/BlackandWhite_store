@@ -32,24 +32,6 @@
       endif
     endfor
   endif
-
-  # Count what will actually be on screen. The lead photo spans both columns,
-  # so when the remaining thumbs do not pair up the last one widens to fill its
-  # row rather than leaving a dead cell.
-  assign visible_total = 0
-  for image in product.images
-    assign image_color = image.alt | strip | handleize
-    if gallery_grouped_by_color and image_color != blank and image_color != selected_color
-      continue
-    endif
-    assign visible_total = visible_total | plus: 1
-  endfor
-  assign trailing_thumb_is_orphan = false
-  assign thumb_total = visible_total | minus: 1
-  assign thumb_parity = thumb_total | modulo: 2
-  if thumb_total > 0 and thumb_parity == 1
-    assign trailing_thumb_is_orphan = true
-  endif
 -%}
 <div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
 {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
@@ -57,49 +39,78 @@
 <nav class="bw-breadcrumb">Home / {{ product.collections.first.title | default: 'Shop' }} / {{ product.title }}</nav>
 
 <div class="bw-product-layout" data-product-section data-product-id="{{ product.id }}">
-  <div class="bw-product-gallery" data-product-gallery>
-    {%- assign shown = 0 -%}
-    {%- for image in product.images -%}
-      {%- assign image_color = '' -%}
-      {%- assign matches_color = true -%}
-      {%- if gallery_grouped_by_color -%}
-        {%- assign image_color = image.alt | strip | handleize -%}
-        {%- if image_color != blank and image_color != selected_color -%}
-          {%- assign matches_color = false -%}
-        {%- endif -%}
-      {%- endif -%}
-      {%- if matches_color -%}{%- assign shown = shown | plus: 1 -%}{%- endif -%}
-      {%- assign is_lead = false -%}
-      {%- assign is_orphan = false -%}
-      {%- if matches_color -%}
-        {%- if shown == 1 -%}
-          {%- assign is_lead = true -%}
-        {%- elsif trailing_thumb_is_orphan and shown == visible_total -%}
-          {%- assign is_orphan = true -%}
-        {%- endif -%}
-      {%- endif -%}
-      <div
-        class="bw-media-placeholder bw-product-gallery__item{% if is_lead %} bw-product-gallery__main{% else %} bw-product-gallery__thumb{% endif %}{% if is_orphan %} bw-product-gallery__wide{% endif %}{% unless matches_color %} is-hidden{% endunless %}"
-        data-gallery-image
-        data-gallery-color="{{ image_color }}"
-        data-media-id="{{ image.id }}"
-      >
-        <img
-          src="{{ image | image_url: width: 900 }}"
-          srcset="{{ image | image_url: width: 400 }} 400w, {{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 900 }} 900w, {{ image | image_url: width: 1200 }} 1200w"
-          sizes="(max-width: 749px) 100vw, 45vw"
-          width="{{ image.width }}"
-          height="{{ image.height }}"
-          alt="{{ image.alt | escape }}"
-          loading="{% if is_lead %}eager{% else %}lazy{% endif %}"
-          {% if is_lead %}fetchpriority="high"{% endif %}
-        >
+  <div class="bw-gallery" data-product-gallery>
+    {%- if product.images.size > 0 -%}
+      <div class="bw-gallery__stage">
+        <div class="bw-gallery__track" data-gallery-track tabindex="0" role="region" aria-label="{{ product.title | escape }} photos">
+          {%- assign shown = 0 -%}
+          {%- for image in product.images -%}
+            {%- assign image_color = '' -%}
+            {%- assign matches_color = true -%}
+            {%- if gallery_grouped_by_color -%}
+              {%- assign image_color = image.alt | strip | handleize -%}
+              {%- if image_color != blank and image_color != selected_color -%}
+                {%- assign matches_color = false -%}
+              {%- endif -%}
+            {%- endif -%}
+            {%- if matches_color -%}{%- assign shown = shown | plus: 1 -%}{%- endif -%}
+            {%- assign is_lead = false -%}
+            {%- if matches_color and shown == 1 -%}{%- assign is_lead = true -%}{%- endif -%}
+            <div
+              class="bw-gallery__slide{% unless matches_color %} is-hidden{% endunless %}"
+              data-gallery-image
+              data-gallery-color="{{ image_color }}"
+              data-media-id="{{ image.id }}"
+            >
+              <img
+                src="{{ image | image_url: width: 900 }}"
+                srcset="{{ image | image_url: width: 400 }} 400w, {{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 900 }} 900w, {{ image | image_url: width: 1200 }} 1200w"
+                sizes="(max-width: 749px) 100vw, 45vw"
+                width="{{ image.width }}"
+                height="{{ image.height }}"
+                alt="{{ image.alt | escape }}"
+                loading="{% if is_lead %}eager{% else %}lazy{% endif %}"
+                {% if is_lead %}fetchpriority="high"{% endif %}
+              >
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <button type="button" class="bw-gallery__nav bw-gallery__nav--prev" data-gallery-prev aria-label="{{ 'general.slider.previous' | t | default: 'Previous photo' }}">
+          <svg width="10" height="16" viewBox="0 0 10 16" fill="none" aria-hidden="true"><path d="M8.5 1L1.5 8l7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" class="bw-gallery__nav bw-gallery__nav--next" data-gallery-next aria-label="{{ 'general.slider.next' | t | default: 'Next photo' }}">
+          <svg width="10" height="16" viewBox="0 0 10 16" fill="none" aria-hidden="true"><path d="M1.5 1l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="bw-gallery__counter bw-label-mono" data-gallery-counter aria-live="polite"></div>
+      </div>
+
+      <div class="bw-gallery__thumbs" data-gallery-thumbs>
+        {%- for image in product.images -%}
+          {%- assign image_color = '' -%}
+          {%- assign matches_color = true -%}
+          {%- if gallery_grouped_by_color -%}
+            {%- assign image_color = image.alt | strip | handleize -%}
+            {%- if image_color != blank and image_color != selected_color -%}
+              {%- assign matches_color = false -%}
+            {%- endif -%}
+          {%- endif -%}
+          <button
+            type="button"
+            class="bw-gallery__thumb{% unless matches_color %} is-hidden{% endunless %}"
+            data-gallery-thumb
+            data-gallery-color="{{ image_color }}"
+            aria-label="{{ 'products.product.media.gallery_viewer' | t | default: 'View photo' }} {{ forloop.index }}"
+          >
+            <img src="{{ image | image_url: width: 240 }}" alt="" loading="lazy" width="{{ image.width }}" height="{{ image.height }}">
+          </button>
+        {%- endfor -%}
       </div>
     {%- else -%}
-      <div class="bw-media-placeholder bw-media-placeholder--dark bw-product-gallery__main">front · 1200×1600</div>
-      <div class="bw-media-placeholder bw-media-placeholder--dark" style="grid-column:1;height:300px">back · 1200×1600</div>
-      <div class="bw-media-placeholder" style="grid-column:2;height:300px">cuff detail</div>
-    {%- endfor -%}
+      <div class="bw-gallery__stage">
+        <div class="bw-media-placeholder bw-media-placeholder--dark bw-gallery__slide">front · 1200×1600</div>
+      </div>
+    {%- endif -%}
   </div>
 
   <div class="bw-buybox">
