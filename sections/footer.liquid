@@ -9,7 +9,7 @@
           {{ shop.name | default: 'B/W' }}
         {%- endif -%}
       </div>
-      <p style="font:13px/1.5 var(--font-ui);color:#aaa;max-width:260px;margin:8px 0 14px">{{ section.settings.tagline }}</p>
+      <p class="bw-footer__tagline">{{ section.settings.tagline }}</p>
       {%- if section.settings.show_newsletter -%}
         {%- form 'customer', id: 'footer-newsletter' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
@@ -63,11 +63,22 @@
     {%- for block in section.blocks -%}
       <div class="bw-footer__col" {{ block.shopify_attributes }}>
         <span class="bw-footer__col-title">{{ block.settings.title }}</span>
-        {%- if block.settings.menu != blank -%}
-          {%- for link in linklists[block.settings.menu].links -%}
-            <a href="{{ link.url }}">{{ link.title }}</a>
-          {%- endfor -%}
-        {%- endif -%}
+        {%- case block.type -%}
+          {%- when 'link_column' -%}
+            {%- for link in linklists[block.settings.menu].links -%}
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            {%- endfor -%}
+          {%- when 'contact_column' -%}
+            {%- if block.settings.body != blank -%}
+              <span style="opacity:.68;line-height:1.55">{{ block.settings.body }}</span>
+            {%- endif -%}
+            {%- if block.settings.email != blank -%}
+              <a href="mailto:{{ block.settings.email }}">{{ block.settings.email }}</a>
+            {%- endif -%}
+            {%- if block.settings.phone != blank -%}
+              <a href="tel:{{ block.settings.phone | remove: ' ' }}">{{ block.settings.phone }}</a>
+            {%- endif -%}
+        {%- endcase -%}
       </div>
     {%- endfor -%}
   </div>
@@ -82,13 +93,27 @@
           <a href="{{ policy.url }}">{{ policy.title }}</a>
         {%- endfor -%}
       </div>
-      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
-        <ul class="bw-footer__payment-icons" aria-label="Payment methods">
-          {%- for type in shop.enabled_payment_types -%}
-            <li>{{ type | payment_type_svg_tag: class: 'bw-footer__payment-icon' }}</li>
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+        {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+          <ul class="bw-footer__payment-icons" aria-label="Payment methods">
+            {%- for type in shop.enabled_payment_types -%}
+              <li>{{ type | payment_type_svg_tag: class: 'bw-footer__payment-icon' }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if section.settings.show_back_to_top -%}
+          <a href="#bw-main" class="bw-footer__totop">
+            <svg width="11" height="12" viewBox="0 0 11 12" fill="none" aria-hidden="true"><path d="M5.5 11V1m0 0L1 5.5M5.5 1L10 5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {{ section.settings.back_to_top_label }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_wordmark -%}
+    <div class="bw-footer__wordmark" aria-hidden="true" style="--bw-wordmark-size:{{ section.settings.wordmark_size }}vw">
+      <span>{{ section.settings.wordmark_text | default: shop.name }}</span>
     </div>
   {%- endif -%}
 </footer>
@@ -162,6 +187,46 @@
       "label": "Show accepted payment icons",
       "default": true
     },
+    {
+      "type": "checkbox",
+      "id": "show_back_to_top",
+      "label": "Show back to top link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "back_to_top_label",
+      "label": "Back to top label",
+      "default": "Back to top",
+      "visible_if": "{{ section.settings.show_back_to_top }}"
+    },
+    { "type": "header", "content": "Wordmark" },
+    {
+      "type": "checkbox",
+      "id": "show_wordmark",
+      "label": "Show oversized wordmark",
+      "default": true,
+      "info": "Sets the store name large across the base of the footer, cropped at the baseline."
+    },
+    {
+      "type": "text",
+      "id": "wordmark_text",
+      "label": "Wordmark text",
+      "info": "Leave empty to use the store name.",
+      "visible_if": "{{ section.settings.show_wordmark }}"
+    },
+    {
+      "type": "range",
+      "id": "wordmark_size",
+      "label": "Wordmark size",
+      "min": 6,
+      "max": 20,
+      "step": 1,
+      "unit": "vw",
+      "default": 13,
+      "info": "Lower this if a longer store name runs off the edge.",
+      "visible_if": "{{ section.settings.show_wordmark }}"
+    },
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 },
     { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 },
@@ -180,13 +245,23 @@
         { "type": "text", "id": "title", "label": "Column title", "default": "Shop" },
         { "type": "link_list", "id": "menu", "label": "Menu", "info": "Pick a menu from Online Store → Navigation. Its links are shown in this column." }
       ]
+    },
+    {
+      "type": "contact_column",
+      "name": "Contact column",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Column title", "default": "Contact" },
+        { "type": "textarea", "id": "body", "label": "Text", "default": "Mon–Fri, 10–6 IST. We reply the same day." },
+        { "type": "text", "id": "email", "label": "Email" },
+        { "type": "text", "id": "phone", "label": "Phone" }
+      ]
     }
   ],
   "default": {
     "blocks": [
-      { "type": "link_column", "settings": { "title": "Shop", "menu": "main-menu" } },
-      { "type": "link_column", "settings": { "title": "Help" } },
-      { "type": "link_column", "settings": { "title": "B/W" } }
+      { "type": "link_column", "settings": { "title": "Shop", "menu": "footer-menu-1" } },
+      { "type": "link_column", "settings": { "title": "Company", "menu": "footer-menu" } },
+      { "type": "link_column", "settings": { "title": "Help", "menu": "footer-help" } }
     ]
   }
 }

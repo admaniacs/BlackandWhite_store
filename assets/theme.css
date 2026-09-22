@@ -401,15 +401,24 @@ html { scroll-behavior: smooth; }
 }
 
 /* ===== Footer ===== */
-.bw-footer { background: var(--paper); color: var(--ink); padding: 36px var(--gutter-desktop); }
-.bw-footer__grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 24px; max-width: var(--container); margin: 0 auto; }
-.bw-footer__col-title { font: 500 10px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink); display: block; margin-bottom: 7px; }
-.bw-footer__col { display: flex; flex-direction: column; gap: 7px; font: 12px var(--font-ui); color: #bbb; }
-.bw-footer__signup { display: flex; margin-top: 14px; }
-.bw-footer__signup input { flex: 1; border: 1px solid var(--ink); background: transparent; color: var(--ink); padding: 12px; font: 500 11px var(--font-mono); text-transform: uppercase; }
-.bw-footer__signup input::placeholder { color: #888; }
-.bw-footer__signup button { background: var(--paper); color: var(--ink); padding: 12px 16px; font: 700 11px var(--font-ui); letter-spacing: .12em; text-transform: uppercase; }
-.bw-footer__social { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; max-width: 260px; }
+.bw-footer { background: var(--paper); color: var(--ink); padding: 36px var(--gutter-desktop) 0; }
+/* Columns align to the top and share the row evenly; the brand column keeps
+   the extra width because it carries the signup field. */
+.bw-footer__grid { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 28px 36px; align-items: start; max-width: var(--container); margin: 0 auto; }
+.bw-footer__col-title { font: 500 10px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink); display: block; margin-bottom: 12px; }
+/* Inherit the scheme's ink and dim it, rather than hardcoding a grey that
+   only reads on a dark footer. */
+.bw-footer__col { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; font: 13px var(--font-ui); color: inherit; }
+.bw-footer__col a { opacity: .68; transition: opacity .15s ease; }
+.bw-footer__col a:hover { opacity: 1; text-decoration: underline; }
+.bw-footer__tagline { font: 13px/1.55 var(--font-ui); color: inherit; opacity: .68; max-width: 280px; margin: 10px 0 0; }
+.bw-footer__signup { display: flex; margin-top: 16px; max-width: 320px; }
+.bw-footer__signup input { flex: 1; min-width: 0; border: 1px solid var(--ink); border-right: 0; background: transparent; color: var(--ink); padding: 12px; font: 500 11px var(--font-mono); text-transform: uppercase; }
+.bw-footer__signup input::placeholder { color: currentColor; opacity: .5; }
+/* Inverted against the field so the button actually reads as a button. */
+.bw-footer__signup button { background: var(--ink); color: var(--paper); border: 1px solid var(--ink); padding: 12px 18px; font: 700 11px var(--font-ui); letter-spacing: .12em; text-transform: uppercase; transition: opacity .15s ease; }
+.bw-footer__signup button:hover { opacity: .8; }
+.bw-footer__social { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 18px; max-width: 260px; }
 .bw-footer__social a { color: inherit; display: inline-flex; opacity: .75; transition: opacity .15s; }
 .bw-footer__social a:hover { opacity: 1; }
 .bw-footer__bottom {
@@ -427,9 +436,46 @@ html { scroll-behavior: smooth; }
 .bw-footer__legal a { text-decoration: underline; }
 .bw-footer__payment-icons { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; opacity: .8; }
 .bw-footer__payment-icon { height: 22px; width: auto; display: block; }
+
+/* Back to top sits on the divider rule, so the eye is handed back up the page
+   before it reaches the legal line. */
+.bw-footer__totop { display: inline-flex; align-items: center; gap: 8px; font: 500 10px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; opacity: .65; transition: opacity .15s ease; }
+.bw-footer__totop:hover { opacity: 1; }
+.bw-footer__totop svg { transition: transform .18s ease; }
+.bw-footer__totop:hover svg { transform: translateY(-2px); }
+
+/* The wordmark is set deliberately oversized and cropped at the baseline —
+   it reads as a printed masthead rather than a logo, and it gives the footer
+   a bottom edge instead of trailing off into empty space. */
+.bw-footer__wordmark {
+  margin-top: 30px;
+  overflow: hidden;
+  line-height: .72;
+  user-select: none;
+}
+.bw-footer__wordmark span {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  /* Sized to fit the viewport rather than overflow it — a wordmark clipped
+     mid-letter reads as a bug, not as a crop. --bw-wordmark-size is set per
+     section so a longer store name can be dialled down. */
+  font-size: clamp(44px, var(--bw-wordmark-size, 13vw), 300px);
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin-bottom: -.14em;
+  color: var(--ink);
+  opacity: .12;
+}
+
+@media (max-width: 989px) {
+  .bw-footer__grid { grid-template-columns: 1fr 1fr; gap: 30px 24px; }
+}
 @media (max-width: 749px) {
-  .bw-footer__grid { grid-template-columns: 1fr 1fr; gap: 28px 16px; }
+  .bw-footer__grid { grid-template-columns: 1fr 1fr; gap: 26px 16px; }
   .bw-footer__bottom { flex-direction: column; align-items: flex-start; }
+  .bw-footer__wordmark { margin-top: 22px; }
 }
 
 /* ===== Placeholder media ===== */
