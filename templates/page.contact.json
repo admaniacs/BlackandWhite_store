@@ -14,30 +14,71 @@
       "name": "Contact form",
       "settings": {
         "heading": "Get in touch",
-        "subtext": "Questions about sizing, orders, or anything else — we usually reply within a day.",
+        "subtext": "Sizing, orders, returns, or anything else. We answer every message ourselves, usually the same day.",
         "submit_label": "Send message",
         "success_text": "Thanks — we'll get back to you shortly.",
         "padding_top": 60,
-        "padding_bottom": 60,
-        "color_scheme": ""
+        "padding_bottom": 48,
+        "color_scheme": "scheme-1"
       }
     },
     "map": {
       "type": "map",
       "name": "Map",
       "settings": {
-        "heading": "Visit us",
-        "address": "154 Grand St, New York, NY 10013",
-        "hours": "Mon–Fri, 10am–7pm\nSat–Sun, 11am–6pm",
-        "phone": "",
-        "email": "",
+        "heading": "Where we are",
+        "address": "Admaniacs\nBengaluru, Karnataka 560046\nIndia",
+        "map_query": "Bengaluru, Karnataka 560046, India",
+        "hours": "Mon–Fri, 10am–6pm IST\nClosed weekends and public holidays",
+        "phone": "+91 75608 59410",
+        "email": "tech@admaniacs.io",
         "get_directions_label": "Get directions",
         "embed_url": "",
         "map_position": "right",
         "height": 420,
         "padding_top": 0,
-        "padding_bottom": 60,
-        "color_scheme": ""
+        "padding_bottom": 48,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "contact_faq": {
+      "type": "faq",
+      "blocks": {
+        "q_order": {
+          "type": "question",
+          "settings": {
+            "question": "Where is my order?",
+            "answer": "<p>You'll get a tracking link by email as soon as it ships, usually within one to two working days. If it hasn't arrived, check your spam folder first, then send us the order number and we'll chase it.</p>"
+          }
+        },
+        "q_return": {
+          "type": "question",
+          "settings": {
+            "question": "How do I return or exchange something?",
+            "answer": "<p>Message us with your order number and what you'd like to do. Unworn pieces with tags on can be returned or swapped for another size — tell us which size you need and we'll hold it while the return is in transit.</p>"
+          }
+        },
+        "q_size": {
+          "type": "question",
+          "settings": {
+            "question": "I'm between sizes — which do I take?",
+            "answer": "<p>Down for shirts and tees, up for hoodies. Or tell us a garment you already own and how it fits, and we'll tell you which size to order. That's faster than a return.</p>"
+          }
+        },
+        "q_stock": {
+          "type": "question",
+          "settings": {
+            "question": "Will you restock a sold-out size?",
+            "answer": "<p>Yes. Nothing is discontinued to make way for a new season, because there isn't one. Message us and we'll tell you when it's back.</p>"
+          }
+        }
+      },
+      "block_order": ["q_order", "q_return", "q_size", "q_stock"],
+      "settings": {
+        "heading": "Before you write in",
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "color_scheme": "scheme-1"
       }
     },
     "newsletter_8MRMg6": {
@@ -45,17 +86,18 @@
       "name": "Newsletter",
       "settings": {
         "heading": "Join the list",
-        "subtext": "Drop alerts, restocks, and nothing else.",
+        "subtext": "No launches, no sales. Occasionally something worth reading.",
         "success_text": "You're on the list.",
         "padding_top": 60,
         "padding_bottom": 60,
-        "color_scheme": ""
+        "color_scheme": "scheme-2"
       }
     }
   },
   "order": [
     "contact_form_7Grnr4",
     "map",
+    "contact_faq",
     "newsletter_8MRMg6"
   ]
 }

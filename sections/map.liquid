@@ -5,7 +5,15 @@
 
 <div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
   {%- if show_map -%}
-    {%- assign map_query = section.settings.address | url_encode -%}
+    {%- comment -%}
+      The address is displayed over several lines, so flatten it to one before
+      it becomes a map query — a raw newline would otherwise end up encoded in
+      the search string. A precise search term can override it.
+    {%- endcomment -%}
+    {%- assign address_one_line = section.settings.address | strip | split: '
+' | join: ', ' -%}
+    {%- assign map_search = section.settings.map_query | default: address_one_line -%}
+    {%- assign map_query = map_search | url_encode -%}
     {%- if section.settings.embed_url != blank -%}
       {%- assign map_src = section.settings.embed_url -%}
     {%- else -%}
@@ -64,7 +72,8 @@
   "name": "Map",
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Visit us" },
-    { "type": "textarea", "id": "address", "label": "Address", "default": "154 Grand St, New York, NY 10013" },
+    { "type": "textarea", "id": "address", "label": "Address", "info": "Shown as written. Line breaks are allowed.", "default": "154 Grand St, New York, NY 10013" },
+    { "type": "text", "id": "map_query", "label": "Map search term", "info": "Optional. Use when the address alone doesn't pin the right spot — a place name or plus code works well. Defaults to the address." },
     { "type": "textarea", "id": "hours", "label": "Hours", "default": "Mon–Fri, 10am–7pm\nSat–Sun, 11am–6pm" },
     { "type": "text", "id": "phone", "label": "Phone" },
     { "type": "text", "id": "email", "label": "Email" },
