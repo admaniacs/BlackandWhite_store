@@ -20,9 +20,7 @@
 
 <div class="bw-container" style="padding-bottom:34px">
   {%- paginate search.results by 24 -%}
-    {%- if search.performed and search.results.size == 0 -%}
-      <p class="bw-body">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
-    {%- else -%}
+    {%- if search.performed and search.results.size > 0 -%}
       <div class="bw-grid bw-grid--3 bw-grid--flush">
         {%- for item in search.results -%}
           {%- if item.object_type == 'product' -%}
@@ -30,12 +28,55 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
-    {%- endif -%}
 
-    {%- if paginate.next -%}
-      <div class="bw-load-more">
-        <a href="{{ paginate.next.url }}" class="bw-btn bw-btn--outline">{{ 'collections.general.load_more' | t }}</a>
-      </div>
+      {%- if paginate.next -%}
+        <div class="bw-load-more">
+          <a href="{{ paginate.next.url }}" class="bw-btn bw-btn--outline">{{ 'collections.general.load_more' | t }}</a>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      {%- comment -%}
+        Nothing to list — either no search has run yet, or it found nothing.
+        Either way the page shouldn't dead-end, so offer a way back in.
+      {%- endcomment -%}
+      {%- if search.performed -%}
+        <p class="bw-body">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+      {%- endif -%}
+
+      {%- assign suggested_terms = section.settings.popular_terms | split: ',' -%}
+      {%- if suggested_terms.size > 0 -%}
+        <div class="bw-search-suggest">
+          <div class="bw-label-mono">{{ section.settings.popular_heading }}</div>
+          <div class="bw-search-chips">
+            {%- for term in suggested_terms -%}
+              {%- assign clean_term = term | strip -%}
+              {%- if clean_term != blank -%}
+                <a href="{{ routes.search_url }}?q={{ clean_term | url_encode }}&type=product" class="bw-search-chip">{{ clean_term }}</a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.preview_collection != blank -%}
+        {%- assign preview_source = collections[section.settings.preview_collection] -%}
+      {%- else -%}
+        {%- assign preview_source = collections.all -%}
+      {%- endif -%}
+
+      {%- if preview_source.products.size > 0 -%}
+        <div class="bw-search-preview">
+          <div class="bw-search-preview__head">
+            <div class="bw-h3">{{ section.settings.preview_heading }}</div>
+            <a href="{{ preview_source.url | default: routes.all_products_collection_url }}" class="bw-nav-link" style="text-decoration:underline">{{ section.settings.preview_link_label }} →</a>
+          </div>
+          <div class="bw-grid bw-grid--3 bw-grid--flush">
+            {%- for product in preview_source.products limit: section.settings.preview_count -%}
+              {%- render 'product-card', product: product, show_sizes: false, quick_add: true -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
     {%- endif -%}
   {%- endpaginate -%}
 </div>
@@ -44,6 +85,13 @@
 {
   "name": "Search results",
   "settings": [
+    { "type": "header", "content": "Empty state", "info": "Shown before a search is run, and when a search finds nothing." },
+    { "type": "text", "id": "popular_heading", "label": "Popular searches heading", "default": "Try one of these" },
+    { "type": "text", "id": "popular_terms", "label": "Popular search terms", "info": "Separate with commas.", "default": "Hoodies, Tees, Shirts, Sneakers, Watch, White, Black" },
+    { "type": "text", "id": "preview_heading", "label": "Product preview heading", "default": "Or start here" },
+    { "type": "collection", "id": "preview_collection", "label": "Products to preview", "info": "Leave empty to show all products." },
+    { "type": "range", "id": "preview_count", "label": "Products to show", "min": 3, "max": 12, "step": 3, "default": 6 },
+    { "type": "text", "id": "preview_link_label", "label": "Preview link label", "default": "Browse everything" },
     { "type": "header", "content": "Colors" },
     { "type": "color_scheme", "id": "hero_color_scheme", "label": "Hero color scheme", "default": "scheme-2" },
     { "type": "header", "content": "Hero background image or video" },

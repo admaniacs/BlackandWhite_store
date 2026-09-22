@@ -682,6 +682,18 @@ html { scroll-behavior: smooth; }
 .bw-collection-toolbar__actions { display: flex; gap: 14px; font: 600 11px var(--font-ui); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
 .bw-load-more { display: flex; justify-content: center; padding: 22px; }
 
+/* ===== Search empty state ===== */
+.bw-search-suggest { padding: 6px 0 26px; }
+.bw-search-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.bw-search-chip {
+  border: 1px solid var(--ink); padding: 9px 14px;
+  font: 500 11px var(--font-mono); letter-spacing: .1em; text-transform: uppercase;
+  transition: background .15s ease, color .15s ease;
+}
+.bw-search-chip:hover { background: var(--ink); color: var(--paper); }
+.bw-search-preview { border-top: 1px solid var(--ink); padding-top: 22px; }
+.bw-search-preview__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+
 @media (max-width: 749px) {
   .bw-collection-layout { display: block; }
   .bw-filters { display: none; }
