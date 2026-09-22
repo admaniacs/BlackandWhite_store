@@ -4,10 +4,13 @@
 {%- assign is_new = false -%}
 {%- if product.tags contains 'new' -%}{%- assign is_new = true -%}{%- endif -%}
 <div class="bw-product-card" data-product-card>
-  <div class="bw-media-placeholder bw-product-card__media" style="position:relative">
+  <div class="bw-media-placeholder bw-product-card__media bw-product-card__media--photo" style="position:relative">
     <a href="{{ product.url }}" style="position:absolute;inset:0">
       {%- if product.featured_image -%}
         <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy">
+        {%- if product.images.size > 1 -%}
+          <img src="{{ product.images[1] | image_url: width: 900 }}" alt="" loading="lazy" aria-hidden="true">
+        {%- endif -%}
       {%- else -%}
         {{ product.title | slice: 0, 1 }}
       {%- endif -%}
