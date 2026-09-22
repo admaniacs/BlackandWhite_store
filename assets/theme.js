@@ -263,6 +263,13 @@
     }
   });
 
+  /* ===== Desktop collection filters: auto-submit on change ===== */
+  document.addEventListener("change", (e) => {
+    const form = e.target.closest("[data-filter-form]");
+    if (!form || form.closest("[data-filter-sheet]")) return;
+    form.requestSubmit();
+  });
+
   /* ===== Product variant picker ===== */
   document.querySelectorAll("[data-product-section]").forEach((section) => {
     const jsonEl = section.querySelector("[data-product-json]");
