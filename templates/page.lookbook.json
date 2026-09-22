@@ -1,8 +1,257 @@
 {
   "sections": {
-    "hero": { "type": "lookbook-hero" },
-    "top": { "type": "lookbook-top" },
-    "bottom": { "type": "lookbook-bottom" }
+    "hero": {
+      "type": "lookbook-hero",
+      "settings": {
+        "eyebrow": "Drop 04 · shot on HP5, pushed one stop",
+        "heading": "No colour, no excuses",
+        "text_alignment": "left",
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 22,
+        "background_overlay_opacity": 0
+      }
+    },
+    "top": {
+      "type": "lookbook-top",
+      "blocks": {
+        "look_01": {
+          "type": "look",
+          "settings": {
+            "image": "shopify://shop_images/all-black-outfits-fashion-editorial.png",
+            "caption": "Look 01 — Box hoodie ₹699 · Court low ₹2,999",
+            "dark": true,
+            "chip_background_color": "#ffffff",
+            "chip_text_color": "#000000"
+          }
+        },
+        "look_02": {
+          "type": "look",
+          "settings": {
+            "image": "shopify://shop_images/all-white-outfit-people-on-black-background.png",
+            "caption": "Look 02 — White on white",
+            "dark": false,
+            "chip_background_color": "#000000",
+            "chip_text_color": "#ffffff"
+          }
+        },
+        "look_03": {
+          "type": "look",
+          "settings": {
+            "image": "shopify://shop_images/mens-fashion-watch.jpg",
+            "caption": "Look 03 — Watch ₹1,999",
+            "dark": true,
+            "chip_background_color": "#ffffff",
+            "chip_text_color": "#000000"
+          }
+        }
+      },
+      "block_order": ["look_01", "look_02", "look_03"],
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "divider_color": "#000000"
+      }
+    },
+    "shop_the_look": {
+      "type": "lookbook-shop-the-look",
+      "blocks": {
+        "piece_hoodie": {
+          "type": "piece",
+          "settings": {
+            "title": "Box hoodie",
+            "detail": "Black · worn in L",
+            "price": "₹699",
+            "link": "/products/hoodies-white",
+            "position_x": 34,
+            "position_y": 36
+          }
+        },
+        "piece_tee": {
+          "type": "piece",
+          "settings": {
+            "title": "Blank tee",
+            "detail": "White · worn in M",
+            "price": "₹599",
+            "link": "/products/t-shirt-white",
+            "position_x": 63,
+            "position_y": 42
+          }
+        },
+        "piece_watch": {
+          "type": "piece",
+          "settings": {
+            "title": "Watch",
+            "detail": "Black · 40mm",
+            "price": "₹1,999",
+            "link": "/products/watch-black",
+            "position_x": 72,
+            "position_y": 61
+          }
+        },
+        "piece_shoe": {
+          "type": "piece",
+          "settings": {
+            "title": "Court low",
+            "detail": "White · 8",
+            "price": "₹2,999",
+            "link": "/products/sneaker-white",
+            "position_x": 46,
+            "position_y": 86
+          }
+        }
+      },
+      "block_order": ["piece_hoodie", "piece_tee", "piece_watch", "piece_shoe"],
+      "settings": {
+        "eyebrow": "Look 04 · shop the frame",
+        "heading": "Everything in this photograph.",
+        "image": "shopify://shop_images/gen-z-couple-in-plain-black-and-white-outfits.png",
+        "image_alt": "Two people in plain black and white outfits",
+        "color_scheme": "scheme-1",
+        "padding_top": 56,
+        "padding_bottom": 40,
+        "background_overlay_opacity": 0
+      }
+    },
+    "contact_sheet": {
+      "type": "lookbook-contact-sheet",
+      "blocks": {
+        "frame_01": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/black-white-group-fashion-photo.png",
+            "caption": "the group",
+            "frame_suffix": "A",
+            "is_selected": true
+          }
+        },
+        "frame_02": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/black-and-white-portrait-mens-fashion.jpg",
+            "caption": "portrait",
+            "frame_suffix": "A",
+            "is_selected": false
+          }
+        },
+        "frame_03": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/man-with-duffle-looks-up.jpg",
+            "caption": "duffle, looking up",
+            "frame_suffix": "A",
+            "is_selected": true
+          }
+        },
+        "frame_04": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/autumn-black-white-fashion.png",
+            "caption": "layered",
+            "frame_suffix": "A",
+            "is_selected": false
+          }
+        },
+        "frame_05": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/black-white-heavyweight-cotton-dress.png",
+            "caption": "420gsm",
+            "frame_suffix": "B",
+            "is_selected": false
+          }
+        },
+        "frame_06": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/a-black-watch-in-a-hand.png",
+            "caption": "wrist",
+            "frame_suffix": "B",
+            "is_selected": true
+          }
+        },
+        "frame_07": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/black-white-fashion.png",
+            "caption": "contact",
+            "frame_suffix": "B",
+            "is_selected": false
+          }
+        },
+        "frame_08": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/all-white-outfit-people-on-black-background.png",
+            "caption": "white on black",
+            "frame_suffix": "B",
+            "is_selected": false
+          }
+        }
+      },
+      "block_order": ["frame_01", "frame_02", "frame_03", "frame_04", "frame_05", "frame_06", "frame_07", "frame_08"],
+      "settings": {
+        "roll_label": "Roll 04 · HP5 400 · pushed one stop",
+        "frames_label": "frames",
+        "footnote": "Ringed frames made the final edit.",
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 52,
+        "background_overlay_opacity": 0
+      }
+    },
+    "bottom": {
+      "type": "lookbook-bottom",
+      "blocks": {
+        "cell_image": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/black-white-contact-section-background.png",
+            "dark": true
+          }
+        },
+        "cell_text": {
+          "type": "text",
+          "settings": {
+            "title": "Wear it out, not away",
+            "body": "Eight pieces, thirty outfits. Nothing in this lookbook gets discontinued next season, because there isn't one.",
+            "cta_text": "Shop the edit",
+            "link": "/collections/shop-all",
+            "text_alignment": "left",
+            "color_scheme": "scheme-1"
+          }
+        },
+        "cell_image_2": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/black-white-fashion.png",
+            "dark": false
+          }
+        }
+      },
+      "block_order": ["cell_image", "cell_text", "cell_image_2"],
+      "settings": {
+        "padding_bottom": 0,
+        "divider_color": "#000000"
+      }
+    },
+    "marquee_close": {
+      "type": "marquee",
+      "blocks": {
+        "m1": { "type": "item", "settings": { "text": "Drop 04 out now" } },
+        "m2": { "type": "item", "settings": { "text": "Two colours, permanently" } },
+        "m3": { "type": "item", "settings": { "text": "Free shipping over ₹2,000" } },
+        "m4": { "type": "item", "settings": { "text": "No seasonal sales, ever" } }
+      },
+      "block_order": ["m1", "m2", "m3", "m4"],
+      "settings": {
+        "size": "large",
+        "speed": 26,
+        "show_separator": true,
+        "separator": "✦",
+        "color_scheme": "scheme-2"
+      }
+    }
   },
-  "order": ["hero", "top", "bottom"]
+  "order": ["hero", "top", "shop_the_look", "contact_sheet", "bottom", "marquee_close"]
 }

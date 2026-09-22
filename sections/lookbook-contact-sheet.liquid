@@ -1,0 +1,75 @@
+<div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+  {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
+  <div class="bw-container" style="position:relative">
+    <div class="bw-contact-sheet">
+      <div class="bw-contact-sheet__head">
+        <span>{{ section.settings.roll_label }}</span>
+        <span>{{ section.blocks.size }} {{ section.settings.frames_label }}</span>
+      </div>
+
+      <div class="bw-contact-sheet__strip">
+        {%- for block in section.blocks -%}
+          {%- assign frame_no = forloop.index | prepend: '0' | slice: -2, 2 -%}
+          <a href="{{ block.settings.link }}" class="bw-contact-sheet__frame{% if block.settings.is_selected %} is-selected{% endif %}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image -%}
+              <img src="{{ block.settings.image | image_url: width: 700 }}" alt="{{ block.settings.caption | escape }}" loading="lazy">
+            {%- endif -%}
+            <span class="bw-contact-sheet__frame-no">{{ frame_no }}{{ block.settings.frame_suffix }}</span>
+            {%- if block.settings.caption != blank -%}
+              <span class="bw-contact-sheet__caption">{{ block.settings.caption }}</span>
+            {%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.footnote != blank -%}
+        <div class="bw-contact-sheet__foot">{{ section.settings.footnote }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Lookbook — contact sheet",
+  "blocks": [
+    {
+      "type": "frame",
+      "name": "Frame",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "caption", "label": "Caption" },
+        { "type": "text", "id": "frame_suffix", "label": "Frame suffix", "info": "Appended to the frame number, e.g. A in 04A.", "default": "A" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "checkbox", "id": "is_selected", "label": "Ring this frame", "info": "Marks it the way a chinagraph pencil would.", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "roll_label", "label": "Roll label", "default": "Roll 04 · HP5 400 · pushed one stop" },
+    { "type": "text", "id": "frames_label", "label": "Frames label", "default": "frames" },
+    { "type": "text", "id": "footnote", "label": "Footnote", "default": "Ringed frames made the final edit." },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 52 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 52 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Background image or video" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Used when no background video is set." },
+    { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },
+    { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook — contact sheet",
+      "blocks": [
+        { "type": "frame", "settings": { "caption": "hood up", "frame_suffix": "A" } },
+        { "type": "frame", "settings": { "caption": "white on white", "frame_suffix": "A", "is_selected": true } },
+        { "type": "frame", "settings": { "caption": "cuff detail", "frame_suffix": "A" } },
+        { "type": "frame", "settings": { "caption": "full length", "frame_suffix": "A", "is_selected": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}

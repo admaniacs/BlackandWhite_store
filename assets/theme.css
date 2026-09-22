@@ -770,6 +770,61 @@ html { scroll-behavior: smooth; }
 .bw-stat-grid__item { background: var(--paper); padding: 26px; }
 .bw-stat-grid__number { font: 400 44px var(--font-display); }
 
+/* ===== Lookbook: shop the look ===== */
+.bw-shoplook { display: grid; grid-template-columns: 1.35fr 1fr; gap: 1px; background: var(--ink); border: 1px solid var(--ink); }
+.bw-shoplook__figure { position: relative; background: var(--paper); aspect-ratio: 3 / 4; overflow: hidden; }
+.bw-shoplook__figure img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Markers stay square — the theme has no rounded corners anywhere, and a
+   numbered square reads as an index mark rather than a generic pin. */
+.bw-shoplook__marker {
+  position: absolute; transform: translate(-50%, -50%); z-index: 2;
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--paper); color: var(--ink); border: 1px solid var(--ink);
+  font: 500 11px var(--font-mono);
+  transition: background .16s ease, color .16s ease, transform .16s ease;
+}
+.bw-shoplook__marker:hover,
+.bw-shoplook__marker.is-active { background: var(--ink); color: var(--paper); transform: translate(-50%, -50%) scale(1.18); }
+/* Rows keep their natural height and sit centred against the photo, rather
+   than stretching to fill it and drifting apart. */
+.bw-shoplook__list { background: var(--paper); display: flex; flex-direction: column; justify-content: center; }
+.bw-shoplook__list li { display: flex; border-bottom: 1px solid var(--grey-20); }
+.bw-shoplook__list li:last-child { border-bottom: 0; }
+.bw-shoplook__piece {
+  flex: 1; display: flex; align-items: center; gap: 14px; padding: 18px 20px;
+  transition: background .16s ease;
+}
+.bw-shoplook__piece:hover,
+.bw-shoplook__piece.is-active { background: var(--grey-10); }
+.bw-shoplook__num { font: 500 11px var(--font-mono); width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--ink); flex: none; }
+.bw-shoplook__piece.is-active .bw-shoplook__num { background: var(--ink); color: var(--paper); }
+.bw-shoplook__meta { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.bw-shoplook__title { font: 400 17px var(--font-display); text-transform: uppercase; }
+.bw-shoplook__detail { font: 500 10px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--grey-90); }
+.bw-shoplook__price { font: 600 14px var(--font-ui); }
+
+/* ===== Lookbook: contact sheet ===== */
+/* A printed contact sheet: frames on a black ground, numbered in the margin,
+   with the keepers ringed the way a chinagraph pencil would. */
+.bw-contact-sheet { background: var(--near-black); color: #fff; padding: 20px; }
+.bw-contact-sheet__head,
+.bw-contact-sheet__foot { display: flex; justify-content: space-between; gap: 16px; font: 500 10px var(--font-mono); text-transform: uppercase; letter-spacing: .12em; color: #8f8f8f; }
+.bw-contact-sheet__head { padding-bottom: 14px; border-bottom: 1px solid #333; }
+.bw-contact-sheet__foot { padding-top: 14px; border-top: 1px solid #333; margin-top: 4px; }
+.bw-contact-sheet__strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 16px 0; }
+.bw-contact-sheet__frame { position: relative; display: block; aspect-ratio: 4 / 5; background: #000; overflow: hidden; }
+.bw-contact-sheet__frame img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(1) contrast(1.06); transition: filter .25s ease, transform .5s ease; }
+.bw-contact-sheet__frame:hover img { filter: grayscale(0) contrast(1); transform: scale(1.04); }
+.bw-contact-sheet__frame-no { position: absolute; left: 7px; top: 6px; font: 500 10px var(--font-mono); color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.85); }
+.bw-contact-sheet__caption { position: absolute; left: 7px; bottom: 6px; font: 500 9px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.85); }
+.bw-contact-sheet__frame.is-selected::after { content: ""; position: absolute; inset: 4px; border: 2px solid #fff; pointer-events: none; }
+
+@media (max-width: 749px) {
+  .bw-shoplook { grid-template-columns: 1fr; }
+  .bw-contact-sheet__strip { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}
+
 /* ===== About: manifesto ===== */
 .bw-manifesto { margin-top: 34px; border-top: 1px solid var(--ink); }
 .bw-manifesto__item {

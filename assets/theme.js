@@ -456,6 +456,39 @@
     render();
   });
 
+  /* ===== Lookbook: shop the look ===== */
+  /* Hovering either a marker on the photo or a row in the list highlights the
+     other, so the two halves read as one object. */
+  document.querySelectorAll("[data-shop-the-look]").forEach((root) => {
+    const markers = root.querySelectorAll("[data-look-marker]");
+    const pieces = root.querySelectorAll("[data-look-piece]");
+    if (!markers.length) return;
+
+    function highlight(index) {
+      markers.forEach((m) => m.classList.toggle("is-active", m.dataset.lookIndex === index));
+      pieces.forEach((p) => p.classList.toggle("is-active", p.dataset.lookIndex === index));
+    }
+
+    root.addEventListener("pointerover", (e) => {
+      const hit = e.target.closest("[data-look-marker], [data-look-piece]");
+      if (hit) highlight(hit.dataset.lookIndex);
+    });
+    root.addEventListener("pointerleave", () => highlight(null));
+    root.addEventListener("focusin", (e) => {
+      const hit = e.target.closest("[data-look-marker], [data-look-piece]");
+      if (hit) highlight(hit.dataset.lookIndex);
+    });
+    /* Touch has no hover, so tapping a marker jumps to its row instead. */
+    markers.forEach((marker) => {
+      marker.addEventListener("click", () => {
+        const piece = root.querySelector(`[data-look-piece][data-look-index="${marker.dataset.lookIndex}"]`);
+        if (!piece) return;
+        highlight(marker.dataset.lookIndex);
+        piece.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+    });
+  });
+
   /* ===== Size guide toggle ===== */
   document.addEventListener("click", (e) => {
     if (e.target.closest("[data-size-guide-open]")) {
