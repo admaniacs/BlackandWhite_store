@@ -1,0 +1,83 @@
+{%- assign show_map = false -%}
+{%- if section.settings.address != blank or section.settings.embed_url != blank -%}
+  {%- assign show_map = true -%}
+{%- endif -%}
+
+<div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+  {%- if show_map -%}
+    {%- assign map_query = section.settings.address | url_encode -%}
+    {%- if section.settings.embed_url != blank -%}
+      {%- assign map_src = section.settings.embed_url -%}
+    {%- else -%}
+      {%- assign map_src = 'https://www.google.com/maps?q=' | append: map_query | append: '&output=embed' -%}
+    {%- endif -%}
+    <div class="bw-container">
+      <div class="bw-map-section{% if section.settings.map_position == 'left' %} bw-map-section--reverse{% endif %}" style="--bw-map-height:{{ section.settings.height }}px">
+        <div class="bw-map-section__map">
+          <iframe
+            src="{{ map_src }}"
+            class="bw-map-section__iframe"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+            title="{{ section.settings.heading | default: 'Map' | escape }}"
+          ></iframe>
+        </div>
+        <div class="bw-map-section__info">
+          {%- if section.settings.heading != blank -%}
+            <div class="bw-h2">{{ section.settings.heading }}</div>
+          {%- endif -%}
+          {%- if section.settings.address != blank -%}
+            <p class="bw-body" style="margin-top:14px;white-space:pre-line">{{ section.settings.address }}</p>
+          {%- endif -%}
+          {%- if section.settings.hours != blank -%}
+            <div class="bw-label-mono" style="margin-top:20px">Hours</div>
+            <p class="bw-body" style="margin-top:6px;white-space:pre-line">{{ section.settings.hours }}</p>
+          {%- endif -%}
+          {%- if section.settings.phone != blank or section.settings.email != blank -%}
+            <div style="margin-top:20px;display:flex;flex-direction:column;gap:6px">
+              {%- if section.settings.phone != blank -%}
+                <a href="tel:{{ section.settings.phone | remove: ' ' }}" class="bw-nav-link">{{ section.settings.phone }}</a>
+              {%- endif -%}
+              {%- if section.settings.email != blank -%}
+                <a href="mailto:{{ section.settings.email }}" class="bw-nav-link">{{ section.settings.email }}</a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.get_directions_label != blank and section.settings.address != blank -%}
+            <a href="https://www.google.com/maps/search/?api=1&query={{ map_query }}" target="_blank" rel="noopener" class="bw-btn bw-btn--outline" style="margin-top:24px;align-self:flex-start">{{ section.settings.get_directions_label }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- elsif request.design_mode -%}
+    <div class="bw-container">
+      <div class="bw-empty-state">
+        <p class="bw-label-mono">Add an address in the section settings to show the map here.</p>
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Map",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Visit us" },
+    { "type": "textarea", "id": "address", "label": "Address", "default": "154 Grand St, New York, NY 10013" },
+    { "type": "textarea", "id": "hours", "label": "Hours", "default": "Mon–Fri, 10am–7pm\nSat–Sun, 11am–6pm" },
+    { "type": "text", "id": "phone", "label": "Phone" },
+    { "type": "text", "id": "email", "label": "Email" },
+    { "type": "text", "id": "get_directions_label", "label": "Get directions button label", "default": "Get directions" },
+    { "type": "text", "id": "embed_url", "label": "Custom map embed URL", "info": "Advanced: paste a Google Maps embed src to override the address-based map." },
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "map_position", "label": "Map position", "options": [{ "value": "right", "label": "Right" }, { "value": "left", "label": "Left" }], "default": "right" },
+    { "type": "range", "id": "height", "label": "Map height", "min": 280, "max": 640, "step": 20, "unit": "px", "default": 420 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" }
+  ],
+  "presets": [{ "name": "Map" }]
+}
+{% endschema %}
