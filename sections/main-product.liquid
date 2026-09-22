@@ -57,7 +57,18 @@
         data-gallery-color="{{ image_color }}"
         data-media-id="{{ image.id }}"
       >
-        <img src="{{ image | image_url: width: 1200 }}" alt="{{ image.alt | escape }}" loading="{% if matches_color and shown == 1 %}eager{% else %}lazy{% endif %}">
+        {%- assign is_lead = false -%}
+        {%- if matches_color and shown == 1 -%}{%- assign is_lead = true -%}{%- endif -%}
+        <img
+          src="{{ image | image_url: width: 900 }}"
+          srcset="{{ image | image_url: width: 400 }} 400w, {{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 900 }} 900w, {{ image | image_url: width: 1200 }} 1200w"
+          sizes="(max-width: 749px) 100vw, 45vw"
+          width="{{ image.width }}"
+          height="{{ image.height }}"
+          alt="{{ image.alt | escape }}"
+          loading="{% if is_lead %}eager{% else %}lazy{% endif %}"
+          {% if is_lead %}fetchpriority="high"{% endif %}
+        >
       </div>
     {%- else -%}
       <div class="bw-media-placeholder bw-media-placeholder--dark bw-product-gallery__main">front · 1200×1600</div>
