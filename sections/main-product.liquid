@@ -32,6 +32,20 @@
       endif
     endfor
   endif
+
+  # The fallback chart measures chest, length and sleeve, so only offer it for
+  # lettered apparel sizes — never for shoes, a one-size hat or a watch. A
+  # merchant-supplied chart in the metafield always wins.
+  assign show_size_guide = false
+  if product.metafields.custom.size_guide != blank
+    assign show_size_guide = true
+  else
+    for option in product.options_with_values
+      if option.name == 'Size' and option.values.size > 1
+        assign show_size_guide = true
+      endif
+    endfor
+  endif
 -%}
 <div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
 {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
@@ -125,11 +139,12 @@
     {%- form 'product', product, id: product_form_id, data-product-form: 'true' -%}
       <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
 
+      {%- unless product.has_only_default_variant -%}
       {%- for option in product.options_with_values -%}
         <div class="bw-buybox__section" data-option-position="{{ forloop.index }}">
           <div class="bw-buybox__section-label">
             <span>{{ option.name }} — <span data-selected-option-value>{{ option.selected_value }}</span></span>
-            {%- if option.name == 'Size' -%}
+            {%- if option.name == 'Size' and show_size_guide -%}
               <button type="button" class="bw-nav-link" style="text-decoration:underline" data-size-guide-open>{{ 'products.product.size_guide' | t }}</button>
             {%- endif -%}
           </div>
@@ -163,6 +178,7 @@
           {%- endif -%}
         </div>
       {%- endfor -%}
+      {%- endunless -%}
 
       <div class="bw-add-row">
         <button type="submit" class="bw-btn" style="flex:1" data-add-to-cart {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
@@ -179,14 +195,16 @@
       <div class="bw-label-mono" style="margin-top:10px">{{ section.settings.shipping_note }}</div>
     {%- endform -%}
 
-    <div class="bw-size-guide" data-size-guide>
-      <div class="bw-size-guide__head">{{ 'products.product.size_guide' | t }} — measurements in inches</div>
-      {%- if product.metafields.custom.size_guide != blank -%}
-        {{ product.metafields.custom.size_guide }}
-      {%- else -%}
-        {%- render 'size-guide-table-fallback', product: product -%}
-      {%- endif -%}
-    </div>
+    {%- if show_size_guide -%}
+      <div class="bw-size-guide" data-size-guide>
+        <div class="bw-size-guide__head">{{ 'products.product.size_guide' | t }} — measurements in inches</div>
+        {%- if product.metafields.custom.size_guide != blank -%}
+          {{ product.metafields.custom.size_guide }}
+        {%- else -%}
+          {%- render 'size-guide-table-fallback', product: product -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
 
     <div class="bw-spec-grid">
       {%- if product.metafields.custom.fabric != blank -%}
