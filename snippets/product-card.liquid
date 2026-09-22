@@ -7,9 +7,26 @@
   <div class="bw-media-placeholder bw-product-card__media bw-product-card__media--photo" style="position:relative">
     <a href="{{ product.url }}" style="position:absolute;inset:0">
       {%- if product.featured_image -%}
-        <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy">
+        <img
+          src="{{ product.featured_image | image_url: width: 600 }}"
+          srcset="{{ product.featured_image | image_url: width: 300 }} 300w, {{ product.featured_image | image_url: width: 450 }} 450w, {{ product.featured_image | image_url: width: 600 }} 600w, {{ product.featured_image | image_url: width: 900 }} 900w"
+          sizes="(max-width: 749px) 50vw, 30vw"
+          width="{{ product.featured_image.width }}"
+          height="{{ product.featured_image.height }}"
+          alt="{{ product.featured_image.alt | default: product.title | escape }}"
+          loading="lazy"
+        >
         {%- if product.images.size > 1 -%}
-          <img src="{{ product.images[1] | image_url: width: 900 }}" alt="" loading="lazy" aria-hidden="true">
+          <img
+            src="{{ product.images[1] | image_url: width: 600 }}"
+            srcset="{{ product.images[1] | image_url: width: 300 }} 300w, {{ product.images[1] | image_url: width: 450 }} 450w, {{ product.images[1] | image_url: width: 600 }} 600w"
+            sizes="(max-width: 749px) 50vw, 30vw"
+            width="{{ product.images[1].width }}"
+            height="{{ product.images[1].height }}"
+            alt=""
+            loading="lazy"
+            aria-hidden="true"
+          >
         {%- endif -%}
       {%- else -%}
         {{ product.title | slice: 0, 1 }}

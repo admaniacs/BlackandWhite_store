@@ -8,10 +8,10 @@
 
   <div class="bw-hero__content" style="padding:60px 24px 40px;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;text-align:{{ section.settings.text_alignment }}">
     <div class="bw-container" style="padding:0">
-      <div class="bw-label-mono" style="color:#9a9a9a">{{ section.settings.eyebrow }}</div>
-      <div class="bw-display" style="margin-top:14px;font-size:calc(var(--heading-scale) * clamp({{ heading_clamp }}))">{{ section.settings.heading }}</div>
+      <div class="bw-label-mono" style="opacity:.62">{{ section.settings.eyebrow }}</div>
+      <h1 class="bw-display" style="margin-top:14px;font-size:calc(var(--heading-scale) * clamp({{ heading_clamp }}))">{{ section.settings.heading }}</h1>
       <div style="display:flex;align-items:flex-end;justify-content:{% if section.settings.text_alignment == 'center' %}center{% else %}space-between{% endif %};gap:40px;margin-top:34px;border-top:1px solid #333;padding-top:20px;flex-wrap:wrap">
-        <p style="max-width:420px;font:15px/1.5 var(--font-ui);color:#c9c9c9;margin:0{% if section.settings.text_alignment == 'center' %};margin-left:auto;margin-right:auto{% endif %}">{{ section.settings.subtext }}</p>
+        <p style="max-width:420px;font:15px/1.5 var(--font-ui);opacity:.78;margin:0{% if section.settings.text_alignment == 'center' %};margin-left:auto;margin-right:auto{% endif %}">{{ section.settings.subtext }}</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
           {%- if section.settings.cta_1_text != blank -%}
             <a href="{{ section.settings.cta_1_link }}" class="bw-btn">{{ section.settings.cta_1_text }}</a>

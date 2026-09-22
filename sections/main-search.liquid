@@ -1,10 +1,10 @@
 <div class="bw-collection-hero color-{{ section.settings.hero_color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.hero_padding_top }}px;padding-bottom:{{ section.settings.hero_padding_bottom }}px">
   {%- render 'section-media-background', image: section.settings.hero_background_image, video: section.settings.hero_background_video, overlay_opacity: section.settings.hero_background_overlay_opacity -%}
   <div>
-    <div class="bw-label-mono" style="color:#999">Home / Search</div>
-    <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(32px,5vw,56px));margin-top:8px">{% if search.terms != blank %}"{{ search.terms }}"{% else %}Search{% endif %}</div>
+    <div class="bw-label-mono" style="opacity:.6">Home / Search</div>
+    <h1 class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(32px,5vw,56px));margin-top:8px">{% if search.terms != blank %}"{{ search.terms }}"{% else %}Search{% endif %}</h1>
   </div>
-  <p style="font:14px/1.5 var(--font-ui);color:#bbb;max-width:340px;margin:0">
+  <p style="font:14px/1.5 var(--font-ui);opacity:.7;max-width:340px;margin:0">
     {%- if search.performed -%}
       {{ 'general.search.results_count' | t: count: search.results_count }}
     {%- endif -%}

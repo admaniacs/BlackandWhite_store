@@ -1,11 +1,11 @@
 <div class="bw-collection-hero color-{{ section.settings.hero_color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.hero_padding_top }}px;padding-bottom:{{ section.settings.hero_padding_bottom }}px">
   {%- render 'section-media-background', image: section.settings.hero_background_image, video: section.settings.hero_background_video, overlay_opacity: section.settings.hero_background_overlay_opacity -%}
   <div>
-    <div class="bw-label-mono" style="color:#999">Home / {{ collection.title }}</div>
-    <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(32px,5vw,56px));margin-top:8px">{{ collection.title }}</div>
+    <div class="bw-label-mono" style="opacity:.6">Home / {{ collection.title }}</div>
+    <h1 class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(32px,5vw,56px));margin-top:8px">{{ collection.title }}</h1>
   </div>
   {%- if collection.description != blank -%}
-    <p style="font:14px/1.5 var(--font-ui);color:#bbb;max-width:340px;margin:0">{{ collection.description }}</p>
+    <p style="font:14px/1.5 var(--font-ui);opacity:.7;max-width:340px;margin:0">{{ collection.description }}</p>
   {%- endif -%}
   {% content_for 'blocks' %}
 </div>

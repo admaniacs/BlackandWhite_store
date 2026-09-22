@@ -3,7 +3,7 @@
   <div class="bw-container" style="max-width:760px">
     {%- if section.blocks.size > 0 -%}
       {%- if section.settings.heading != blank -%}
-        <div class="bw-h2" style="margin-bottom:20px">{{ section.settings.heading }}</div>
+        <h2 class="bw-h2" style="margin-bottom:20px">{{ section.settings.heading }}</h2>
       {%- endif -%}
       <div class="bw-faq">
         {%- for block in section.blocks -%}

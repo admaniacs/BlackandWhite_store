@@ -7,9 +7,12 @@
   {%- if settings.favicon != blank -%}
     <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
   {%- endif -%}
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
   <title>{{ page_title }}{% unless page_title contains shop.name %} | {{ shop.name }}{% endunless %}</title>
   {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
   <link rel="canonical" href="{{ canonical_url }}">
+  {%- render 'meta-tags' -%}
   {{ content_for_header }}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
   {%- if settings.color_schemes -%}
@@ -56,6 +59,7 @@
     {% render 'search-overlay' %}
   {%- endunless -%}
 
-  {{ 'theme.js' | asset_url | script_tag }}
+  {%- render 'structured-data' -%}
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
 </body>
 </html>

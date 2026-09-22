@@ -5,8 +5,8 @@
     {%- else -%}studio / mill photo · 1000×800{%- endif -%}
   </div>
   <div style="padding:30px 28px;order:{% if section.settings.image_position == 'right' %}1{% else %}2{% endif %};{% unless section.settings.image_position == 'right' %}border-left:1px solid var(--ink){% endunless %}">
-    <div class="bw-h2" style="font-size:28px">{{ section.settings.heading }}</div>
-    <p class="bw-body" style="margin:10px 0 18px;color:#444">{{ section.settings.body }}</p>
+    <h2 class="bw-h2" style="font-size:28px">{{ section.settings.heading }}</h2>
+    <p class="bw-body" style="margin:10px 0 18px;opacity:.75">{{ section.settings.body }}</p>
     <div style="display:flex;flex-direction:column;gap:1px;background:#e3e3e3;border:1px solid #e3e3e3">
       {%- for block in section.blocks -%}
         <div style="background:var(--paper);display:flex;justify-content:space-between;padding:12px;font:600 12px var(--font-ui);text-transform:uppercase">

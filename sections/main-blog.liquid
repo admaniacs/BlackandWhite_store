@@ -2,7 +2,7 @@
   {%- render 'section-media-background', image: section.settings.hero_background_image, video: section.settings.hero_background_video, overlay_opacity: section.settings.hero_background_overlay_opacity -%}
   <div style="position:relative">
     <div class="bw-label-mono" style="opacity:.6">Home / {{ blog.title }}</div>
-    <div class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(32px,5vw,56px));margin-top:8px">{{ blog.title }}</div>
+    <h1 class="bw-display" style="font-size:calc(var(--heading-scale) * clamp(32px,5vw,56px));margin-top:8px">{{ blog.title }}</h1>
     {%- if section.settings.intro != blank -%}
       <p style="font:15px/1.55 var(--font-ui);opacity:.7;max-width:460px;margin:12px 0 0">{{ section.settings.intro }}</p>
     {%- endif -%}

@@ -128,7 +128,7 @@
   </div>
 
   <div class="bw-buybox">
-    <div class="bw-buybox__title">{{ product.title }}</div>
+    <h1 class="bw-buybox__title">{{ product.title }}</h1>
     <div class="bw-buybox__meta">
       <span style="font:700 22px var(--font-ui)" data-product-price>{{ product.selected_or_first_available_variant.price | money }}</span>
       {%- if product.metafields.reviews.rating.value -%}
