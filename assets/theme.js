@@ -357,17 +357,24 @@
     })();
 
     function updateGallery() {
-      if (!gallery || colorOptionIndex < 0) return;
-      const color = handleize(selected[colorOptionIndex]);
-      if (!color) return;
-      let isFirstVisible = true;
+      if (!gallery) return;
+      const color = colorOptionIndex < 0 ? "" : handleize(selected[colorOptionIndex]);
+      const visible = [];
       gallery.querySelectorAll("[data-gallery-image]").forEach((item) => {
         const itemColor = item.dataset.galleryColor || "";
-        const matches = !itemColor || itemColor === color;
+        const matches = !color || !itemColor || itemColor === color;
         item.classList.toggle("is-hidden", !matches);
-        item.classList.toggle("bw-product-gallery__main", matches && isFirstVisible);
-        item.classList.toggle("bw-product-gallery__thumb", !(matches && isFirstVisible));
-        if (matches && isFirstVisible) isFirstVisible = false;
+        if (matches) visible.push(item);
+      });
+      /* The lead photo spans both columns, so the thumbs that follow it pair
+         up. An odd one out widens to fill its row instead of leaving a gap. */
+      const thumbCount = visible.length - 1;
+      visible.forEach((item, i) => {
+        const isLead = i === 0;
+        const isOrphan = !isLead && i === visible.length - 1 && thumbCount % 2 === 1;
+        item.classList.toggle("bw-product-gallery__main", isLead);
+        item.classList.toggle("bw-product-gallery__thumb", !isLead);
+        item.classList.toggle("bw-product-gallery__wide", isOrphan);
       });
     }
 

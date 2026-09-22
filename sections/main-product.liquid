@@ -32,6 +32,24 @@
       endif
     endfor
   endif
+
+  # Count what will actually be on screen. The lead photo spans both columns,
+  # so when the remaining thumbs do not pair up the last one widens to fill its
+  # row rather than leaving a dead cell.
+  assign visible_total = 0
+  for image in product.images
+    assign image_color = image.alt | strip | handleize
+    if gallery_grouped_by_color and image_color != blank and image_color != selected_color
+      continue
+    endif
+    assign visible_total = visible_total | plus: 1
+  endfor
+  assign trailing_thumb_is_orphan = false
+  assign thumb_total = visible_total | minus: 1
+  assign thumb_parity = thumb_total | modulo: 2
+  if thumb_total > 0 and thumb_parity == 1
+    assign trailing_thumb_is_orphan = true
+  endif
 -%}
 <div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
 {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
@@ -51,14 +69,21 @@
         {%- endif -%}
       {%- endif -%}
       {%- if matches_color -%}{%- assign shown = shown | plus: 1 -%}{%- endif -%}
+      {%- assign is_lead = false -%}
+      {%- assign is_orphan = false -%}
+      {%- if matches_color -%}
+        {%- if shown == 1 -%}
+          {%- assign is_lead = true -%}
+        {%- elsif trailing_thumb_is_orphan and shown == visible_total -%}
+          {%- assign is_orphan = true -%}
+        {%- endif -%}
+      {%- endif -%}
       <div
-        class="bw-media-placeholder bw-product-gallery__item{% if matches_color and shown == 1 %} bw-product-gallery__main{% else %} bw-product-gallery__thumb{% endif %}{% unless matches_color %} is-hidden{% endunless %}"
+        class="bw-media-placeholder bw-product-gallery__item{% if is_lead %} bw-product-gallery__main{% else %} bw-product-gallery__thumb{% endif %}{% if is_orphan %} bw-product-gallery__wide{% endif %}{% unless matches_color %} is-hidden{% endunless %}"
         data-gallery-image
         data-gallery-color="{{ image_color }}"
         data-media-id="{{ image.id }}"
       >
-        {%- assign is_lead = false -%}
-        {%- if matches_color and shown == 1 -%}{%- assign is_lead = true -%}{%- endif -%}
         <img
           src="{{ image | image_url: width: 900 }}"
           srcset="{{ image | image_url: width: 400 }} 400w, {{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 900 }} 900w, {{ image | image_url: width: 1200 }} 1200w"

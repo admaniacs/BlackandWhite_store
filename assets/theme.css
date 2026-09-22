@@ -656,6 +656,8 @@ html { scroll-behavior: smooth; }
 .bw-product-gallery__item img { object-fit: contain; padding: 18px; }
 .bw-product-gallery__main { grid-column: span 2; aspect-ratio: 4 / 3; }
 .bw-product-gallery__thumb { aspect-ratio: 1 / 1; }
+/* Odd thumb out — fills the row so the grid never ends on a dead cell. */
+.bw-product-gallery__thumb.bw-product-gallery__wide { grid-column: span 2; aspect-ratio: 2 / 1; }
 .bw-product-gallery__item.is-hidden { display: none; }
 .bw-buybox { padding: 28px 26px; }
 .bw-buybox__title { font: 400 38px/1 var(--font-display); text-transform: uppercase; letter-spacing: -.02em; }
