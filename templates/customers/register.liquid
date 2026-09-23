@@ -3,10 +3,14 @@
   {%- form 'create_customer' -%}
     {{ form.errors | default_errors }}
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
-      <input type="text" name="customer[first_name]" class="bw-field" placeholder="{{ 'customer.register.first_name' | t }}" autocomplete="given-name">
-      <input type="text" name="customer[last_name]" class="bw-field" placeholder="{{ 'customer.register.last_name' | t }}" autocomplete="family-name">
-      <input type="email" name="customer[email]" class="bw-field" placeholder="{{ 'customer.register.email' | t }}" autocomplete="email" required>
-      <input type="password" name="customer[password]" class="bw-field" placeholder="{{ 'customer.register.password' | t }}" autocomplete="new-password" required>
+      <label class="bw-visually-hidden" for="RegisterCustomerFirstName">{{ 'customer.register.first_name' | t }}</label>
+      <input id="RegisterCustomerFirstName" type="text" name="customer[first_name]" class="bw-field" placeholder="{{ 'customer.register.first_name' | t }}" autocomplete="given-name">
+      <label class="bw-visually-hidden" for="RegisterCustomerLastName">{{ 'customer.register.last_name' | t }}</label>
+      <input id="RegisterCustomerLastName" type="text" name="customer[last_name]" class="bw-field" placeholder="{{ 'customer.register.last_name' | t }}" autocomplete="family-name">
+      <label class="bw-visually-hidden" for="RegisterCustomerEmail">{{ 'customer.register.email' | t }}</label>
+      <input id="RegisterCustomerEmail" type="email" name="customer[email]" class="bw-field" placeholder="{{ 'customer.register.email' | t }}" autocomplete="email" required>
+      <label class="bw-visually-hidden" for="RegisterCustomerPassword">{{ 'customer.register.password' | t }}</label>
+      <input id="RegisterCustomerPassword" type="password" name="customer[password]" class="bw-field" placeholder="{{ 'customer.register.password' | t }}" autocomplete="new-password" required>
       <button type="submit" class="bw-btn bw-btn--block">{{ 'customer.register.submit' | t }}</button>
     </div>
   {%- endform -%}

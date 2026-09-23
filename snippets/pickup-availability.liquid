@@ -1,0 +1,60 @@
+{%- comment -%}
+  Local pickup for the selected variant.
+
+  Shopify only populates `store_availabilities` when the shop has pickup
+  enabled at a location, so on most stores this renders nothing at all — which
+  is the correct outcome, not a bug. The wrapper carries the variant id so the
+  variant picker can re-fetch this section when the shopper switches variant.
+
+  Accepts: variant
+{%- endcomment -%}
+{%- if variant != blank and variant.store_availabilities.size > 0 -%}
+  {%- assign pickup_available = false -%}
+  {%- for availability in variant.store_availabilities -%}
+    {%- if availability.available -%}{%- assign pickup_available = true -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+
+  <div class="bw-pickup" data-pickup-availability data-variant-id="{{ variant.id }}">
+    {%- if pickup_available -%}
+      {%- assign first_store = variant.store_availabilities.first -%}
+      <div class="bw-pickup__summary">
+        <span class="bw-pickup__dot bw-pickup__dot--in" aria-hidden="true"></span>
+        <span>
+          {{ 'products.product.pickup_available_at' | t: location: first_store.location.name }}
+          {%- if first_store.pick_up_time != blank %} <span class="bw-pickup__time">· {{ first_store.pick_up_time }}</span>{% endif -%}
+        </span>
+      </div>
+      <button type="button" class="bw-nav-link bw-pickup__more" data-pickup-open>
+        {{ 'products.product.pickup_check_other_stores' | t: count: variant.store_availabilities.size }}
+      </button>
+    {%- else -%}
+      <div class="bw-pickup__summary">
+        <span class="bw-pickup__dot bw-pickup__dot--out" aria-hidden="true"></span>
+        <span>{{ 'products.product.pickup_unavailable' | t }}</span>
+      </div>
+    {%- endif -%}
+
+    <div class="bw-pickup__list" data-pickup-list hidden>
+      {%- for availability in variant.store_availabilities -%}
+        <div class="bw-pickup__store">
+          <div class="bw-pickup__store-name">{{ availability.location.name }}</div>
+          <div class="bw-pickup__store-status">
+            {%- if availability.available -%}
+              {{ 'products.product.pickup_available' | t }}{% if availability.pick_up_time != blank %}, {{ availability.pick_up_time }}{% endif %}
+            {%- else -%}
+              {{ 'products.product.pickup_unavailable_here' | t }}
+            {%- endif -%}
+          </div>
+          {%- assign address = availability.location.address -%}
+          {%- if address != blank -%}
+            <address class="bw-pickup__store-address">
+              {{ address.address1 }}{% if address.address2 != blank %}, {{ address.address2 }}{% endif %}<br>
+              {{ address.city }}{% if address.province != blank %}, {{ address.province }}{% endif %} {{ address.zip }}
+              {%- if address.phone != blank %}<br>{{ address.phone }}{% endif -%}
+            </address>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}

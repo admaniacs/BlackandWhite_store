@@ -5,7 +5,8 @@
     <p style="font:16px/1.55 var(--font-ui);opacity:.6;max-width:480px;margin:20px auto 0">{{ section.settings.body }}</p>
 
     <form action="{{ routes.search_url }}" method="get" role="search" style="display:flex;gap:8px;max-width:420px;margin:28px auto 0">
-      <input type="search" name="q" class="bw-field" placeholder="{{ 'general.search.placeholder' | t }}">
+      <label class="bw-visually-hidden" for="Search404-{{ section.id }}">{{ 'general.search.placeholder' | t }}</label>
+      <input id="Search404-{{ section.id }}" type="search" name="q" class="bw-field" placeholder="{{ 'general.search.placeholder' | t }}">
       <input type="hidden" name="type" value="product">
       <button type="submit" class="bw-btn">{{ 'general.search.placeholder' | t }}</button>
     </form>

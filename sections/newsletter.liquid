@@ -10,7 +10,8 @@
         <p class="bw-body" style="margin-top:18px">{{ section.settings.success_text }}</p>
       {%- else -%}
         <div style="display:flex;gap:8px;margin-top:20px;max-width:400px;margin-left:auto;margin-right:auto">
-          <input type="email" name="contact[email]" class="bw-field" placeholder="email address" required aria-label="Email address">
+          <label class="bw-visually-hidden" for="NewsletterEmail-{{ section.id }}">{{ 'general.newsletter.email_label' | t }}</label>
+          <input id="NewsletterEmail-{{ section.id }}" type="email" name="contact[email]" class="bw-field" placeholder="email address" required autocomplete="email" aria-label="Email address">
           <button type="submit" class="bw-btn">Join</button>
         </div>
         {%- if form.errors -%}

@@ -67,9 +67,12 @@
             <p class="bw-body" style="margin-top:16px">Your comment was submitted and is awaiting approval.</p>
           {%- endif -%}
           <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;max-width:460px">
-            <input type="text" name="comment[author]" class="bw-field" placeholder="Name" value="{{ form.author }}" required>
-            <input type="email" name="comment[email]" class="bw-field" placeholder="Email" value="{{ form.email }}" required>
-            <textarea name="comment[body]" class="bw-field" rows="4" placeholder="Comment" required>{{ form.body }}</textarea>
+            <label class="bw-visually-hidden" for="CommentAuthor-{{ section.id }}">{{ 'blogs.comments.name' | t }}</label>
+            <input id="CommentAuthor-{{ section.id }}" type="text" name="comment[author]" class="bw-field" placeholder="{{ 'blogs.comments.name' | t }}" value="{{ form.author }}" autocomplete="name" required>
+            <label class="bw-visually-hidden" for="CommentEmail-{{ section.id }}">{{ 'blogs.comments.email' | t }}</label>
+            <input id="CommentEmail-{{ section.id }}" type="email" name="comment[email]" class="bw-field" placeholder="{{ 'blogs.comments.email' | t }}" value="{{ form.email }}" autocomplete="email" required>
+            <label class="bw-visually-hidden" for="CommentBody-{{ section.id }}">{{ 'blogs.comments.message' | t }}</label>
+            <textarea id="CommentBody-{{ section.id }}" name="comment[body]" class="bw-field" rows="4" placeholder="{{ 'blogs.comments.message' | t }}" required>{{ form.body }}</textarea>
             <button type="submit" class="bw-btn" style="align-self:flex-start">Post comment</button>
           </div>
         {%- endform -%}

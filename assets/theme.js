@@ -95,19 +95,26 @@
       const line = remove.closest("[data-cart-line]");
       if (line) changeCartLine(line.dataset.lineKey, 0);
     }
-    const decrease = e.target.closest("[data-qty-decrease]");
-    if (decrease) {
-      const line = decrease.closest("[data-cart-line]");
-      const valueEl = line.querySelector("[data-qty-value]");
-      const next = Math.max(0, parseInt(valueEl.textContent, 10) - 1);
-      changeCartLine(line.dataset.lineKey, next);
-    }
-    const increase = e.target.closest("[data-qty-increase]");
-    if (increase) {
-      const line = increase.closest("[data-cart-line]");
-      const valueEl = line.querySelector("[data-qty-value]");
-      const next = parseInt(valueEl.textContent, 10) + 1;
-      changeCartLine(line.dataset.lineKey, next);
+    /* The same stepper markup is used in two places: a cart line, where a
+       change is a request to the Cart API, and the product form, where it is
+       just a number in an input. Which one it is depends on the ancestor. */
+    const step = e.target.closest("[data-qty-decrease], [data-qty-increase]");
+    if (step) {
+      const delta = step.hasAttribute("data-qty-increase") ? 1 : -1;
+      const line = step.closest("[data-cart-line]");
+      if (line) {
+        const valueEl = line.querySelector("[data-qty-value]");
+        const current = parseInt(valueEl.textContent, 10) || 0;
+        changeCartLine(line.dataset.lineKey, Math.max(0, current + delta));
+      } else {
+        const stepper = step.closest("[data-qty-stepper]");
+        const input = stepper && stepper.querySelector("[data-qty-input]");
+        if (input) {
+          const min = parseInt(input.min, 10) || 1;
+          input.value = Math.max(min, (parseInt(input.value, 10) || min) + delta);
+          input.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      }
     }
     const upsell = e.target.closest("[data-cart-add-variant]");
     if (upsell) {
@@ -322,6 +329,19 @@
 
       const priceEl = section.querySelector("[data-product-price]");
       if (priceEl) priceEl.textContent = formatMoney(variant.price);
+
+      /* Compare-at only counts as a markdown when it is above the selling
+         price. Shopify happily stores a lower one, which would otherwise
+         render a "was" that is cheaper than the "now". */
+      const onSale = variant.compare_at_price && variant.compare_at_price > variant.price;
+      const compareEl = section.querySelector("[data-product-compare]");
+      if (compareEl) {
+        compareEl.hidden = !onSale;
+        const s = compareEl.querySelector("s");
+        if (s && onSale) s.textContent = formatMoney(variant.compare_at_price);
+      }
+      const saveEl = section.querySelector("[data-product-save]");
+      if (saveEl) saveEl.hidden = !onSale;
 
       const addBtn = section.querySelector("[data-add-to-cart]");
       const addText = section.querySelector("[data-add-to-cart-text]");

@@ -11,10 +11,14 @@
       {%- else -%}
         {{ form.errors | default_errors }}
         <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
-          <input type="text" name="contact[name]" class="bw-field" placeholder="Name" value="{{ form.name }}">
-          <input type="email" name="contact[email]" class="bw-field" placeholder="Email" value="{{ form.email }}" required>
-          <input type="tel" name="contact[phone]" class="bw-field" placeholder="Phone (optional)" value="{{ form.phone }}">
-          <textarea name="contact[body]" class="bw-field" rows="5" placeholder="Message" required>{{ form.body }}</textarea>
+          <label class="bw-visually-hidden" for="ContactName-{{ section.id }}">{{ 'contact.form.name' | t }}</label>
+          <input id="ContactName-{{ section.id }}" type="text" name="contact[name]" class="bw-field" placeholder="{{ 'contact.form.name' | t }}" value="{{ form.name }}" autocomplete="name">
+          <label class="bw-visually-hidden" for="ContactEmail-{{ section.id }}">{{ 'contact.form.email' | t }}</label>
+          <input id="ContactEmail-{{ section.id }}" type="email" name="contact[email]" class="bw-field" placeholder="{{ 'contact.form.email' | t }}" value="{{ form.email }}" autocomplete="email" required>
+          <label class="bw-visually-hidden" for="ContactPhone-{{ section.id }}">{{ 'contact.form.phone' | t }}</label>
+          <input id="ContactPhone-{{ section.id }}" type="tel" name="contact[phone]" class="bw-field" placeholder="{{ 'contact.form.phone' | t }}" value="{{ form.phone }}" autocomplete="tel">
+          <label class="bw-visually-hidden" for="ContactBody-{{ section.id }}">{{ 'contact.form.message' | t }}</label>
+          <textarea id="ContactBody-{{ section.id }}" name="contact[body]" class="bw-field" rows="5" placeholder="{{ 'contact.form.message' | t }}" required>{{ form.body }}</textarea>
           <button type="submit" class="bw-btn bw-btn--block">{{ section.settings.submit_label }}</button>
         </div>
       {%- endif -%}

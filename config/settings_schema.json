@@ -82,23 +82,23 @@
       {
         "type": "font_picker",
         "id": "type_heading_font",
-        "label": "Headline font",
+        "label": "Heading font",
         "default": "archivo_black_n4",
-        "info": "Used for all large uppercase headlines."
+        "info": "Used for all large uppercase headings."
       },
       {
         "type": "font_picker",
         "id": "type_body_font",
-        "label": "Body / UI font",
+        "label": "Body text font",
         "default": "archivo_n4",
-        "info": "Used for nav, buttons, prices, and body copy."
+        "info": "Used for navigation, buttons, prices and body text."
       },
       {
         "type": "font_picker",
         "id": "type_mono_font",
-        "label": "Meta / label font",
-        "default": "mono",
-        "info": "Used for small uppercase meta labels (SKU-style tags, breadcrumbs)."
+        "label": "Label font",
+        "default": "ibm_plex_mono_n4",
+        "info": "Used for small uppercase labels, such as tags and breadcrumbs."
       },
       {
         "type": "select",

@@ -73,7 +73,12 @@
           }
         }
       },
-      "block_order": ["q_order", "q_return", "q_size", "q_stock"],
+      "block_order": [
+        "q_order",
+        "q_return",
+        "q_size",
+        "q_stock"
+      ],
       "settings": {
         "heading": "Before you write in",
         "padding_top": 0,
@@ -92,9 +97,22 @@
         "padding_bottom": 60,
         "color_scheme": "scheme-2"
       }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "show_breadcrumb": true,
+        "show_heading": true,
+        "text_alignment": "left",
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 8,
+        "background_overlay_opacity": 0
+      }
     }
   },
   "order": [
+    "main",
     "contact_form_7Grnr4",
     "map",
     "contact_faq",

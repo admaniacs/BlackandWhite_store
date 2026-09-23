@@ -32,7 +32,18 @@
         {{ product.title | slice: 0, 1 }}
       {%- endif -%}
     </a>
-    {%- if is_new -%}<span class="bw-badge">New</span>{%- endif -%}
+    {%- comment -%}
+      compare_at_price_max is the highest across every variant, so a product
+      with one marked-down variant still earns the badge. Only a compare-at
+      above the selling price is a real markdown.
+    {%- endcomment -%}
+    {%- if product.compare_at_price_max > product.price_min -%}
+      <span class="bw-badge bw-badge--sale">{{ 'products.product.on_sale' | t }}</span>
+    {%- elsif is_new -%}
+      <span class="bw-badge">New</span>
+    {%- elsif product.available == false -%}
+      <span class="bw-badge bw-badge--sold">{{ 'products.product.sold_out' | t }}</span>
+    {%- endif -%}
     {%- if quick_add -%}
       <button type="button" class="bw-product-card__quickadd" data-quick-add data-variant-id="{{ product.selected_or_first_available_variant.id }}" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
         {%- if product.selected_or_first_available_variant.available -%}{{ 'products.product.quick_add' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
@@ -41,7 +52,26 @@
   </div>
   <a href="{{ product.url }}" class="bw-product-card__body">
     <span class="bw-product-card__title">{{ product.title }}</span>
-    <span class="bw-price">{{ product.price | money_without_trailing_zeros }}</span>
+    <span class="bw-product-card__prices">
+      {%- comment -%}
+        A product whose variants are priced differently has to advertise a
+        range, or the cheapest variant reads as the price of all of them.
+      {%- endcomment -%}
+      <span class="bw-price">
+        {%- if product.price_varies -%}
+          {{ 'products.product.price_from' | t: price: product.price_min | money_without_trailing_zeros }}
+        {%- else -%}
+          {{ product.price | money_without_trailing_zeros }}
+        {%- endif -%}
+      </span>
+      {%- if product.compare_at_price_max > product.price_min -%}
+        <s class="bw-price-compare">{{ product.compare_at_price_max | money_without_trailing_zeros }}</s>
+      {%- endif -%}
+      {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
+        {%- assign unit_variant = product.selected_or_first_available_variant -%}
+        <span class="bw-price-unit">{{ unit_variant.unit_price | money }} / {% if unit_variant.unit_price_measurement.reference_value != 1 %}{{ unit_variant.unit_price_measurement.reference_value }} {% endif %}{{ unit_variant.unit_price_measurement.reference_unit }}</span>
+      {%- endif -%}
+    </span>
   </a>
   {%- if show_sizes -%}
     <div class="bw-product-card__sizes">

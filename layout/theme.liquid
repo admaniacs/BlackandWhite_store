@@ -31,10 +31,37 @@
     {%- endfor -%}
   </style>
   {%- endif -%}
+  {%- comment -%}
+    Each font role loads its regular face plus bold, italic and bold-italic.
+    Without these, a <strong> or <em> — in a blog post, a product description,
+    anywhere a merchant writes — gets synthesised by the browser instead of the
+    real cut, which looks noticeably wrong. font_modify returns nothing when a
+    family has no such weight, so this degrades quietly on single-weight fonts.
+  {%- endcomment -%}
+  {%- liquid
+    assign heading_bold = settings.type_heading_font | font_modify: 'weight', 'bolder'
+    assign heading_italic = settings.type_heading_font | font_modify: 'style', 'italic'
+    assign heading_bold_italic = heading_bold | font_modify: 'style', 'italic'
+    assign body_bold = settings.type_body_font | font_modify: 'weight', 'bolder'
+    assign body_italic = settings.type_body_font | font_modify: 'style', 'italic'
+    assign body_bold_italic = body_bold | font_modify: 'style', 'italic'
+    assign mono_bold = settings.type_mono_font | font_modify: 'weight', 'bolder'
+    assign mono_italic = settings.type_mono_font | font_modify: 'style', 'italic'
+    assign mono_bold_italic = mono_bold | font_modify: 'style', 'italic'
+  -%}
   <style>
     {{ settings.type_heading_font | font_face: font_display: 'swap' }}
+    {{ heading_bold | font_face: font_display: 'swap' }}
+    {{ heading_italic | font_face: font_display: 'swap' }}
+    {{ heading_bold_italic | font_face: font_display: 'swap' }}
     {{ settings.type_body_font | font_face: font_display: 'swap' }}
+    {{ body_bold | font_face: font_display: 'swap' }}
+    {{ body_italic | font_face: font_display: 'swap' }}
+    {{ body_bold_italic | font_face: font_display: 'swap' }}
     {{ settings.type_mono_font | font_face: font_display: 'swap' }}
+    {{ mono_bold | font_face: font_display: 'swap' }}
+    {{ mono_italic | font_face: font_display: 'swap' }}
+    {{ mono_bold_italic | font_face: font_display: 'swap' }}
     :root {
       --font-display: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
       --font-ui: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};

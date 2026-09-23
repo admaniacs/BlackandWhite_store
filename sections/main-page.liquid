@@ -1,0 +1,58 @@
+<div class="color-{{ section.settings.color_scheme }}" style="background:var(--paper);color:var(--ink);position:relative;overflow:hidden;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+  {%- render 'section-media-background', image: section.settings.background_image, video: section.settings.background_video, overlay_opacity: section.settings.background_overlay_opacity -%}
+  <div class="bw-page" style="position:relative;text-align:{{ section.settings.text_alignment }}">
+    {%- if section.settings.show_breadcrumb -%}
+      <nav class="bw-breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a> / {{ page.title }}
+      </nav>
+    {%- endif -%}
+
+    {%- if section.settings.show_heading -%}
+      <h1 class="bw-display bw-page__title" style="font-size:calc(var(--heading-scale) * clamp(30px,5vw,56px))">{{ page.title }}</h1>
+    {%- endif -%}
+
+    {%- comment -%}
+      A page can legitimately be built entirely from sections, with an empty
+      body. Only reserve the space when there is something to put in it.
+    {%- endcomment -%}
+    {%- if page.content != blank -%}
+      <div class="bw-rte bw-page__content">{{ page.content }}</div>
+    {%- endif -%}
+
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "show_breadcrumb", "label": "Show breadcrumb", "default": true },
+    { "type": "checkbox", "id": "show_heading", "label": "Show page heading", "default": true, "info": "Turn off when the page starts with its own image banner." },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 64 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Background image or video" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Used when no background video is set." },
+    { "type": "video", "id": "background_video", "label": "Background video", "info": "Takes priority over the background image." },
+    { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
+  ]
+}
+{% endschema %}

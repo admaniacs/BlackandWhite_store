@@ -30,7 +30,15 @@
     },
     "newsletter": {
       "placeholder": "email address",
-      "submit": "Join"
+      "submit": "Join",
+      "email_label": "Email address"
+    },
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "slider": {
+      "previous": "Previous",
+      "next": "Next"
     }
   },
   "products": {
@@ -44,7 +52,24 @@
         "one": "{{ count }} review",
         "other": "{{ count }} reviews"
       },
-      "quick_add": "Quick add"
+      "quick_add": "Quick add",
+      "quantity": "Quantity",
+      "quantity_decrease": "Decrease quantity",
+      "quantity_increase": "Increase quantity",
+      "on_sale": "Sale",
+      "taxes_included": "Tax included.",
+      "pickup_available_at": "Pickup available at {{ location }}",
+      "pickup_available": "Pickup available",
+      "pickup_unavailable": "Pickup currently unavailable",
+      "pickup_unavailable_here": "Pickup currently unavailable at this location",
+      "pickup_check_other_stores": {
+        "one": "Check availability at 1 store",
+        "other": "Check availability at {{ count }} stores"
+      },
+      "price_from": "From {{ price }}",
+      "media": {
+        "gallery_viewer": "Gallery viewer"
+      }
     }
   },
   "collections": {
@@ -55,7 +80,9 @@
       "sort": "Sort",
       "showing": "Showing {{ count }} of {{ total }}",
       "load_more": "Load more",
-      "no_products": "No products found"
+      "no_products": "No products found",
+      "price_min": "Minimum price",
+      "price_max": "Maximum price"
     },
     "list": {
       "title": "Collections",
@@ -72,6 +99,11 @@
       "older_post": "Older post",
       "newer_post": "Newer post",
       "by_author": "By {{ author }}"
+    },
+    "comments": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Comment"
     }
   },
   "gift_cards": {
@@ -91,7 +123,8 @@
     "signup_form_heading": "Notify me when the store is available",
     "signup_form_email_label": "Email",
     "signup_form_button_label": "Notify me",
-    "password_link": "Enter using password"
+    "password_link": "Enter using password",
+    "login_form_password_label": "Password"
   },
   "customer": {
     "account": {
@@ -144,6 +177,14 @@
       "email": "Email",
       "password": "Password",
       "submit": "Create"
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "message": "Message"
     }
   }
 }

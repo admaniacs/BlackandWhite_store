@@ -4,9 +4,11 @@
     {%- form 'customer_login' -%}
       {{ form.errors | default_errors }}
       <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
-        <input type="email" name="customer[email]" class="bw-field" placeholder="{{ 'customer.login.email' | t }}" autocomplete="email" required>
+        <label class="bw-visually-hidden" for="LoginCustomerEmail">{{ 'customer.login.email' | t }}</label>
+        <input id="LoginCustomerEmail" type="email" name="customer[email]" class="bw-field" placeholder="{{ 'customer.login.email' | t }}" autocomplete="email" required>
         {%- if form.password_needed -%}
-          <input type="password" name="customer[password]" class="bw-field" placeholder="{{ 'customer.login.password' | t }}" autocomplete="current-password" required>
+          <label class="bw-visually-hidden" for="LoginCustomerPassword">{{ 'customer.login.password' | t }}</label>
+          <input id="LoginCustomerPassword" type="password" name="customer[password]" class="bw-field" placeholder="{{ 'customer.login.password' | t }}" autocomplete="current-password" required>
         {%- endif -%}
         <button type="submit" class="bw-btn bw-btn--block">{{ 'customer.login.sign_in' | t }}</button>
       </div>
@@ -28,7 +30,8 @@
         {{ form.errors | default_errors }}
         <p class="bw-body" style="margin-top:16px">{{ 'customer.login.recover_subtext' | t }}</p>
         <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
-          <input type="email" name="email" class="bw-field" placeholder="{{ 'customer.login.email' | t }}" autocomplete="email" required>
+          <label class="bw-visually-hidden" for="LoginEmail">{{ 'customer.login.email' | t }}</label>
+          <input id="LoginEmail" type="email" name="email" class="bw-field" placeholder="{{ 'customer.login.email' | t }}" autocomplete="email" required>
           <button type="submit" class="bw-btn bw-btn--block">{{ 'customer.login.recover_submit' | t }}</button>
         </div>
       {%- endif -%}

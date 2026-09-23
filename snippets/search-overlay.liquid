@@ -2,7 +2,8 @@
   <form action="{{ routes.search_url }}" method="get" role="search" class="bw-search-overlay__bar">
     <a href="{{ routes.root_url }}" class="bw-header__logo" style="color:#fff">{{ shop.name | default: 'B/W' }}</a>
     <div class="bw-search-overlay__input-wrap">
-      <input type="search" name="q" class="bw-search-overlay__input" placeholder="Search products" autocomplete="off" data-search-input value="{{ search.terms | escape }}">
+      <label class="bw-visually-hidden" for="SearchOverlayInput">{{ 'general.search.placeholder' | t }}</label>
+      <input id="SearchOverlayInput" type="search" name="q" class="bw-search-overlay__input" placeholder="Search products" autocomplete="off" data-search-input value="{{ search.terms | escape }}">
       <span class="bw-search-overlay__meta" data-search-meta>{{ 'general.search.esc_to_close' | t }}</span>
     </div>
     <input type="hidden" name="type" value="product">

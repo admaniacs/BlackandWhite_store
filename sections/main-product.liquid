@@ -127,99 +127,216 @@
     {%- endif -%}
   </div>
 
+  {%- comment -%}
+    Every element of the buy box is a block, so a merchant can reorder or
+    remove any of them. The whole loop sits inside one product form: blocks
+    are free to move, and the variant, quantity and submit inputs stay in the
+    same form whatever order they end up in.
+  {%- endcomment -%}
   <div class="bw-buybox">
-    <h1 class="bw-buybox__title">{{ product.title }}</h1>
-    <div class="bw-buybox__meta">
-      <span style="font:700 22px var(--font-ui)" data-product-price>{{ product.selected_or_first_available_variant.price | money }}</span>
-      {%- if product.metafields.reviews.rating.value -%}
-        <span class="bw-label-mono">{% render 'star-rating', rating: product.metafields.reviews.rating.value.rating %} {{ product.metafields.reviews.rating.value.rating }} · {{ product.metafields.reviews.rating_count.value }} {{ 'products.product.reviews_count' | t: count: product.metafields.reviews.rating_count.value }}</span>
-      {%- endif -%}
-    </div>
-
     {%- form 'product', product, id: product_form_id, data-product-form: 'true' -%}
       <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
 
-      {%- unless product.has_only_default_variant -%}
-      {%- for option in product.options_with_values -%}
-        <div class="bw-buybox__section" data-option-position="{{ forloop.index }}">
-          <div class="bw-buybox__section-label">
-            <span>{{ option.name }} — <span data-selected-option-value>{{ option.selected_value }}</span></span>
-            {%- if option.name == 'Size' and show_size_guide -%}
-              <button type="button" class="bw-nav-link" style="text-decoration:underline" data-size-guide-open>{{ 'products.product.size_guide' | t }}</button>
-            {%- endif -%}
-          </div>
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
 
-          {%- if option.name == 'Color' or option.name == 'Colour' -%}
-            <div style="display:flex;gap:10px">
-              {%- for value in option.values -%}
-                <button
-                  type="button"
-                  class="bw-swatch{% if value == option.selected_value %} is-selected{% endif %}"
-                  data-color="{{ value | handleize }}"
-                  data-option-index="{{ forloop.parentloop.index0 }}"
-                  data-option-name="{{ option.name | handleize }}"
-                  data-option-value="{{ value | escape }}"
-                  aria-label="{{ value }}"
-                ></button>
-              {%- endfor -%}
+          {%- when 'title' -%}
+            <h1 class="bw-buybox__title" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+
+          {%- when 'vendor' -%}
+            {%- if product.vendor != blank -%}
+              <div class="bw-label-mono bw-buybox__vendor" {{ block.shopify_attributes }}>
+                {%- if block.settings.link_to_vendor -%}
+                  <a href="{{ product.vendor | url_for_vendor }}">{{ product.vendor }}</a>
+                {%- else -%}
+                  {{ product.vendor }}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+          {%- when 'price' -%}
+            {%- assign current_variant = product.selected_or_first_available_variant -%}
+            <div class="bw-buybox__meta" {{ block.shopify_attributes }}>
+              <span class="bw-buybox__price" data-product-price>{{ current_variant.price | money }}</span>
+              {%- comment -%}
+                Shopify sets compare_at_price even when it is below the selling
+                price, which would render a "was" line that is lower than the
+                "now" line. Only show it when it is genuinely a markdown.
+              {%- endcomment -%}
+              <span class="bw-buybox__compare" data-product-compare {% unless current_variant.compare_at_price > current_variant.price %}hidden{% endunless %}>
+                <s>{{ current_variant.compare_at_price | money }}</s>
+              </span>
+              <span class="bw-buybox__save" data-product-save {% unless current_variant.compare_at_price > current_variant.price %}hidden{% endunless %}>
+                {{ 'products.product.on_sale' | t }}
+              </span>
+              {%- if current_variant.unit_price_measurement -%}
+                <span class="bw-label-mono bw-buybox__unit" data-product-unit-price>
+                  {{ current_variant.unit_price | money }} / {% if current_variant.unit_price_measurement.reference_value != 1 %}{{ current_variant.unit_price_measurement.reference_value }} {% endif %}{{ current_variant.unit_price_measurement.reference_unit }}
+                </span>
+              {%- endif -%}
             </div>
+            {%- if cart.taxes_included -%}
+              <div class="bw-label-mono bw-buybox__tax-note">{{ 'products.product.taxes_included' | t }}</div>
+            {%- endif -%}
+
+          {%- when 'rating' -%}
+            {%- if product.metafields.reviews.rating.value -%}
+              <div class="bw-label-mono bw-buybox__rating" {{ block.shopify_attributes }}>
+                {% render 'star-rating', rating: product.metafields.reviews.rating.value.rating %}
+                {{ product.metafields.reviews.rating.value.rating }} · {{ product.metafields.reviews.rating_count.value }} {{ 'products.product.reviews_count' | t: count: product.metafields.reviews.rating_count.value }}
+              </div>
+            {%- endif -%}
+
+          {%- when 'description' -%}
+            {%- if product.description != blank -%}
+              <div class="bw-rte bw-buybox__description" {{ block.shopify_attributes }}>{{ product.description }}</div>
+            {%- endif -%}
+
+          {%- when 'variant_picker' -%}
+            {%- unless product.has_only_default_variant -%}
+              <div {{ block.shopify_attributes }}>
+                {%- for option in product.options_with_values -%}
+                  {%- assign option_key = option.name | downcase -%}
+                  <fieldset class="bw-buybox__section" data-option-position="{{ forloop.index }}">
+                    <legend class="bw-buybox__section-label">
+                      <span>{{ option.name }} — <span data-selected-option-value>{{ option.selected_value }}</span></span>
+                    </legend>
+                    {%- if option_key == 'size' and show_size_guide -%}
+                      <button type="button" class="bw-nav-link bw-buybox__size-guide-link" data-size-guide-open>{{ 'products.product.size_guide' | t }}</button>
+                    {%- endif -%}
+
+                    {%- if option_key == 'color' or option_key == 'colour' -%}
+                      <div class="bw-swatch-row">
+                        {%- for value in option.values -%}
+                          {%- comment -%}
+                            Prefer the merchant's own swatch — a hex or an image
+                            set on the option value — and fall back to the
+                            handle-based CSS only when neither is configured.
+                          {%- endcomment -%}
+                          <button
+                            type="button"
+                            class="bw-swatch{% if value == option.selected_value %} is-selected{% endif %}"
+                            data-color="{{ value | handleize }}"
+                            data-option-index="{{ forloop.parentloop.index0 }}"
+                            data-option-name="{{ option.name | handleize }}"
+                            data-option-value="{{ value | escape }}"
+                            aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}"
+                            aria-label="{{ option.name | escape }}: {{ value | escape }}"
+                            {%- if value.swatch.image %} style="background-image:url({{ value.swatch.image | image_url: width: 80 }});background-size:cover"
+                            {%- elsif value.swatch.color %} style="background:{{ value.swatch.color }}"{% endif %}
+                          ></button>
+                        {%- endfor -%}
+                      </div>
+                    {%- else -%}
+                      <div class="bw-size-row">
+                        {%- for value in option.values -%}
+                          <button
+                            type="button"
+                            class="bw-size-chip{% if value == option.selected_value %} is-selected{% endif %}"
+                            data-option-index="{{ forloop.parentloop.index0 }}"
+                            data-option-name="{{ option.name | handleize }}"
+                            data-option-value="{{ value | escape }}"
+                            aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}"
+                          >{{ value }}</button>
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+                  </fieldset>
+                {%- endfor -%}
+              </div>
+            {%- endunless -%}
+
+          {%- when 'quantity_selector' -%}
+            <div class="bw-buybox__section bw-buybox__qty" {{ block.shopify_attributes }}>
+              <label class="bw-buybox__section-label" for="Quantity-{{ section.id }}">{{ 'products.product.quantity' | t }}</label>
+              <div class="bw-qty-stepper" data-qty-stepper>
+                <button type="button" data-qty-decrease aria-label="{{ 'products.product.quantity_decrease' | t }}">−</button>
+                <input
+                  type="number"
+                  id="Quantity-{{ section.id }}"
+                  name="quantity"
+                  value="1"
+                  min="1"
+                  step="1"
+                  inputmode="numeric"
+                  class="bw-qty-stepper__input"
+                  data-qty-input
+                >
+                <button type="button" data-qty-increase aria-label="{{ 'products.product.quantity_increase' | t }}">+</button>
+              </div>
+            </div>
+
+          {%- when 'buy_buttons' -%}
+            <div {{ block.shopify_attributes }}>
+              <div class="bw-add-row">
+                <button type="submit" name="add" class="bw-btn" style="flex:1" data-add-to-cart {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+                  <span data-add-to-cart-text>
+                    {%- if product.selected_or_first_available_variant.available -%}
+                      {{ 'products.product.add_to_cart' | t }} — {{ product.selected_or_first_available_variant.price | money }}
+                    {%- else -%}
+                      {{ 'products.product.sold_out' | t }}
+                    {%- endif -%}
+                  </span>
+                </button>
+              </div>
+              {%- if block.settings.show_dynamic_checkout -%}
+                <div class="bw-buybox__accelerated">{{ form | payment_button }}</div>
+              {%- endif -%}
+              {%- if block.settings.show_payment_terms -%}
+                <div class="bw-buybox__installments">{{ form | payment_terms }}</div>
+              {%- endif -%}
+            </div>
+
+          {%- when 'pickup_availability' -%}
+            <div {{ block.shopify_attributes }}>
+              {%- render 'pickup-availability', variant: product.selected_or_first_available_variant -%}
+            </div>
+
+          {%- when 'shipping_note' -%}
+            {%- if block.settings.text != blank -%}
+              <div class="bw-label-mono bw-buybox__note" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+            {%- endif -%}
+
+          {%- when 'size_guide' -%}
+            {%- if show_size_guide -%}
+              <div class="bw-size-guide" data-size-guide {{ block.shopify_attributes }}>
+                <div class="bw-size-guide__head">{{ 'products.product.size_guide' | t }} — {{ block.settings.unit_note }}</div>
+                {%- if product.metafields.custom.size_guide != blank -%}
+                  {{ product.metafields.custom.size_guide }}
+                {%- else -%}
+                  {%- render 'size-guide-table-fallback', product: product -%}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+          {%- when 'specs' -%}
+            {%- assign has_specs = false -%}
+            {%- if product.metafields.custom.fabric != blank or product.metafields.custom.fit != blank or product.metafields.custom.origin != blank or product.metafields.custom.care != blank -%}
+              {%- assign has_specs = true -%}
+            {%- endif -%}
+            {%- if has_specs -%}
+              <div class="bw-spec-grid" {{ block.shopify_attributes }}>
+                {%- if product.metafields.custom.fabric != blank -%}
+                  <div class="bw-spec-cell"><div class="bw-spec-cell__label">Fabric</div><div class="bw-spec-cell__value">{{ product.metafields.custom.fabric.value }}</div></div>
+                {%- endif -%}
+                {%- if product.metafields.custom.fit != blank -%}
+                  <div class="bw-spec-cell"><div class="bw-spec-cell__label">Fit</div><div class="bw-spec-cell__value">{{ product.metafields.custom.fit.value }}</div></div>
+                {%- endif -%}
+                {%- if product.metafields.custom.origin != blank -%}
+                  <div class="bw-spec-cell"><div class="bw-spec-cell__label">Origin</div><div class="bw-spec-cell__value">{{ product.metafields.custom.origin.value }}</div></div>
+                {%- endif -%}
+                {%- if product.metafields.custom.care != blank -%}
+                  <div class="bw-spec-cell"><div class="bw-spec-cell__label">Care</div><div class="bw-spec-cell__value">{{ product.metafields.custom.care.value }}</div></div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
           {%- else -%}
-            <div class="bw-size-row">
-              {%- for value in option.values -%}
-                <button
-                  type="button"
-                  class="bw-size-chip{% if value == option.selected_value %} is-selected{% endif %}"
-                  data-option-index="{{ forloop.parentloop.index0 }}"
-                  data-option-name="{{ option.name | handleize }}"
-                  data-option-value="{{ value | escape }}"
-                >{{ value }}</button>
-              {%- endfor -%}
-            </div>
-          {%- endif -%}
-        </div>
+            {%- render block -%}
+
+        {%- endcase -%}
       {%- endfor -%}
-      {%- endunless -%}
-
-      <div class="bw-add-row">
-        <button type="submit" class="bw-btn" style="flex:1" data-add-to-cart {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
-          <span data-add-to-cart-text>
-            {%- if product.selected_or_first_available_variant.available -%}
-              {{ 'products.product.add_to_cart' | t }} — {{ product.selected_or_first_available_variant.price | money }}
-            {%- else -%}
-              {{ 'products.product.sold_out' | t }}
-            {%- endif -%}
-          </span>
-        </button>
-        <button type="button" class="bw-wishlist-btn" aria-label="Add to wishlist">♥</button>
-      </div>
-      <div class="bw-label-mono" style="margin-top:10px">{{ section.settings.shipping_note }}</div>
     {%- endform -%}
-
-    {%- if show_size_guide -%}
-      <div class="bw-size-guide" data-size-guide>
-        <div class="bw-size-guide__head">{{ 'products.product.size_guide' | t }} — measurements in inches</div>
-        {%- if product.metafields.custom.size_guide != blank -%}
-          {{ product.metafields.custom.size_guide }}
-        {%- else -%}
-          {%- render 'size-guide-table-fallback', product: product -%}
-        {%- endif -%}
-      </div>
-    {%- endif -%}
-
-    <div class="bw-spec-grid">
-      {%- if product.metafields.custom.fabric != blank -%}
-        <div class="bw-spec-cell"><div class="bw-spec-cell__label">Fabric</div><div class="bw-spec-cell__value">{{ product.metafields.custom.fabric.value }}</div></div>
-      {%- endif -%}
-      {%- if product.metafields.custom.fit != blank -%}
-        <div class="bw-spec-cell"><div class="bw-spec-cell__label">Fit</div><div class="bw-spec-cell__value">{{ product.metafields.custom.fit.value }}</div></div>
-      {%- endif -%}
-      {%- if product.metafields.custom.origin != blank -%}
-        <div class="bw-spec-cell"><div class="bw-spec-cell__label">Origin</div><div class="bw-spec-cell__value">{{ product.metafields.custom.origin.value }}</div></div>
-      {%- endif -%}
-      {%- if product.metafields.custom.care != blank -%}
-        <div class="bw-spec-cell"><div class="bw-spec-cell__label">Care</div><div class="bw-spec-cell__value">{{ product.metafields.custom.care.value }}</div></div>
-      {%- endif -%}
-    </div>
   </div>
 
   <script type="application/json" data-product-json>
@@ -244,7 +361,6 @@
 {
   "name": "Product page",
   "settings": [
-    { "type": "text", "id": "shipping_note", "label": "Shipping note", "default": "Free shipping over $75 · ships in 1–2 days" },
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "padding_top", "label": "Extra space above", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
     { "type": "range", "id": "padding_bottom", "label": "Extra space below", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
@@ -256,8 +372,51 @@
     { "type": "range", "id": "background_overlay_opacity", "label": "Darkening overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 }
   ],
   "blocks": [
+    { "type": "title", "name": "Product title", "limit": 1 },
+    { "type": "vendor", "name": "Vendor", "limit": 1, "settings": [
+      { "type": "checkbox", "id": "link_to_vendor", "label": "Link to all products by this vendor", "default": false }
+    ] },
+    { "type": "price", "name": "Price", "limit": 1 },
+    { "type": "rating", "name": "Rating", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Shows once a product reviews app has added ratings to your products." }
+    ] },
+    { "type": "description", "name": "Description", "limit": 1 },
+    { "type": "variant_picker", "name": "Variant picker", "limit": 1 },
+    { "type": "quantity_selector", "name": "Quantity selector", "limit": 1 },
+    { "type": "buy_buttons", "name": "Buy buttons", "limit": 1, "settings": [
+      { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout buttons", "default": true, "info": "Shows the payment methods available in your store, so customers can check out in one step." },
+      { "type": "checkbox", "id": "show_payment_terms", "label": "Show Shop Pay Installments", "default": true }
+    ] },
+    { "type": "pickup_availability", "name": "Pickup availability", "limit": 1 },
+    { "type": "size_guide", "name": "Size guide", "limit": 1, "settings": [
+      { "type": "text", "id": "unit_note", "label": "Measurement note", "default": "measurements in inches" }
+    ] },
+    { "type": "specs", "name": "Product specs", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Shows the fabric, fit, origin and care metafields when they are filled in." }
+    ] },
+    { "type": "shipping_note", "name": "Shipping note", "settings": [
+      { "type": "text", "id": "text", "label": "Text", "default": "Free shipping over ₹2,000 · ships in 1–2 days" }
+    ] },
     { "type": "@theme" },
     { "type": "@app" }
+  ],
+  "presets": [
+    {
+      "name": "Product page",
+      "blocks": [
+        { "type": "title" },
+        { "type": "price" },
+        { "type": "rating" },
+        { "type": "variant_picker" },
+        { "type": "quantity_selector" },
+        { "type": "buy_buttons" },
+        { "type": "shipping_note" },
+        { "type": "pickup_availability" },
+        { "type": "description" },
+        { "type": "size_guide" },
+        { "type": "specs" }
+      ]
+    }
   ]
 }
 {% endschema %}

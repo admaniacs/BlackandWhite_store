@@ -116,6 +116,24 @@ html { scroll-behavior: smooth; }
   .bw-container { padding: 0 var(--gutter-mobile); }
 }
 
+/* Merchant- and app-authored markup. Nothing is imposed on it beyond keeping
+   wide embeds (iframes, tables) from forcing the page to scroll sideways. */
+.bw-custom-liquid > * { max-width: 100%; }
+.bw-custom-liquid img,
+.bw-custom-liquid iframe,
+.bw-custom-liquid video { max-width: 100%; height: auto; }
+.bw-custom-liquid--full { width: 100%; }
+
+/* Standard page body. Narrower than the full container because long prose at
+   container width is uncomfortable to read. */
+.bw-page { max-width: 760px; margin: 0 auto; padding: 0 var(--gutter-desktop); }
+.bw-page .bw-breadcrumb { padding-left: 0; padding-right: 0; border-bottom: 0; }
+.bw-page__title { margin: 6px 0 0; }
+.bw-page__content { margin-top: 22px; }
+@media (max-width: 749px) {
+  .bw-page { padding: 0 var(--gutter-mobile); }
+}
+
 .bw-hide-mobile { display: block; }
 .bw-hide-desktop { display: none; }
 @media (max-width: 749px) {
@@ -161,6 +179,9 @@ html { scroll-behavior: smooth; }
 .bw-price {
   font: 700 15px var(--font-ui);
 }
+.bw-product-card__prices { display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px; }
+.bw-price-compare { font: 400 13px var(--font-ui); opacity: .5; }
+.bw-price-unit { font: 500 10px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; opacity: .55; width: 100%; }
 .bw-body {
   font: 14px/1.55 var(--font-ui);
   color: var(--grey-95);
@@ -522,6 +543,10 @@ html { scroll-behavior: smooth; }
   text-transform: uppercase;
   padding: 6px 10px;
 }
+/* Inverted so a markdown reads differently from the "New" badge without
+   introducing a colour — the palette is the whole point of the brand. */
+.bw-badge--sale { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.bw-badge--sold { background: var(--grey-40); color: var(--paper); }
 
 /* ===== Product card ===== */
 .bw-product-card { border: 1px solid var(--ink); background: var(--paper); }
@@ -645,8 +670,12 @@ html { scroll-behavior: smooth; }
 .bw-cart-line { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--grey-20); }
 .bw-cart-line__media { width: 76px; height: 96px; flex: none; }
 .bw-qty-stepper { display: flex; border: 1px solid var(--ink); width: fit-content; }
-.bw-qty-stepper button { padding: 5px 11px; font: 600 12px var(--font-ui); }
+/* WCAG 2.2 asks for a 24x24px minimum pointer target. */
+.bw-qty-stepper button { min-width: 32px; min-height: 32px; padding: 5px 11px; font: 600 12px var(--font-ui); }
 .bw-qty-stepper span { padding: 5px 11px; border-left: 1px solid var(--ink); border-right: 1px solid var(--ink); font: 600 12px var(--font-ui); min-width: 14px; text-align: center; }
+.bw-qty-stepper__input { width: 48px; min-height: 32px; border: 0; border-left: 1px solid var(--ink); border-right: 1px solid var(--ink); background: transparent; color: inherit; font: 600 12px var(--font-ui); text-align: center; -moz-appearance: textfield; }
+.bw-qty-stepper__input::-webkit-outer-spin-button,
+.bw-qty-stepper__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .bw-cart-drawer__upsell { padding: 16px 0; }
 .bw-cart-drawer__foot { border-top: 1px solid var(--ink); padding: 18px 20px; }
 .bw-summary-row { display: flex; justify-content: space-between; font: 600 12px var(--font-ui); letter-spacing: .02em; text-transform: uppercase; color: var(--grey-90); margin-top: 6px; }
@@ -763,8 +792,37 @@ html { scroll-behavior: smooth; }
 .bw-buybox { padding: 28px 26px; }
 .bw-buybox__title { font: 400 38px/1 var(--font-display); text-transform: uppercase; letter-spacing: -.02em; }
 .bw-buybox__meta { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
-.bw-buybox__section { border-top: 1px solid var(--ink); margin-top: 20px; padding-top: 16px; }
-.bw-buybox__section-label { display: flex; justify-content: space-between; font: 600 11px var(--font-ui); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px; }
+/* A fieldset for each option group, so the option name is announced with its
+   choices. Browsers give fieldset its own border and padding — strip both. */
+.bw-buybox__section { border: 0; border-top: 1px solid var(--ink); margin-top: 20px; padding: 16px 0 0; min-width: 0; }
+.bw-buybox__section-label { display: flex; justify-content: space-between; width: 100%; padding: 0; font: 600 11px var(--font-ui); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px; }
+.bw-buybox__size-guide-link { float: right; margin-top: -32px; text-decoration: underline; }
+.bw-buybox__vendor { margin-top: 8px; opacity: .6; }
+.bw-buybox__price { font: 700 22px var(--font-ui); }
+.bw-buybox__compare s { font: 400 15px var(--font-ui); opacity: .5; }
+.bw-buybox__save { font: 600 10px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; background: var(--ink); color: var(--paper); padding: 4px 7px; }
+.bw-buybox__unit { opacity: .6; }
+.bw-buybox__tax-note { margin-top: 6px; opacity: .55; }
+.bw-buybox__rating { margin-top: 10px; }
+.bw-buybox__description { margin-top: 18px; }
+.bw-buybox__note { margin-top: 10px; }
+.bw-buybox__qty { display: block; }
+.bw-swatch-row { display: flex; gap: 10px; flex-wrap: wrap; }
+/* The dynamic checkout buttons are branded and must not be restyled — only
+   given room. Shopify controls everything inside. */
+.bw-buybox__accelerated { margin-top: 10px; }
+.bw-buybox__installments { margin-top: 10px; }
+.bw-pickup { border-top: 1px solid var(--grey-20); margin-top: 18px; padding-top: 14px; font: 13px/1.5 var(--font-ui); }
+.bw-pickup__summary { display: flex; align-items: center; gap: 8px; }
+.bw-pickup__dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.bw-pickup__dot--in { background: #2f7d32; }
+.bw-pickup__dot--out { background: var(--grey-40); }
+.bw-pickup__time { opacity: .6; }
+.bw-pickup__more { margin-top: 8px; text-decoration: underline; }
+.bw-pickup__list { margin-top: 14px; display: grid; gap: 14px; }
+.bw-pickup__store-name { font: 600 12px var(--font-ui); letter-spacing: .06em; text-transform: uppercase; }
+.bw-pickup__store-status { font-size: 12px; opacity: .7; margin-top: 3px; }
+.bw-pickup__store-address { font-size: 12px; font-style: normal; opacity: .6; margin-top: 4px; }
 .bw-size-row { display: flex; gap: 7px; }
 .bw-size-row .bw-size-chip { padding: 13px 0; font-size: 12px; }
 .bw-add-row { display: flex; gap: 8px; margin-top: 18px; }
@@ -1035,23 +1093,60 @@ html { scroll-behavior: smooth; }
 .bw-blog-card__excerpt { font: 13px/1.5 var(--font-ui); color: var(--grey-90); flex: 1; }
 .bw-article { max-width: 720px; margin: 0 auto; padding: 44px var(--gutter-desktop) 60px; }
 .bw-article__media { margin: 26px calc(var(--gutter-desktop) * -1) 28px; }
+/* Shared rich-text styles. Anything a merchant types into a rich text editor —
+   a page body, a product description, a collection description, a blog post —
+   carries .bw-rte so the same markup renders identically everywhere.
+   .bw-article__body is kept alongside it as the article-specific alias. */
+.bw-rte,
 .bw-article__body { font: 15px/1.7 var(--font-ui); color: var(--grey-100); }
+.bw-rte > :first-child,
+.bw-article__body > :first-child { margin-top: 0; }
+.bw-rte > :last-child,
+.bw-article__body > :last-child { margin-bottom: 0; }
+.bw-rte p,
 .bw-article__body p { margin: 0 0 18px; }
+.bw-rte h1,
+.bw-article__body h1 { font: 400 32px var(--font-display); text-transform: uppercase; margin: 36px 0 16px; }
+.bw-rte h2,
 .bw-article__body h2 { font: 400 26px var(--font-display); text-transform: uppercase; margin: 34px 0 14px; }
+.bw-rte h3,
 .bw-article__body h3 { font: 400 20px var(--font-display); text-transform: uppercase; margin: 28px 0 12px; }
-.bw-article__body img { margin: 22px 0; }
+.bw-rte h4,
+.bw-article__body h4 { font: 400 17px var(--font-display); text-transform: uppercase; margin: 24px 0 10px; }
+.bw-rte h5,
+.bw-article__body h5 { font: 600 14px var(--font-ui); letter-spacing: .06em; text-transform: uppercase; margin: 22px 0 8px; }
+.bw-rte h6,
+.bw-article__body h6 { font: 600 12px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; margin: 20px 0 8px; opacity: .7; }
+.bw-rte img,
+.bw-article__body img { margin: 22px 0; max-width: 100%; height: auto; }
+.bw-rte a,
 .bw-article__body a { text-decoration: underline; }
+.bw-rte blockquote,
 .bw-article__body blockquote { border-left: 2px solid var(--ink); padding-left: 18px; font-style: italic; color: var(--grey-90); margin: 22px 0; }
 /* The reset strips list markers globally, which is right for nav and card
    lists but wrong inside prose — a bulleted list written in the blog editor
    would otherwise run together as unindented plain text. */
+.bw-rte ul, .bw-rte ol,
 .bw-article__body ul,
 .bw-article__body ol { margin: 0 0 18px; padding-left: 22px; }
+.bw-rte ul,
 .bw-article__body ul { list-style: disc; }
+.bw-rte ol,
 .bw-article__body ol { list-style: decimal; }
+.bw-rte li,
 .bw-article__body li { margin-bottom: 8px; }
+.bw-rte strong,
 .bw-article__body strong { color: var(--ink); font-weight: 600; }
+.bw-rte hr,
 .bw-article__body hr { border: 0; border-top: 1px solid var(--grey-20); margin: 30px 0; }
+/* Merchant tables come out of the RTE unstyled and overflow narrow screens. */
+.bw-rte table,
+.bw-article__body table { width: 100%; border-collapse: collapse; margin: 0 0 18px; font-size: 14px; }
+.bw-rte th, .bw-rte td,
+.bw-article__body th,
+.bw-article__body td { border: 1px solid var(--grey-20); padding: 8px 10px; text-align: left; }
+.bw-rte th,
+.bw-article__body th { font: 600 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
 .bw-article__nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--ink); }
 @media (max-width: 749px) { .bw-blog-card__media { height: 200px; } }
 

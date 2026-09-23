@@ -22,13 +22,20 @@
     {%- form 'customer_address', customer.new_address, class: 'bw-address-form' -%}
       <div class="bw-h3" style="margin-top:30px;font-size:18px">Add a new address</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;max-width:520px">
-        <input type="text" class="bw-field" name="address[first_name]" placeholder="First name">
-        <input type="text" class="bw-field" name="address[last_name]" placeholder="Last name">
-        <input type="text" class="bw-field" style="grid-column:span 2" name="address[address1]" placeholder="Address">
-        <input type="text" class="bw-field" name="address[city]" placeholder="City">
-        <input type="text" class="bw-field" name="address[zip]" placeholder="Postal / ZIP code">
-        <input type="text" class="bw-field" name="address[country]" placeholder="Country">
-        <input type="text" class="bw-field" name="address[phone]" placeholder="Phone">
+        <label class="bw-visually-hidden" for="AddressesAddressFirstName">First name</label>
+        <input id="AddressesAddressFirstName" type="text" class="bw-field" name="address[first_name]" placeholder="First name">
+        <label class="bw-visually-hidden" for="AddressesAddressLastName">Last name</label>
+        <input id="AddressesAddressLastName" type="text" class="bw-field" name="address[last_name]" placeholder="Last name">
+        <label class="bw-visually-hidden" for="AddressesAddressAddress1">Address</label>
+        <input id="AddressesAddressAddress1" type="text" class="bw-field" style="grid-column:span 2" name="address[address1]" placeholder="Address">
+        <label class="bw-visually-hidden" for="AddressesAddressCity">City</label>
+        <input id="AddressesAddressCity" type="text" class="bw-field" name="address[city]" placeholder="City">
+        <label class="bw-visually-hidden" for="AddressesAddressZip">Postal / ZIP code</label>
+        <input id="AddressesAddressZip" type="text" class="bw-field" name="address[zip]" placeholder="Postal / ZIP code">
+        <label class="bw-visually-hidden" for="AddressesAddressCountry">Country</label>
+        <input id="AddressesAddressCountry" type="text" class="bw-field" name="address[country]" placeholder="Country">
+        <label class="bw-visually-hidden" for="AddressesAddressPhone">Phone</label>
+        <input id="AddressesAddressPhone" type="text" class="bw-field" name="address[phone]" placeholder="Phone">
       </div>
       <button type="submit" class="bw-btn" style="margin-top:16px">Save address</button>
     {%- endform -%}

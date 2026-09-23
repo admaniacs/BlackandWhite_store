@@ -13,7 +13,8 @@
 </div>
 
 <form action="{{ routes.search_url }}" method="get" role="search" class="bw-container" style="padding-top:20px;padding-bottom:20px;display:flex;gap:8px">
-  <input type="search" name="q" value="{{ search.terms | escape }}" class="bw-field" placeholder="{{ 'general.search.placeholder' | t }}">
+  <label class="bw-visually-hidden" for="SearchPage-{{ section.id }}">{{ 'general.search.placeholder' | t }}</label>
+  <input id="SearchPage-{{ section.id }}" type="search" name="q" value="{{ search.terms | escape }}" class="bw-field" placeholder="{{ 'general.search.placeholder' | t }}">
   <input type="hidden" name="type" value="product">
   <button type="submit" class="bw-btn">{{ 'general.search.placeholder' | t }}</button>
 </form>

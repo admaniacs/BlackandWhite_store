@@ -14,7 +14,8 @@
         {%- form 'customer', id: 'footer-newsletter' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
           <div class="bw-footer__signup">
-            <input type="email" name="contact[email]" placeholder="email address" required aria-label="Email address">
+            <label class="bw-visually-hidden" for="FooterEmail-{{ section.id }}">{{ 'general.newsletter.email_label' | t }}</label>
+            <input id="FooterEmail-{{ section.id }}" type="email" name="contact[email]" placeholder="email address" required autocomplete="email">
             <button type="submit">Join</button>
           </div>
         {%- endform -%}

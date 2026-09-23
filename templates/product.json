@@ -1,11 +1,81 @@
 {
   "sections": {
     "main": {
-      "type": "main-product"
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_payment_terms": true
+          }
+        },
+        "shipping_note": {
+          "type": "shipping_note",
+          "settings": {
+            "text": "Free shipping over ₹2,000 · ships in 1–2 days"
+          }
+        },
+        "pickup_availability": {
+          "type": "pickup_availability",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "size_guide": {
+          "type": "size_guide",
+          "settings": {
+            "unit_note": "measurements in inches"
+          }
+        },
+        "specs": {
+          "type": "specs",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "rating",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "shipping_note",
+        "pickup_availability",
+        "description",
+        "size_guide",
+        "specs"
+      ],
+      "settings": {}
     },
     "recommendations": {
       "type": "product-recommendations"
     }
   },
-  "order": ["main", "recommendations"]
+  "order": [
+    "main",
+    "recommendations"
+  ]
 }

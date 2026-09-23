@@ -1,0 +1,22 @@
+{%- comment -%}
+  An insertion point for Liquid a merchant or an app needs to drop into a
+  section. Rendered raw and unwrapped so snippets that bring their own markup
+  are not boxed in by a container they did not ask for.
+{%- endcomment -%}
+<div {{ block.shopify_attributes }} class="bw-custom-liquid">{{ block.settings.custom_liquid }}</div>
+
+{% schema %}
+{
+  "name": "Custom Liquid",
+  "tag": null,
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "custom_liquid",
+      "label": "Liquid code",
+      "info": "Add app snippets or other Liquid code to create advanced customizations."
+    }
+  ],
+  "presets": [{ "name": "Custom Liquid" }]
+}
+{% endschema %}

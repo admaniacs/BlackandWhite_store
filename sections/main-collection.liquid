@@ -22,7 +22,8 @@
     {%- for filter in collection.filters -%}
       {%- for value in filter.active_values -%}<input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">{%- endfor -%}
     {%- endfor -%}
-    <select name="sort_by" class="bw-nav-link" style="width:100%;height:100%;border:0;background:#fff;text-align:center" onchange="this.form.submit()">
+    <label class="bw-visually-hidden" for="SortMobile-{{ section.id }}">{{ 'collections.general.sort' | t }}</label>
+    <select id="SortMobile-{{ section.id }}" name="sort_by" class="bw-nav-link" style="width:100%;height:100%;border:0;background:#fff;text-align:center" onchange="this.form.submit()">
       {%- for option in collection.sort_options -%}
         <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ 'collections.general.sort' | t }}: {{ option.name }}</option>
       {%- endfor -%}
@@ -44,7 +45,8 @@
             {%- for filter in collection.filters -%}
               {%- for value in filter.active_values -%}<input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">{%- endfor -%}
             {%- endfor -%}
-            <select name="sort_by" class="bw-nav-link" style="border:0;background:transparent" onchange="this.form.submit()">
+            <label class="bw-visually-hidden" for="Sort-{{ section.id }}">{{ 'collections.general.sort' | t }}</label>
+            <select id="Sort-{{ section.id }}" name="sort_by" class="bw-nav-link" style="border:0;background:transparent" onchange="this.form.submit()">
               {%- for option in collection.sort_options -%}
                 <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>Sort: {{ option.name }}</option>
               {%- endfor -%}
