@@ -227,7 +227,9 @@
             "link_a": "/products/t-shirt-white",
             "image_b": "shopify://shop_images/Black_t_shirt_1.png",
             "name_b": "Black tee",
-            "link_b": "/products/t-shirt-black"
+            "link_b": "/products/t-shirt-black",
+            "scale_a": 83,
+            "scale_b": 83
           }
         },
         "p_layer": {
@@ -239,19 +241,23 @@
             "link_a": "/products/check-shirt-white",
             "image_b": "shopify://shop_images/Checked_Black.png",
             "name_b": "Black check shirt",
-            "link_b": "/products/checkered-shirt-black"
+            "link_b": "/products/checkered-shirt-black",
+            "scale_a": 83,
+            "scale_b": 83
           }
         },
         "p_outer": {
           "type": "piece",
           "settings": {
             "label": "Outer",
-            "image_a": "shopify://shop_images/WhiteHoodie2.png",
+            "image_a": "shopify://shop_images/WhiteHoodie3.png",
             "name_a": "White hoodie",
             "link_a": "/products/hoodies-white",
-            "image_b": "shopify://shop_images/BlackHoodie.png",
+            "image_b": "shopify://shop_images/BlckHoodie2.png",
             "name_b": "Black hoodie",
-            "link_b": "/products/hoodies-white"
+            "link_b": "/products/hoodies-white",
+            "scale_a": 104,
+            "scale_b": 84
           }
         },
         "p_shoes": {
@@ -260,10 +266,12 @@
             "label": "Shoes",
             "image_a": "shopify://shop_images/White_shoe_2.png",
             "name_a": "White court low",
-            "link_a": "/products/sneaker-white",
+            "link_a": "/products/shoe-white",
             "image_b": "shopify://shop_images/black_shoe_2.png",
             "name_b": "Black court low",
-            "link_b": "/products/sneaker-black"
+            "link_b": "/products/shoe-black",
+            "scale_a": 100,
+            "scale_b": 100
           }
         }
       },

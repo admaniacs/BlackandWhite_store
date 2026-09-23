@@ -22,6 +22,7 @@
           data-link-a="{{ block.settings.link_a }}"
           data-link-b="{{ block.settings.link_b }}"
           aria-label="{{ block.settings.label | escape }} — tap to switch colour"
+          style="--bw-scale-a:{{ block.settings.scale_a | default: 100 | divided_by: 100.0 }};--bw-scale-b:{{ block.settings.scale_b | default: 100 | divided_by: 100.0 }}"
           {{ block.shopify_attributes }}
         >
           <span class="bw-system__frame">
@@ -68,10 +69,12 @@
         { "type": "header", "content": "White" },
         { "type": "image_picker", "id": "image_a", "label": "Image" },
         { "type": "text", "id": "name_a", "label": "Name", "default": "White tee" },
+        { "type": "range", "id": "scale_a", "label": "Image scale", "info": "Nudge until the garment matches the others. Source photos vary in aspect.", "min": 50, "max": 130, "step": 1, "unit": "%", "default": 100 },
         { "type": "url", "id": "link_a", "label": "Link" },
         { "type": "header", "content": "Black" },
         { "type": "image_picker", "id": "image_b", "label": "Image" },
         { "type": "text", "id": "name_b", "label": "Name", "default": "Black tee" },
+        { "type": "range", "id": "scale_b", "label": "Image scale", "info": "Nudge until the garment matches the others.", "min": 50, "max": 130, "step": 1, "unit": "%", "default": 100 },
         { "type": "url", "id": "link_b", "label": "Link" }
       ]
     }

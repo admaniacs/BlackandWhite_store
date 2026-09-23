@@ -844,8 +844,13 @@ html { scroll-behavior: smooth; }
 .bw-system__slot { display: block; text-align: left; background: var(--paper); padding: 0 0 16px; }
 .bw-system__frame { position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden; background: var(--paper); }
 /* Both colourways are stacked; flipping swaps which one is opaque, so there
-   is no network request when the shopper toggles. */
+   is no network request when the shopper toggles.
+   Source photos differ in aspect, and `contain` sizes to whichever edge binds
+   first — a landscape shot lands far shorter than a portrait one in the same
+   slot. The per-image scale levels the garments off against each other. */
 .bw-system__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 18px; transition: opacity .28s ease; }
+.bw-system__img--a { transform: scale(var(--bw-scale-a, 1)); }
+.bw-system__img--b { transform: scale(var(--bw-scale-b, 1)); }
 .bw-system__img--b { opacity: 0; }
 .bw-system__slot.is-b .bw-system__img--a { opacity: 0; }
 .bw-system__slot.is-b .bw-system__img--b { opacity: 1; }
