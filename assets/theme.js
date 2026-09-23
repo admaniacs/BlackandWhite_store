@@ -456,6 +456,38 @@
     render();
   });
 
+  /* ===== Home: the two-colour system ===== */
+  /* Tapping a slot flips that piece between its two colourways and rewrites
+     the readout. The count is 2^pieces — every combination works, which is
+     the whole argument the section is making. */
+  document.querySelectorAll("[data-system]").forEach((root) => {
+    const slots = Array.from(root.querySelectorAll("[data-system-slot]"));
+    if (!slots.length) return;
+    const outfit = root.parentElement.querySelector("[data-system-outfit]");
+    const count = root.parentElement.querySelector("[data-system-count]");
+
+    if (count) count.textContent = Math.pow(2, slots.length);
+
+    function readout() {
+      if (!outfit) return;
+      outfit.textContent = slots
+        .map((slot) => (slot.classList.contains("is-b") ? slot.dataset.nameB : slot.dataset.nameA))
+        .filter(Boolean)
+        .join(" · ");
+    }
+
+    slots.forEach((slot) => {
+      slot.addEventListener("click", () => {
+        slot.classList.toggle("is-b");
+        const name = slot.querySelector("[data-system-name]");
+        if (name) name.textContent = slot.classList.contains("is-b") ? slot.dataset.nameB : slot.dataset.nameA;
+        readout();
+      });
+    });
+
+    readout();
+  });
+
   /* ===== Lookbook: shop the look ===== */
   /* Hovering either a marker on the photo or a row in the list highlights the
      other, so the two halves read as one object. */

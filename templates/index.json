@@ -16,9 +16,9 @@
         "heading": "Two colours. Nothing else.",
         "subtext": "Heavyweight cotton, honest prices. Every piece is black, white, or both — so everything works with everything.",
         "cta_1_text": "Shop all",
-        "cta_1_link": "",
+        "cta_1_link": "shopify://collections/shop-all",
         "cta_2_text": "New arrivals",
-        "cta_2_link": "",
+        "cta_2_link": "shopify://collections/best-sellers",
         "color_scheme": "scheme-2",
         "background_video": "shopify://files/videos/8443731-uhd_4096_2160_25fps.mp4",
         "video_overlay_opacity": 60
@@ -170,13 +170,144 @@
       "settings": {
         "color_scheme": "scheme-1"
       }
+    },
+    "ticker": {
+      "type": "marquee",
+      "blocks": {
+        "m1": {
+          "type": "item",
+          "settings": {
+            "text": "Two colours, permanently"
+          }
+        },
+        "m2": {
+          "type": "item",
+          "settings": {
+            "text": "420gsm, every knit"
+          }
+        },
+        "m3": {
+          "type": "item",
+          "settings": {
+            "text": "No seasons, no sales"
+          }
+        },
+        "m4": {
+          "type": "item",
+          "settings": {
+            "text": "Free shipping over ₹2,000"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
+      "settings": {
+        "size": "small",
+        "speed": 30,
+        "show_separator": true,
+        "separator": "✦",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "color_scheme": "scheme-2"
+      }
+    },
+    "system": {
+      "type": "home-system",
+      "blocks": {
+        "p_top": {
+          "type": "piece",
+          "settings": {
+            "label": "Top",
+            "image_a": "shopify://shop_images/WhiteTshirt1.png",
+            "name_a": "White tee",
+            "link_a": "/products/t-shirt-white",
+            "image_b": "shopify://shop_images/Black_t_shirt_1.png",
+            "name_b": "Black tee",
+            "link_b": "/products/t-shirt-black"
+          }
+        },
+        "p_layer": {
+          "type": "piece",
+          "settings": {
+            "label": "Layer",
+            "image_a": "shopify://shop_images/White_checked.png",
+            "name_a": "White check shirt",
+            "link_a": "/products/check-shirt-white",
+            "image_b": "shopify://shop_images/Checked_Black.png",
+            "name_b": "Black check shirt",
+            "link_b": "/products/checkered-shirt-black"
+          }
+        },
+        "p_outer": {
+          "type": "piece",
+          "settings": {
+            "label": "Outer",
+            "image_a": "shopify://shop_images/WhiteHoodie2.png",
+            "name_a": "White hoodie",
+            "link_a": "/products/hoodies-white",
+            "image_b": "shopify://shop_images/BlackHoodie.png",
+            "name_b": "Black hoodie",
+            "link_b": "/products/hoodies-white"
+          }
+        },
+        "p_shoes": {
+          "type": "piece",
+          "settings": {
+            "label": "Shoes",
+            "image_a": "shopify://shop_images/White_shoe_2.png",
+            "name_a": "White court low",
+            "link_a": "/products/sneaker-white",
+            "image_b": "shopify://shop_images/black_shoe_2.png",
+            "name_b": "Black court low",
+            "link_b": "/products/sneaker-black"
+          }
+        }
+      },
+      "block_order": [
+        "p_top",
+        "p_layer",
+        "p_outer",
+        "p_shoes"
+      ],
+      "settings": {
+        "eyebrow": "The system",
+        "heading": "Four pieces. Sixteen outfits.",
+        "body": "Every piece is black, white, or both — so nothing clashes and everything pairs. Tap a piece to switch its colour.",
+        "readout_label": "You're wearing",
+        "count_label": "combinations, all of which work",
+        "cta_text": "Shop the system",
+        "cta_link": "shopify://collections/shop-all",
+        "color_scheme": "scheme-1",
+        "padding_top": 56,
+        "padding_bottom": 48,
+        "background_overlay_opacity": 0
+      }
+    },
+    "journal": {
+      "type": "blog-posts",
+      "settings": {
+        "heading": "From the Journal",
+        "blog": "news",
+        "posts_to_show": 3,
+        "view_all_label": "All posts",
+        "padding_top": 40,
+        "padding_bottom": 48,
+        "color_scheme": "scheme-1"
+      }
     }
   },
   "order": [
     "hero",
+    "ticker",
     "categories",
+    "system",
     "best_sellers",
     "split_promo",
+    "journal",
     "features_bar_g9JtLP"
   ]
 }
