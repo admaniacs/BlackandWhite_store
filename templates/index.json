@@ -18,7 +18,7 @@
         "cta_1_text": "Shop all",
         "cta_1_link": "shopify://collections/shop-all",
         "cta_2_text": "New arrivals",
-        "cta_2_link": "shopify://collections/best-sellers",
+        "cta_2_link": "shopify://collections/new-arrivals",
         "color_scheme": "scheme-2",
         "background_video": "shopify://files/videos/8443731-uhd_4096_2160_25fps.mp4",
         "video_overlay_opacity": 60
