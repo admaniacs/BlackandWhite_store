@@ -331,7 +331,11 @@
               </div>
             {%- endif -%}
 
+          {%- when 'custom_liquid' -%}
+            <div class="bw-custom-liquid" {{ block.shopify_attributes }}>{{ block.settings.custom_liquid }}</div>
+
           {%- else -%}
+            {%- comment -%} App blocks. {%- endcomment -%}
             {%- render block -%}
 
         {%- endcase -%}
@@ -397,7 +401,9 @@
     { "type": "shipping_note", "name": "Shipping note", "settings": [
       { "type": "text", "id": "text", "label": "Text", "default": "Free shipping over ₹2,000 · ships in 1–2 days" }
     ] },
-    { "type": "@theme" },
+    { "type": "custom_liquid", "name": "Custom Liquid", "settings": [
+      { "type": "liquid", "id": "custom_liquid", "label": "Liquid code", "info": "Add app snippets or other Liquid code to create advanced customizations." }
+    ] },
     { "type": "@app" }
   ],
   "presets": [
