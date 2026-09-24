@@ -1,0 +1,167 @@
+{% doc %}
+  @prompt
+    create a eyebrow badge with text "THEME 01" and eyebrow text "OUR FIRST SHOPIFY THEME" it should be horizontall aligned in left side, separate the badge and the eyebrow text as two blocks fully customizable, need two in side by side
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-badge-eyebrow-pair-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: {{ block.settings.item_gap }}px;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    color: {{ block.settings.text_color }};
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+  }
+
+  .ai-badge-eyebrow-pair-{{ ai_gen_id }}__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: {{ block.settings.badge_vertical_padding }}px {{ block.settings.badge_horizontal_padding }}px;
+    border: {{ block.settings.badge_border_width }}px solid {{ block.settings.text_color }};
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.badge_font_size }}px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-badge-eyebrow-pair-{{ ai_gen_id }}__badge {
+      white-space: normal;
+      text-align: center;
+    }
+  }
+
+  .ai-badge-eyebrow-pair-{{ ai_gen_id }}__eyebrow {
+    margin: 0;
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.eyebrow_font_size }}px;
+    line-height: 1.4;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+{% endstyle %}
+
+<div class="ai-badge-eyebrow-pair-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <span class="ai-badge-eyebrow-pair-{{ ai_gen_id }}__badge">{{ block.settings.badge_text | escape }}</span>
+  <p class="ai-badge-eyebrow-pair-{{ ai_gen_id }}__eyebrow">{{ block.settings.eyebrow_text | escape }}</p>
+</div>
+
+{% schema %}
+{
+  "name": "Badge + eyebrow row",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "THEME 01"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow text",
+      "default": "OUR FIRST SHOPIFY THEME"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "label": "Space between",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Badge style"
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "badge_vertical_padding",
+      "label": "Vertical padding",
+      "min": 0,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "badge_horizontal_padding",
+      "label": "Horizontal padding",
+      "min": 2,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "badge_border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Eyebrow style"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Badge + eyebrow row"
+    }
+  ],
+  "tag": null,
+  "class": "badge-eyebrow-row-block"
+}
+{% endschema %}

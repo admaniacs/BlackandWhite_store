@@ -1,0 +1,339 @@
+{% doc %}
+  @prompt
+    Create a 4-column horizontal timeline/process block on a soft pale mint-green background. Each column represents a stage and includes, top to bottom:
+    
+    A small filled dark green circle (bullet dot) followed by a thin horizontal line extending to the right, aligned at the top of the column
+    A small uppercase label in dark green, letter-spaced (e.g., 'DAYS 1–5', 'DAYS 6–15', 'DAYS 16–20', 'LAUNCH DAY')
+    A large serif heading below it in dark green/black (e.g., Sketch, Build, Test, Ship)
+    A short 2-line description in muted grey sans-serif text explaining that stage
+    
+    Repeat this structure for 4 columns total, evenly spaced with equal gutters between them. Keep generous padding around the whole section. Typography should mix a serif font for headings (elegant, editorial) with a clean sans-serif for labels and body text — matching a premium, minimal design studio aesthetic. No borders or boxes around each column — just the dot-and-line divider at the top of each to visually separate them, Also add the above line to Launch day
+{% enddoc %}
+{% doc %}
+  @prompt
+    Create a 4-column horizontal timeline/process block on a soft pale mint-green background. Each column represents a stage and includes, top to bottom:
+    
+    A small filled dark green circle (bullet dot) followed by a thin horizontal line extending to the right, aligned at the top of the column
+    A small uppercase label in dark green, letter-spaced (e.g., 'DAYS 1–5', 'DAYS 6–15', 'DAYS 16–20', 'LAUNCH DAY')
+    A large serif heading below it in dark green/black (e.g., Sketch, Build, Test, Ship)
+    A short 2-line description in muted grey sans-serif text explaining that stage
+    
+    Repeat this structure for 4 columns total, evenly spaced with equal gutters between them. Keep generous padding around the whole section. Typography should mix a serif font for headings (elegant, editorial) with a clean sans-serif for labels and body text — matching a premium, minimal design studio aesthetic. No borders or boxes around each column — just the dot-and-line divider at the top of each to visually separate them
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-process-{{ ai_gen_id }} {
+    display: block;
+    box-sizing: border-box;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding }}px;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.heading_color }};
+  }
+
+  .ai-process-{{ ai_gen_id }} *,
+  .ai-process-{{ ai_gen_id }} *::before,
+  .ai-process-{{ ai_gen_id }} *::after {
+    box-sizing: border-box;
+  }
+
+  .ai-process-{{ ai_gen_id }}__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: {{ block.settings.column_gap }}px;
+    width: 100%;
+  }
+
+  .ai-process-{{ ai_gen_id }}__item {
+    min-width: 0;
+  }
+
+  .ai-process-{{ ai_gen_id }}__rule {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .ai-process-{{ ai_gen_id }}__dot {
+    display: block;
+    flex: 0 0 9px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: {{ block.settings.accent_color }};
+  }
+
+  .ai-process-{{ ai_gen_id }}__line {
+    display: block;
+    height: 1px;
+    flex: 1 1 auto;
+    background: {{ block.settings.accent_color }};
+    opacity: 0.58;
+  }
+
+  .ai-process-{{ ai_gen_id }}__label {
+    margin: 0 0 13px;
+    color: {{ block.settings.accent_color }};
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .ai-process-{{ ai_gen_id }}__heading {
+    margin: 0 0 12px;
+    color: {{ block.settings.heading_color }};
+    font-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+
+  .ai-process-{{ ai_gen_id }}__description {
+    margin: 0;
+    max-width: 28ch;
+    color: {{ block.settings.body_color }};
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    font-size: {{ block.settings.body_size }}px;
+    line-height: 1.65;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-process-{{ ai_gen_id }} {
+      width: 100%;
+      padding: {{ block.settings.section_padding | divided_by: 2 }}px 20px;
+    }
+
+    .ai-process-{{ ai_gen_id }}__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: 36px;
+      column-gap: 24px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .ai-process-{{ ai_gen_id }}__grid {
+      grid-template-columns: 1fr;
+      row-gap: 30px;
+    }
+
+    .ai-process-{{ ai_gen_id }}__rule {
+      margin-bottom: 16px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-process-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-process-{{ ai_gen_id }}__grid">
+    {% for i in (1..4) %}
+      {% liquid
+        assign label_key = 'stage_' | append: i | append: '_label'
+        assign heading_key = 'stage_' | append: i | append: '_heading'
+        assign description_key = 'stage_' | append: i | append: '_description'
+      %}
+      <article class="ai-process-{{ ai_gen_id }}__item">
+        <div class="ai-process-{{ ai_gen_id }}__rule" aria-hidden="true">
+          <span class="ai-process-{{ ai_gen_id }}__dot"></span>
+          <span class="ai-process-{{ ai_gen_id }}__line"></span>
+        </div>
+        {% if block.settings[label_key] != blank %}
+          <p class="ai-process-{{ ai_gen_id }}__label">{{ block.settings[label_key] | escape }}</p>
+        {% endif %}
+        {% if block.settings[heading_key] != blank %}
+          <h2 class="ai-process-{{ ai_gen_id }}__heading">{{ block.settings[heading_key] | escape }}</h2>
+        {% endif %}
+        {% if block.settings[description_key] != blank %}
+          <p class="ai-process-{{ ai_gen_id }}__description">{{ block.settings[description_key] | escape }}</p>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Process timeline",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Stage 1"
+    },
+    {
+      "type": "text",
+      "id": "stage_1_label",
+      "label": "Label",
+      "default": "Days 1–5"
+    },
+    {
+      "type": "text",
+      "id": "stage_1_heading",
+      "label": "Heading",
+      "default": "Sketch"
+    },
+    {
+      "type": "textarea",
+      "id": "stage_1_description",
+      "label": "Description",
+      "default": "We shape the initial idea into a clear creative direction."
+    },
+    {
+      "type": "header",
+      "content": "Stage 2"
+    },
+    {
+      "type": "text",
+      "id": "stage_2_label",
+      "label": "Label",
+      "default": "Days 6–15"
+    },
+    {
+      "type": "text",
+      "id": "stage_2_heading",
+      "label": "Heading",
+      "default": "Build"
+    },
+    {
+      "type": "textarea",
+      "id": "stage_2_description",
+      "label": "Description",
+      "default": "We bring the chosen concept to life with care and craft."
+    },
+    {
+      "type": "header",
+      "content": "Stage 3"
+    },
+    {
+      "type": "text",
+      "id": "stage_3_label",
+      "label": "Label",
+      "default": "Days 16–20"
+    },
+    {
+      "type": "text",
+      "id": "stage_3_heading",
+      "label": "Heading",
+      "default": "Test"
+    },
+    {
+      "type": "textarea",
+      "id": "stage_3_description",
+      "label": "Description",
+      "default": "We refine every detail and make sure it works beautifully."
+    },
+    {
+      "type": "header",
+      "content": "Stage 4"
+    },
+    {
+      "type": "text",
+      "id": "stage_4_label",
+      "label": "Label",
+      "default": "Launch day"
+    },
+    {
+      "type": "text",
+      "id": "stage_4_heading",
+      "label": "Heading",
+      "default": "Ship"
+    },
+    {
+      "type": "textarea",
+      "id": "stage_4_description",
+      "label": "Description",
+      "default": "We launch the finished experience and hand it over to you."
+    },
+    {
+      "type": "header",
+      "content": "Design"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 12,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#EAF4EE"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#074F3B"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#17392F"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body color",
+      "default": "#4B5C55"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Process timeline"
+    }
+  ],
+  "tag": null,
+  "class": "process-timeline-block"
+}
+{% endschema %}

@@ -1,0 +1,95 @@
+{% doc %}
+  @prompt
+    Create a Custom Voting Block with 4 options 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-voting-{{ ai_gen_id }} {
+    display: block;
+    box-sizing: border-box;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: 28px;
+    color: #000000;
+    background: #ffffff;
+    border: 1px solid #d8d8d8;
+  }
+  .ai-voting-{{ ai_gen_id }}__heading { margin: 0 0 8px; color: #000000; font-size: clamp(22px, 3vw, 32px); line-height: 1.15; }
+  .ai-voting-{{ ai_gen_id }}__description { margin: 0 0 20px; color: #383838; line-height: 1.5; }
+  .ai-voting-{{ ai_gen_id }}__choices { display: grid; gap: 10px; margin: 0 0 16px; padding: 0; border: 0; }
+  .ai-voting-{{ ai_gen_id }}__choice { display: flex; align-items: center; gap: 11px; min-height: 48px; padding: 11px 14px; border: 1px solid #767676; cursor: pointer; }
+  .ai-voting-{{ ai_gen_id }}__choice:has(input:checked) { border-color: #000000; background: #f2f2f2; }
+  .ai-voting-{{ ai_gen_id }}__choice input { width: 18px; height: 18px; margin: 0; accent-color: #000000; flex: 0 0 auto; }
+  .ai-voting-{{ ai_gen_id }}__choice span { color: #000000; line-height: 1.4; }
+  .ai-voting-{{ ai_gen_id }}__submit { min-height: 46px; padding: 12px 24px; border: 2px solid #000000; border-radius: 0; background: #000000; color: #ffffff; font: inherit; font-weight: 600; cursor: pointer; }
+  .ai-voting-{{ ai_gen_id }}__submit:hover { background: #383838; border-color: #383838; }
+  .ai-voting-{{ ai_gen_id }}__submit:focus-visible, .ai-voting-{{ ai_gen_id }}__choice:focus-within { outline: 3px solid #383838; outline-offset: 3px; }
+  .ai-voting-{{ ai_gen_id }}__message { margin: 14px 0 0; color: #000000; font-weight: 600; }
+  @media (max-width: 749px) { .ai-voting-{{ ai_gen_id }} { padding: 20px; width: 100%; } }
+{% endstyle %}
+
+<voting-block-{{ ai_gen_id }} class="ai-voting-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <form class="ai-voting-{{ ai_gen_id }}__form" action="{{ block.settings.results_link | default: request.path }}" method="get">
+    {% if block.settings.question != blank %}<h2 class="ai-voting-{{ ai_gen_id }}__heading">{{ block.settings.question | escape }}</h2>{% endif %}
+    {% if block.settings.description != blank %}<p class="ai-voting-{{ ai_gen_id }}__description">{{ block.settings.description | escape }}</p>{% endif %}
+    <fieldset class="ai-voting-{{ ai_gen_id }}__choices">
+      <legend class="visually-hidden">{{ block.settings.question | escape }}</legend>
+      {% for i in (1..4) %}
+        {% assign option_key = 'option_' | append: i %}
+        {% assign option_value = block.settings[option_key] %}
+        {% if option_value != blank %}
+          <label class="ai-voting-{{ ai_gen_id }}__choice">
+            <input type="radio" name="vote_{{ ai_gen_id }}" value="{{ option_value | escape }}" required>
+            <span>{{ option_value | escape }}</span>
+          </label>
+        {% endif %}
+      {% endfor %}
+    </fieldset>
+    <button class="ai-voting-{{ ai_gen_id }}__submit" type="submit">{{ block.settings.button_label | escape }}</button>
+    <p class="ai-voting-{{ ai_gen_id }}__message" role="status" aria-live="polite" hidden>{{ block.settings.thanks_message | escape }}</p>
+  </form>
+</voting-block-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    const tagName = 'voting-block-{{ ai_gen_id }}';
+    if (customElements.get(tagName)) return;
+    class VotingBlock extends HTMLElement {
+      connectedCallback() {
+        const form = this.querySelector('form');
+        const message = this.querySelector('[role="status"]');
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          if (!form.reportValidity()) return;
+          form.querySelectorAll('input, button').forEach((control) => { control.disabled = true; });
+          message.hidden = false;
+        });
+      }
+    }
+    customElements.define(tagName, VotingBlock);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom voting block",
+  "settings": [
+    { "type": "header", "content": "Poll content" },
+    { "type": "text", "id": "question", "label": "Question", "default": "Which option do you prefer?" },
+    { "type": "text", "id": "description", "label": "Description", "default": "Choose one option and submit your vote." },
+    { "type": "text", "id": "option_1", "label": "Option 1", "default": "Option one" },
+    { "type": "text", "id": "option_2", "label": "Option 2", "default": "Option two" },
+    { "type": "text", "id": "option_3", "label": "Option 3", "default": "Option three" },
+    { "type": "text", "id": "option_4", "label": "Option 4", "default": "Option four" },
+    { "type": "header", "content": "Submission" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Submit vote" },
+    { "type": "text", "id": "thanks_message", "label": "Confirmation message", "default": "Thank you for voting!" },
+    { "type": "url", "id": "results_link", "label": "Vote destination link" },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 }
+  ],
+  "presets": [{ "name": "Custom voting block" }],
+  "tag": null,
+  "class": "custom-voting-block"
+}
+{% endschema %}

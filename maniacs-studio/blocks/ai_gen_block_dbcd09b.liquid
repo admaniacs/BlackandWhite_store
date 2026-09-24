@@ -1,0 +1,49 @@
+{% doc %}
+  @prompt
+    create a fully customizable badge/tag, make the desktop width fit, make it fit in basis of the text
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% style %}
+.ai-badge-{{ ai_gen_id }} { display: block; width: fit-content; max-width: 100%; text-align: {{ block.settings.alignment }}; }
+.ai-badge-{{ ai_gen_id }}__label { display: inline-flex; align-items: center; justify-content: center; gap: .4em; max-width: 100%; padding: {{ block.settings.vertical_padding }}px {{ block.settings.horizontal_padding }}px; color: {{ block.settings.text_color }}; background-color: {{ block.settings.background_color }}; border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }}; border-radius: {{ block.settings.corner_radius }}px; font-family: {{ block.settings.badge_font.family }}, {{ block.settings.badge_font.fallback_families }}; font-size: {{ block.settings.font_size }}px; font-weight: {{ block.settings.font_weight }}; line-height: 1.2; letter-spacing: {{ block.settings.letter_spacing }}px; text-transform: {{ block.settings.text_transform }}; text-align: center; text-decoration: none; overflow-wrap: anywhere; box-sizing: border-box; }
+.ai-badge-{{ ai_gen_id }}__icon { display: inline-flex; width: {{ block.settings.icon_size }}px; height: {{ block.settings.icon_size }}px; flex: 0 0 {{ block.settings.icon_size }}px; }
+.ai-badge-{{ ai_gen_id }}__icon svg { width: 100%; height: 100%; fill: currentColor; }
+{% endstyle %}
+<div class="ai-badge-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+{% if block.settings.badge_link != blank %}<a class="ai-badge-{{ ai_gen_id }}__label" href="{{ block.settings.badge_link }}" {% if block.settings.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{% else %}<span class="ai-badge-{{ ai_gen_id }}__label">{% endif %}
+{% if block.settings.show_icon %}<span class="ai-badge-{{ ai_gen_id }}__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1 14.2-4.2-4.1 1.4-1.4 2.8 2.7 5.8-5.8 1.4 1.4-7.2 7.2Z"/></svg></span>{% endif %}
+<span>{{ block.settings.badge_text | escape }}</span>
+{% if block.settings.badge_link != blank %}</a>{% else %}</span>{% endif %}
+</div>
+{% schema %}
+{
+  "name": "Custom badge or tag",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "badge_text", "label": "Badge text", "default": "New arrival" },
+    { "type": "checkbox", "id": "show_icon", "label": "Show check icon", "default": false },
+    { "type": "url", "id": "badge_link", "label": "Badge link" },
+    { "type": "checkbox", "id": "open_new_tab", "label": "Open link in new tab", "default": false },
+    { "type": "select", "id": "alignment", "label": "Alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }], "default": "left" },
+    { "type": "header", "content": "Appearance" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#000000" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "border_color", "label": "Border", "default": "#000000" },
+    { "type": "range", "id": "border_width", "label": "Border width", "min": 0, "max": 6, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "horizontal_padding", "label": "Horizontal padding", "min": 4, "max": 40, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "vertical_padding", "label": "Vertical padding", "min": 2, "max": 24, "step": 2, "unit": "px", "default": 6 },
+    { "type": "header", "content": "Typography" },
+    { "type": "font_picker", "id": "badge_font", "label": "Font", "default": "anonymous_pro_n4" },
+    { "type": "range", "id": "font_size", "label": "Font size", "min": 10, "max": 32, "step": 1, "unit": "px", "default": 14 },
+    { "type": "select", "id": "font_weight", "label": "Font weight", "options": [{ "value": "400", "label": "Regular" }, { "value": "500", "label": "Medium" }, { "value": "600", "label": "Semibold" }, { "value": "700", "label": "Bold" }], "default": "500" },
+    { "type": "range", "id": "letter_spacing", "label": "Letter spacing", "min": 0, "max": 3, "step": 0.5, "unit": "px", "default": 0 },
+    { "type": "select", "id": "text_transform", "label": "Text case", "options": [{ "value": "none", "label": "As entered" }, { "value": "uppercase", "label": "Uppercase" }, { "value": "lowercase", "label": "Lowercase" }, { "value": "capitalize", "label": "Capitalize" }], "default": "none" },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 10, "max": 24, "step": 2, "unit": "px", "default": 14 },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 }
+  ],
+  "presets": [{ "name": "Custom badge or tag" }],
+  "tag": null,
+  "class": "custom-badge-tag"
+}
+{% endschema %}

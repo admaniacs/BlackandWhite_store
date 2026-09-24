@@ -1,0 +1,217 @@
+{% doc %}
+  @prompt
+    Generate a small Photo holder shaped Laptop and Mobile phone, like the laptop and mobile phone is frame, the laptop and mobile phone will hold different pictures, the mobile phone and laptop should be layered like in back laptop and infront at the right side mobile phone , in the holder, the attaching photo should should be show fully like the photo size is big it should automatically resize full picture to the frames size  
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-device-gallery-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    min-height: 310px;
+    color: {{ block.settings.frame_color }};
+  }
+
+  .ai-device-gallery-{{ ai_gen_id }}__stage {
+    position: relative;
+    width: 100%;
+    min-height: 310px;
+  }
+
+  .ai-device-gallery-{{ ai_gen_id }}__laptop {
+    position: absolute;
+    left: 2%;
+    top: 8%;
+    width: 74%;
+    z-index: 1;
+  }
+
+  .ai-device-gallery-{{ ai_gen_id }}__screen {
+    aspect-ratio: 16 / 10;
+    padding: 10px;
+    overflow: hidden;
+    background: {{ block.settings.frame_color }};
+    border-radius: 14px 14px 5px 5px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, .18);
+  }
+
+  .ai-device-gallery-{{ ai_gen_id }}__laptop-image {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #f2f2f2;
+    border-radius: 4px;
+  }
+
+  .ai-device-gallery-{{ ai_gen_id }}__laptop-image img,
+  .ai-device-gallery-{{ ai_gen_id }}__phone-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .ai-device-gallery-{{ ai_gen_id }}__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f2f2f2;
+  }
+
+  .ai-device-gallery-{{ ai_gen_id }}__placeholder svg {
+    display: block;
+    width: 70%;
+    height: 70%;
+    color: #777;
+  }
+
+  .ai-device-gallery-{{ ai_gen_id }}__base {
+    height: 13px;
+    margin: 0 -4.5% 0;
+    background: linear-gradient(to bottom, {{ block.settings.frame_color }}, #777);
+    border-radius: 2px 2px 16px 16px;
+    box-shadow: 0 12px 16px rgba(0, 0, 0, .16);
+  }
+
+  .ai-device-gallery-{{ ai_gen_id }}__phone {
+    position: absolute;
+    right: 3%;
+    top: 25%;
+    width: 25%;
+    height: 70%;
+    z-index: 2;
+    padding: 8px;
+    background: {{ block.settings.frame_color }};
+    border-radius: 24px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, .24);
+  }
+
+  .ai-device-gallery-{{ ai_gen_id }}__phone-camera {
+    position: absolute;
+    z-index: 1;
+    top: 4px;
+    left: 50%;
+    width: 30%;
+    height: 7px;
+    transform: translateX(-50%);
+    border-radius: 0 0 7px 7px;
+    background: {{ block.settings.frame_color }};
+  }
+
+  .ai-device-gallery-{{ ai_gen_id }}__phone-image {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #f2f2f2;
+    border-radius: 17px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-device-gallery-{{ ai_gen_id }} {
+      width: 100%;
+      min-height: 245px;
+    }
+
+    .ai-device-gallery-{{ ai_gen_id }}__stage {
+      min-height: 245px;
+    }
+
+    .ai-device-gallery-{{ ai_gen_id }}__screen {
+      padding: 7px;
+      border-radius: 10px 10px 4px 4px;
+    }
+
+    .ai-device-gallery-{{ ai_gen_id }}__base {
+      height: 9px;
+    }
+
+    .ai-device-gallery-{{ ai_gen_id }}__phone {
+      padding: 6px;
+      border-radius: 17px;
+    }
+
+    .ai-device-gallery-{{ ai_gen_id }}__phone-image {
+      border-radius: 12px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-device-gallery-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-device-gallery-{{ ai_gen_id }}__stage">
+    <div class="ai-device-gallery-{{ ai_gen_id }}__laptop">
+      <div class="ai-device-gallery-{{ ai_gen_id }}__screen">
+        <div class="ai-device-gallery-{{ ai_gen_id }}__laptop-image">
+          {% if block.settings.laptop_image != blank %}
+            <img src="{{ block.settings.laptop_image | image_url: width: 1600 }}" alt="{{ block.settings.laptop_image.alt | escape }}" loading="lazy" width="{{ block.settings.laptop_image.width }}" height="{{ block.settings.laptop_image.height }}">
+          {% else %}
+            <div class="ai-device-gallery-{{ ai_gen_id }}__placeholder">{{ 'image' | placeholder_svg_tag }}<span>Choose a laptop photo</span></div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="ai-device-gallery-{{ ai_gen_id }}__base"></div>
+    </div>
+    <div class="ai-device-gallery-{{ ai_gen_id }}__phone" aria-label="Mobile phone photo frame">
+      <span class="ai-device-gallery-{{ ai_gen_id }}__phone-camera" aria-hidden="true"></span>
+      <div class="ai-device-gallery-{{ ai_gen_id }}__phone-image">
+        {% if block.settings.phone_image != blank %}
+          <img src="{{ block.settings.phone_image | image_url: width: 800 }}" alt="{{ block.settings.phone_image.alt | escape }}" loading="lazy" width="{{ block.settings.phone_image.width }}" height="{{ block.settings.phone_image.height }}">
+        {% else %}
+          <div class="ai-device-gallery-{{ ai_gen_id }}__placeholder">{{ 'image' | placeholder_svg_tag }}<span>Choose a phone photo</span></div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Laptop and phone photos",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Photos"
+    },
+    {
+      "type": "image_picker",
+      "id": "laptop_image",
+      "label": "Laptop photo"
+    },
+    {
+      "type": "image_picker",
+      "id": "phone_image",
+      "label": "Phone photo"
+    },
+    {
+      "type": "header",
+      "content": "Frame style"
+    },
+    {
+      "type": "color",
+      "id": "frame_color",
+      "label": "Frame color",
+      "default": "#222222"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Laptop and phone photos"
+    }
+  ],
+  "tag": null,
+  "class": "device-gallery-block"
+}
+{% endschema %}

@@ -1,0 +1,103 @@
+{% doc %}
+  @prompt
+    Create a Tag/Badge as eyebrow and use the text "THEME 01"
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-eyebrow-badge-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+  }
+
+  .ai-eyebrow-badge-{{ ai_gen_id }}__label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 12px;
+    background-color: {{ block.settings.badge_background }};
+    color: {{ block.settings.badge_text_color }};
+    border: 1px solid {{ block.settings.badge_border_color }};
+    border-radius: {{ block.settings.corner_radius }}px;
+    font-family: {{ settings.type_accent_font.family }}, {{ settings.type_accent_font.fallback_families }};
+    font-size: {{ block.settings.text_size }}px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+{% endstyle %}
+
+<div class="ai-eyebrow-badge-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <span class="ai-eyebrow-badge-{{ ai_gen_id }}__label">{{ block.settings.badge_text | escape }}</span>
+</div>
+
+{% schema %}
+{
+  "name": "Eyebrow badge",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "THEME 01"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "badge_background",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "badge_border_color",
+      "label": "Border",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Eyebrow badge"
+    }
+  ],
+  "tag": null,
+  "class": "eyebrow-badge-block"
+}
+{% endschema %}

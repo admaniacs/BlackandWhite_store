@@ -1,0 +1,188 @@
+{% doc %}
+  @prompt
+    create a block of Text rotator
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-text-rotator-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    color: {{ block.settings.text_color }};
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    font-size: {{ block.settings.font_size }}px;
+    line-height: 1.3;
+    text-align: {{ block.settings.alignment }};
+  }
+
+  .ai-text-rotator-{{ ai_gen_id }}__line {
+    margin: 0;
+  }
+
+  .ai-text-rotator-{{ ai_gen_id }}__item[hidden] {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-text-rotator-{{ ai_gen_id }} {
+      width: 100%;
+      font-size: {{ block.settings.mobile_font_size }}px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-text-rotator-{{ ai_gen_id }}__item {
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+<text-rotator-{{ ai_gen_id }} class="ai-text-rotator-{{ ai_gen_id }}" data-interval="{{ block.settings.interval | times: 1000 }}" {{ block.shopify_attributes }}>
+  <p class="ai-text-rotator-{{ ai_gen_id }}__line" aria-live="polite" aria-atomic="true">
+    {% assign text_items = block.settings.rotator_text | newline_to_br | split: '<br />' %}
+    {% assign first_item_found = false %}
+    {% for item in text_items %}
+      {% assign clean_item = item | strip %}
+      {% if clean_item != blank %}
+        {% if first_item_found == false %}
+          <span class="ai-text-rotator-{{ ai_gen_id }}__item">{{ clean_item | escape }}</span>
+          {% assign first_item_found = true %}
+        {% else %}
+          <span class="ai-text-rotator-{{ ai_gen_id }}__item" hidden>{{ clean_item | escape }}</span>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    {% unless first_item_found %}
+      <span class="ai-text-rotator-{{ ai_gen_id }}__item">Add lines of text in block settings</span>
+    {% endunless %}
+  </p>
+</text-rotator-{{ ai_gen_id }}>
+
+<script>
+  (() => {
+    const tagName = 'text-rotator-{{ ai_gen_id }}';
+    if (customElements.get(tagName)) return;
+
+    class TextRotator extends HTMLElement {
+      connectedCallback() {
+        this.items = Array.from(this.querySelectorAll('.ai-text-rotator-{{ ai_gen_id }}__item'));
+        this.index = 0;
+        this.intervalId = null;
+        if (this.items.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        this.start();
+        this.addEventListener('mouseenter', () => this.stop());
+        this.addEventListener('mouseleave', () => this.start());
+        this.addEventListener('focusin', () => this.stop());
+        this.addEventListener('focusout', () => this.start());
+      }
+
+      start() {
+        if (this.intervalId || document.hidden) return;
+        const delay = Number(this.dataset.interval) || 3000;
+        this.intervalId = window.setInterval(() => {
+          this.items[this.index].hidden = true;
+          this.index = (this.index + 1) % this.items.length;
+          this.items[this.index].hidden = false;
+        }, delay);
+      }
+
+      stop() {
+        window.clearInterval(this.intervalId);
+        this.intervalId = null;
+      }
+
+      disconnectedCallback() {
+        this.stop();
+      }
+    }
+
+    customElements.define(tagName, TextRotator);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Text rotator",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "textarea",
+      "id": "rotator_text",
+      "label": "Rotating lines",
+      "default": "Discover our latest collection\nDesigned for everyday living\nFind something you love"
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "Change every",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Desktop font size",
+      "min": 12,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "label": "Mobile font size",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#074F3B"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text rotator"
+    }
+  ],
+  "tag": null,
+  "class": "text-rotator-block"
+}
+{% endschema %}

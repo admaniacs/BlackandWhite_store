@@ -1,0 +1,261 @@
+{% doc %}
+  @prompt
+    Create an accordion-style FAQ/features section titled 'Our six obsessions' in a large, elegant serif font (dark green, italic-friendly serif like Canela or Playfair Display), left-aligned. Add a small subtext on the right side, aligned with the title, reading 'Tap any one to see why it matters.' in a light grey sans-serif font.
+    
+    Below the title, create a vertical accordion list with 6 numbered items (01–06), each using two-digit serif numerals in light grey on the left, followed by the item title in large serif font (e.g., Speed, Typography, The small screen, No-code control, Conversion, and a 6th item).
+    
+    The first item ('01 Speed') should be expanded by default with a solid dark green background, white serif heading text, and white body copy below it explaining the point in 1-2 sentences. Include a minus (–) icon on the right side of the expanded item.
+    
+    All other items should be collapsed, shown as plain rows with a thin light-grey divider line between them, black/dark serif text, and a plus (+) icon on the right aligned to the same position as the minus icon.
+    
+    Style: minimal, editorial, generous vertical padding between rows, no borders around the section itself, clean white background outside the expanded green panel. Typography should feel premium and slightly vintage-luxury (serif-forward), matching a sophisticated design studio aesthetic.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-obsessions-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    color: {{ block.settings.text_color }};
+    background: {{ block.settings.background_color }};
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 34px;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__title {
+    margin: 0;
+    color: {{ block.settings.heading_color }};
+    font-family: {{ settings.type_accent_font.family }}, {{ settings.type_accent_font.fallback_families }};
+    font-size: clamp(42px, 6vw, 76px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__intro {
+    flex: 0 0 auto;
+    margin: 0;
+    color: {{ block.settings.subtext_color }};
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__list {
+    display: grid;
+    gap: 0;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__item {
+    border-bottom: 1px solid {{ block.settings.divider_color }};
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__item[open] {
+    margin: 8px 0;
+    border: 0;
+    background: {{ block.settings.panel_color }};
+    color: {{ block.settings.panel_text_color }};
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__item:first-child {
+    border-top: 0;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__summary {
+    display: grid;
+    grid-template-columns: 54px 1fr 28px;
+    align-items: center;
+    gap: 20px;
+    min-height: 100px;
+    padding: 18px 8px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__number {
+    color: {{ block.settings.number_color }};
+    font-family: {{ settings.type_accent_font.family }}, {{ settings.type_accent_font.fallback_families }};
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__item[open] .ai-obsessions__number {
+    color: {{ block.settings.panel_text_color }};
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__label {
+    color: {{ block.settings.text_color }};
+    font-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    font-size: clamp(28px, 3.5vw, 42px);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__item[open] .ai-obsessions__label {
+    color: {{ block.settings.panel_text_color }};
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: currentColor;
+    font-family: {{ settings.type_body_font.family }}, sans-serif;
+    font-size: 25px;
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__icon--minus {
+    display: none;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__item[open] .ai-obsessions__icon--plus {
+    display: none;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__item[open] .ai-obsessions__icon--minus {
+    display: inline-flex;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__body {
+    padding: 0 64px 30px 82px;
+    max-width: 760px;
+    color: {{ block.settings.panel_text_color }};
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__body p {
+    margin: 0;
+  }
+
+  .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__summary:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -3px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__header {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__summary {
+      grid-template-columns: 36px 1fr 24px;
+      gap: 12px;
+      min-height: 78px;
+      padding: 14px 10px;
+    }
+
+    .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__number {
+      font-size: 19px;
+    }
+
+    .ai-obsessions-{{ ai_gen_id }} .ai-obsessions__body {
+      padding: 0 18px 24px 58px;
+      font-size: 14px;
+    }
+  }
+{% endstyle %}
+
+<obsessions-accordion-{{ ai_gen_id }} class="ai-obsessions-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-obsessions__header">
+    <h2 class="ai-obsessions__title">{{ block.settings.section_title | escape }}</h2>
+    <p class="ai-obsessions__intro">{{ block.settings.intro_text | escape }}</p>
+  </div>
+  <div class="ai-obsessions__list">
+    {% for i in (1..6) %}
+      {% liquid
+        assign title_key = 'item_' | append: i | append: '_title'
+        assign body_key = 'item_' | append: i | append: '_body'
+        assign item_title = block.settings[title_key]
+        assign item_body = block.settings[body_key]
+      %}
+      <details class="ai-obsessions__item" {% if forloop.first %}open{% endif %}>
+        <summary class="ai-obsessions__summary">
+          <span class="ai-obsessions__number">0{{ i }}</span>
+          <span class="ai-obsessions__label">{{ item_title | escape }}</span>
+          <span class="ai-obsessions__icon ai-obsessions__icon--plus" aria-hidden="true">+</span>
+          <span class="ai-obsessions__icon ai-obsessions__icon--minus" aria-hidden="true">−</span>
+        </summary>
+        <div class="ai-obsessions__body">{{ item_body }}</div>
+      </details>
+    {% endfor %}
+  </div>
+</obsessions-accordion-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    const tagName = 'obsessions-accordion-{{ ai_gen_id }}';
+    if (customElements.get(tagName)) return;
+    class ObsessionsAccordion extends HTMLElement {
+      connectedCallback() {
+        this.items = Array.from(this.querySelectorAll('.ai-obsessions__item'));
+        this.items.forEach((item) => {
+          item.addEventListener('toggle', () => {
+            if (item.open) {
+              this.items.forEach((other) => {
+                if (other !== item) other.open = false;
+              });
+            }
+          });
+        });
+      }
+    }
+    customElements.define(tagName, ObsessionsAccordion);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Our six obsessions",
+  "settings": [
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "text", "id": "section_title", "label": "Title", "default": "Our six obsessions" },
+    { "type": "text", "id": "intro_text", "label": "Subtext", "default": "Tap any one to see why it matters." },
+    { "type": "color", "id": "background_color", "label": "Section background", "default": "#FFFFFF" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#074F3B" },
+    { "type": "color", "id": "text_color", "label": "Row text", "default": "#171717" },
+    { "type": "color", "id": "subtext_color", "label": "Subtext color", "default": "#666666" },
+    { "type": "color", "id": "number_color", "label": "Number color", "default": "#777777" },
+    { "type": "color", "id": "divider_color", "label": "Divider color", "default": "#D9D9D9" },
+    { "type": "color", "id": "panel_color", "label": "Expanded background", "default": "#074F3B" },
+    { "type": "color", "id": "panel_text_color", "label": "Expanded text", "default": "#FFFFFF" },
+    { "type": "header", "content": "Accordion content" },
+    { "type": "text", "id": "item_1_title", "label": "01 title", "default": "Speed" },
+    { "type": "richtext", "id": "item_1_body", "label": "01 description", "default": "<p>Every second matters. We design fast, focused experiences that help people find what they need and move forward with confidence.</p>" },
+    { "type": "text", "id": "item_2_title", "label": "02 title", "default": "Typography" },
+    { "type": "richtext", "id": "item_2_body", "label": "02 description", "default": "<p>Type sets the tone before a word is read. Thoughtful typography brings clarity, character, and a distinctive voice to every page.</p>" },
+    { "type": "text", "id": "item_3_title", "label": "03 title", "default": "The small screen" },
+    { "type": "richtext", "id": "item_3_body", "label": "03 description", "default": "<p>Good design meets people where they are. We make every detail feel considered, comfortable, and effortless on mobile.</p>" },
+    { "type": "text", "id": "item_4_title", "label": "04 title", "default": "No-code control" },
+    { "type": "richtext", "id": "item_4_body", "label": "04 description", "default": "<p>Creative teams should be free to keep creating. Flexible tools make it easy to shape, refine, and evolve a storefront without friction.</p>" },
+    { "type": "text", "id": "item_5_title", "label": "05 title", "default": "Conversion" },
+    { "type": "richtext", "id": "item_5_body", "label": "05 description", "default": "<p>Beautiful experiences should work hard, too. Clear journeys and purposeful details turn interest into meaningful action.</p>" },
+    { "type": "text", "id": "item_6_title", "label": "06 title", "default": "The finishing touch" },
+    { "type": "richtext", "id": "item_6_body", "label": "06 description", "default": "<p>Care lives in the details. A final pass for rhythm, consistency, and craft is what makes a digital experience feel complete.</p>" }
+  ],
+  "presets": [
+    { "name": "Our six obsessions" }
+  ],
+  "tag": null,
+  "class": "obsessions-accordion-block"
+}
+{% endschema %}

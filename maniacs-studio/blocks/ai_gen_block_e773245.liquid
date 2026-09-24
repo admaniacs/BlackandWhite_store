@@ -1,0 +1,130 @@
+{% doc %}
+  @prompt
+    Create A Header Block with Constant text "We’re maniacs
+    about" and a text rotator motion with words {{Details, Speed, Typography, Conversion, Your store}} ., Give Rotating words a custom font section and a Underline
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  {{ block.settings.rotating_font | font_face: font_display: 'swap' }}
+
+  .ai-rotating-header-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    color: {{ block.settings.text_color }};
+    font-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    font-size: {{ block.settings.font_size }}px;
+    line-height: 1.05;
+    text-align: {{ block.settings.alignment }};
+  }
+
+  .ai-rotating-header-{{ ai_gen_id }}__heading {
+    margin: 0;
+    font: inherit;
+    font-weight: 400;
+  }
+
+  .ai-rotating-header-{{ ai_gen_id }}__fixed,
+  .ai-rotating-header-{{ ai_gen_id }}__word {
+    display: block;
+  }
+
+  .ai-rotating-header-{{ ai_gen_id }}__word {
+    min-height: 1.1em;
+    color: {{ block.settings.accent_color }};
+    font-family: {{ block.settings.rotating_font.family }}, {{ block.settings.rotating_font.fallback_families }};
+    font-style: {{ block.settings.rotating_font.style }};
+    font-weight: {{ block.settings.rotating_font.weight }};
+    text-decoration: {% if block.settings.underline_word %}underline{% else %}none{% endif %};
+    text-decoration-color: {{ block.settings.underline_color }};
+    text-decoration-thickness: {{ block.settings.underline_thickness }}px;
+    text-underline-offset: {{ block.settings.underline_offset }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-rotating-header-{{ ai_gen_id }} {
+      font-size: {{ block.settings.mobile_font_size }}px;
+    }
+  }
+{% endstyle %}
+
+<rotating-header-{{ ai_gen_id }} class="ai-rotating-header-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <h2 class="ai-rotating-header-{{ ai_gen_id }}__heading">
+    <span class="ai-rotating-header-{{ ai_gen_id }}__fixed">{{ block.settings.fixed_text | escape }}</span>
+    <span class="ai-rotating-header-{{ ai_gen_id }}__word" aria-live="polite">{{ block.settings.word_one | escape }}</span>
+  </h2>
+  <span class="ai-rotating-header-{{ ai_gen_id }}__words" hidden>
+    <span>{{ block.settings.word_one | escape }}</span>
+    <span>{{ block.settings.word_two | escape }}</span>
+    <span>{{ block.settings.word_three | escape }}</span>
+    <span>{{ block.settings.word_four | escape }}</span>
+    <span>{{ block.settings.word_five | escape }}</span>
+  </span>
+</rotating-header-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    var elementName = 'rotating-header-{{ ai_gen_id }}';
+    if (customElements.get(elementName)) return;
+
+    class RotatingHeader{{ ai_gen_id }} extends HTMLElement {
+      connectedCallback() {
+        if (this.initialized) return;
+        this.initialized = true;
+        this.output = this.querySelector('.ai-rotating-header-{{ ai_gen_id }}__word');
+        this.words = Array.from(this.querySelectorAll('.ai-rotating-header-{{ ai_gen_id }}__words span')).map(function(item) {
+          return item.textContent.trim();
+        }).filter(Boolean);
+        this.index = 0;
+        this.delay = {{ block.settings.rotation_delay | times: 1000 }};
+        this.timer = window.setInterval(() => {
+          if (this.words.length < 2 || document.hidden) return;
+          this.index = (this.index + 1) % this.words.length;
+          this.output.textContent = this.words[this.index];
+        }, this.delay);
+      }
+
+      disconnectedCallback() {
+        if (this.timer) window.clearInterval(this.timer);
+        this.initialized = false;
+      }
+    }
+
+    customElements.define(elementName, RotatingHeader{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Rotating header",
+  "settings": [
+    { "type": "text", "id": "fixed_text", "label": "Fixed text", "default": "We’re maniacs about" },
+    { "type": "text", "id": "word_one", "label": "Word 1", "default": "Details" },
+    { "type": "text", "id": "word_two", "label": "Word 2", "default": "Speed" },
+    { "type": "text", "id": "word_three", "label": "Word 3", "default": "Typography" },
+    { "type": "text", "id": "word_four", "label": "Word 4", "default": "Conversion" },
+    { "type": "text", "id": "word_five", "label": "Word 5", "default": "Your store" },
+    { "type": "range", "id": "rotation_delay", "label": "Rotation interval", "min": 2, "max": 10, "step": 1, "unit": "s", "default": 3 },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "font_size", "label": "Font size", "min": 24, "max": 100, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "mobile_font_size", "label": "Mobile font size", "min": 20, "max": 60, "step": 2, "unit": "px", "default": 36 },
+    {
+      "type": "select", "id": "alignment", "label": "Alignment",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" } ],
+      "default": "left"
+    },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#074F3B" },
+    { "type": "color", "id": "accent_color", "label": "Rotating word color", "default": "#074F3B" },
+    { "type": "header", "content": "Rotating word style" },
+    { "type": "font_picker", "id": "rotating_font", "label": "Custom font", "default": "dm_serif_text_n4" },
+    { "type": "checkbox", "id": "underline_word", "label": "Show underline", "default": true },
+    { "type": "color", "id": "underline_color", "label": "Underline color", "default": "#074F3B" },
+    { "type": "range", "id": "underline_thickness", "label": "Underline thickness", "min": 1, "max": 6, "step": 1, "unit": "px", "default": 2 },
+    { "type": "range", "id": "underline_offset", "label": "Underline offset", "min": 0, "max": 12, "step": 2, "unit": "px", "default": 2 }
+  ],
+  "presets": [ { "name": "Rotating header" } ],
+  "tag": null,
+  "class": "rotating-header-block"
+}
+{% endschema %}

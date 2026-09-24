@@ -1,0 +1,163 @@
+{% doc %}
+  @prompt
+    create Feature strip / feature row
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-feature-strip-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    color: {{ block.settings.text_color }};
+    background: {{ block.settings.background_color }};
+    padding: {{ block.settings.vertical_padding }}px 0;
+  }
+
+  .ai-feature-strip-{{ ai_gen_id }}__inner {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.columns_desktop }}, minmax(0, 1fr));
+    gap: 1px;
+    background: {{ block.settings.divider_color }};
+    border: 1px solid {{ block.settings.divider_color }};
+  }
+
+  .ai-feature-strip-{{ ai_gen_id }}__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-width: 0;
+    padding: 22px 18px;
+    background: {{ block.settings.background_color }};
+    text-align: {{ block.settings.alignment }};
+  }
+
+  .ai-feature-strip-{{ ai_gen_id }}__icon {
+    display: flex;
+    flex: 0 0 28px;
+    align-items: center;
+    justify-content: center;
+    color: {{ block.settings.icon_color }};
+  }
+
+  .ai-feature-strip-{{ ai_gen_id }}__icon svg {
+    display: block;
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .ai-feature-strip-{{ ai_gen_id }}__copy {
+    min-width: 0;
+  }
+
+  .ai-feature-strip-{{ ai_gen_id }}__title {
+    margin: 0;
+    color: {{ block.settings.text_color }};
+    font-size: 15px;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+
+  .ai-feature-strip-{{ ai_gen_id }}__text {
+    margin: 4px 0 0;
+    color: {{ block.settings.text_color }};
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-feature-strip-{{ ai_gen_id }}__inner {
+      grid-template-columns: repeat({{ block.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+
+    .ai-feature-strip-{{ ai_gen_id }}__item {
+      gap: 10px;
+      padding: 18px 12px;
+    }
+
+    .ai-feature-strip-{{ ai_gen_id }}__title {
+      font-size: 14px;
+    }
+
+    .ai-feature-strip-{{ ai_gen_id }}__text {
+      font-size: 12px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-feature-strip-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-feature-strip-{{ ai_gen_id }}__inner">
+    {% for i in (1..4) %}
+      {% liquid
+        assign title_key = 'feature_' | append: i | append: '_title'
+        assign text_key = 'feature_' | append: i | append: '_text'
+        assign icon_key = 'feature_' | append: i | append: '_icon'
+        assign title = block.settings[title_key]
+        assign text = block.settings[text_key]
+        assign icon = block.settings[icon_key]
+      %}
+      {% if title != blank or text != blank %}
+        <div class="ai-feature-strip-{{ ai_gen_id }}__item">
+          {% if icon != 'none' %}
+            <span class="ai-feature-strip-{{ ai_gen_id }}__icon" aria-hidden="true">
+              {% case icon %}
+                {% when 'shipping' %}<svg viewBox="0 0 24 24"><path d="M3 7h11v11H3z"/><path d="M14 11h4l3 3v4h-7z"/><circle cx="7.5" cy="18" r="1.5"/><circle cx="18" cy="18" r="1.5"/></svg>
+                {% when 'returns' %}<svg viewBox="0 0 24 24"><path d="M4 11a8 8 0 1 1 2 6"/><path d="M4 5v6h6"/><path d="M12 8v4l3 2"/></svg>
+                {% when 'secure' %}<svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/></svg>
+                {% when 'support' %}<svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13h3v6H6a2 2 0 0 1-2-2zM20 13h-3v6h1a2 2 0 0 0 2-2z"/><path d="M17 19a5 5 0 0 1-5 2"/></svg>
+                {% when 'quality' %}<svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>
+              {% endcase %}
+            </span>
+          {% endif %}
+          <div class="ai-feature-strip-{{ ai_gen_id }}__copy">
+            {% if title != blank %}<h3 class="ai-feature-strip-{{ ai_gen_id }}__title">{{ title | escape }}</h3>{% endif %}
+            {% if text != blank %}<p class="ai-feature-strip-{{ ai_gen_id }}__text">{{ text | escape }}</p>{% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Feature strip",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "select", "id": "columns_desktop", "label": "Columns on desktop", "options": [{ "value": "2", "label": "2" }, { "value": "3", "label": "3" }, { "value": "4", "label": "4" }], "default": "4" },
+    { "type": "select", "id": "columns_mobile", "label": "Columns on mobile", "options": [{ "value": "1", "label": "1" }, { "value": "2", "label": "2" }], "default": "2" },
+    { "type": "select", "id": "alignment", "label": "Text alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "left" },
+    { "type": "range", "id": "vertical_padding", "label": "Vertical padding", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 12 },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#000000" },
+    { "type": "color", "id": "icon_color", "label": "Icon", "default": "#000000" },
+    { "type": "color", "id": "divider_color", "label": "Divider", "default": "#D9D9D9" },
+    { "type": "header", "content": "Feature 1" },
+    { "type": "select", "id": "feature_1_icon", "label": "Icon", "options": [{ "value": "shipping", "label": "Shipping" }, { "value": "returns", "label": "Returns" }, { "value": "secure", "label": "Secure payment" }, { "value": "support", "label": "Support" }, { "value": "quality", "label": "Quality" }, { "value": "none", "label": "No icon" }], "default": "shipping" },
+    { "type": "text", "id": "feature_1_title", "label": "Title", "default": "Complimentary shipping" },
+    { "type": "text", "id": "feature_1_text", "label": "Description", "default": "On qualifying orders" },
+    { "type": "header", "content": "Feature 2" },
+    { "type": "select", "id": "feature_2_icon", "label": "Icon", "options": [{ "value": "shipping", "label": "Shipping" }, { "value": "returns", "label": "Returns" }, { "value": "secure", "label": "Secure payment" }, { "value": "support", "label": "Support" }, { "value": "quality", "label": "Quality" }, { "value": "none", "label": "No icon" }], "default": "returns" },
+    { "type": "text", "id": "feature_2_title", "label": "Title", "default": "Easy returns" },
+    { "type": "text", "id": "feature_2_text", "label": "Description", "default": "Simple, stress-free exchanges" },
+    { "type": "header", "content": "Feature 3" },
+    { "type": "select", "id": "feature_3_icon", "label": "Icon", "options": [{ "value": "shipping", "label": "Shipping" }, { "value": "returns", "label": "Returns" }, { "value": "secure", "label": "Secure payment" }, { "value": "support", "label": "Support" }, { "value": "quality", "label": "Quality" }, { "value": "none", "label": "No icon" }], "default": "secure" },
+    { "type": "text", "id": "feature_3_title", "label": "Title", "default": "Secure checkout" },
+    { "type": "text", "id": "feature_3_text", "label": "Description", "default": "Shop with confidence" },
+    { "type": "header", "content": "Feature 4" },
+    { "type": "select", "id": "feature_4_icon", "label": "Icon", "options": [{ "value": "shipping", "label": "Shipping" }, { "value": "returns", "label": "Returns" }, { "value": "secure", "label": "Secure payment" }, { "value": "support", "label": "Support" }, { "value": "quality", "label": "Quality" }, { "value": "none", "label": "No icon" }], "default": "support" },
+    { "type": "text", "id": "feature_4_title", "label": "Title", "default": "Here to help" },
+    { "type": "text", "id": "feature_4_text", "label": "Description", "default": "Friendly customer support" }
+  ],
+  "presets": [{ "name": "Feature strip" }],
+  "tag": null,
+  "class": "feature-strip-block"
+}
+{% endschema %}

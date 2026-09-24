@@ -1,0 +1,145 @@
+{% doc %}
+  @prompt
+    Create a custom block called 'Roadmap Cards' for my Shopify theme that displays a 3-column grid of 'what's coming next' cards.
+    
+    Each card should include:
+    
+    A large index number (e.g., 02, 03, 04) in a serif font, top-left, positioned above the title
+    A status badge in the top-right corner with a bordered/outlined style (e.g., 'IN BUILD', 'SKETCHING', 'YOU DECIDE') — make this a text field so I can edit it per card
+    A background image or textured pattern fill for the top portion of the card
+    A codename-style title (e.g., 'Codename "Ember"') in a serif font
+    A short one-line description below the title
+    A 4-step horizontal progress tracker at the bottom (Sketch → Build → Test → Launch) with a progress bar/line above it that visually fills based on how far along the item is — make the fill percentage editable per card
+    
+    Design requirements:
+    
+    Dark green background (
+    #0F3D2E or similar) for the whole section, with a slightly lighter green for each card
+    White/cream text for contrast
+    Card corners should be sharp or slightly rounded, minimal border
+    Section should support 3-4 cards, each fully editable as blocks (title, description, status badge text, progress step, background image)
+    Make it responsive — stack to 1 column on mobile
+    
+    Add this as a reusable section with blocks so I can add/remove/reorder cards from the theme customizer., The Photo Is covered by Gradient too much , Fix the 'Roadmap Cards' section — the card image is being cropped/cut off and the text is overlapping on top of it. Please update:
+    
+    Image display: The uploaded photo should display in full within its container — use object-fit: contain or resize the image container to match the photo's actual aspect ratio, instead of cropping it with object-fit: cover. The full image (including the top portion that's currently cut off) needs to be visible.
+    Layout order: The image should be its own distinct block at the top of the card, fully separated from the text content below it — not overlapping. Below the image (not on top of it), stack in this order:
+    The codename-style title (e.g., 'Codename "North"') in a serif italic font
+    A short one-line description directly underneath the title
+    Then the Sketch → Build → Test → Launch progress tracker at the bottom
+    Spacing: Add clear padding/margin between the image block and the text block so they don't visually collide — right now the title is overlapping into the bottom edge of the photo.
+    
+    Keep the index number (04) and status badge ('YOU DECIDE') positioned on top of the image as they currently are, but make sure the image container is tall enough to show the full photo without cutting off the top or sides."
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-roadmap-{{ ai_gen_id }} { display:block; width:{{ block.settings.desktop_width_percent }}%; max-width:100%; box-sizing:border-box; padding:44px 32px; background:{{ block.settings.section_color }}; color:{{ block.settings.text_color }}; }
+  .ai-roadmap-{{ ai_gen_id }} *,.ai-roadmap-{{ ai_gen_id }} *::before,.ai-roadmap-{{ ai_gen_id }} *::after { box-sizing:border-box; }
+  .ai-roadmap-{{ ai_gen_id }}__inner { max-width:1200px; margin:0 auto; }
+  .ai-roadmap-{{ ai_gen_id }}__heading { margin:0 0 28px; color:{{ block.settings.text_color }}; font-family:{{ settings.type_heading_font.family }},{{ settings.type_heading_font.fallback_families }}; font-size:clamp(30px,4vw,52px); line-height:1.08; font-weight:400; }
+  .ai-roadmap-{{ ai_gen_id }}__grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+  .ai-roadmap-{{ ai_gen_id }}__card { display:flex; flex-direction:column; min-width:0; min-height:420px; overflow:hidden; background:{{ block.settings.card_color }}; border:1px solid rgba(247,244,234,.22); }
+  .ai-roadmap-{{ ai_gen_id }}__art { position:relative; width:100%; min-height:180px; aspect-ratio:4 / 3; padding:16px; flex:0 0 auto; background-color:{{ block.settings.card_color }}; background-image:repeating-linear-gradient(135deg,rgba(246,242,225,.13) 0,rgba(246,242,225,.13) 1px,transparent 1px,transparent 12px); background-size:cover; background-position:center; }
+  .ai-roadmap-{{ ai_gen_id }}__art img { display:block; width:100%; height:100%; object-fit:contain; object-position:center; }
+  .ai-roadmap-{{ ai_gen_id }}__top { position:absolute; z-index:1; top:16px; left:16px; right:16px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; color:#F7F4EA; text-shadow:0 1px 5px rgba(0,0,0,.8); }
+  .ai-roadmap-{{ ai_gen_id }}__number { font-family:{{ settings.type_accent_font.family }},{{ settings.type_accent_font.fallback_families }}; font-size:42px; line-height:1; }
+  .ai-roadmap-{{ ai_gen_id }}__badge { border:1px solid rgba(247,244,234,.9); padding:7px 9px; background:rgba(15,61,46,.72); font-size:10px; line-height:1.2; letter-spacing:.12em; text-transform:uppercase; text-shadow:none; }
+  .ai-roadmap-{{ ai_gen_id }}__body { display:flex; flex:1; flex-direction:column; padding:22px; }
+  .ai-roadmap-{{ ai_gen_id }}__title { margin:0 0 8px; color:{{ block.settings.text_color }}; font-family:{{ settings.type_heading_font.family }},{{ settings.type_heading_font.fallback_families }}; font-size:25px; line-height:1.2; font-weight:400; font-style:italic; }
+  .ai-roadmap-{{ ai_gen_id }}__description { margin:0; color:{{ block.settings.text_color }}; opacity:.9; font-size:13px; line-height:1.5; }
+  .ai-roadmap-{{ ai_gen_id }}__progress { margin-top:auto; padding-top:28px; }
+  .ai-roadmap-{{ ai_gen_id }}__track { height:2px; margin-bottom:11px; background:rgba(247,244,234,.3); }
+  .ai-roadmap-{{ ai_gen_id }}__fill { display:block; width:var(--progress); height:100%; background:{{ block.settings.progress_color }}; }
+  .ai-roadmap-{{ ai_gen_id }}__steps { display:grid; grid-template-columns:repeat(4,1fr); gap:4px; }
+  .ai-roadmap-{{ ai_gen_id }}__step { opacity:.65; font-size:10px; line-height:1.3; }
+  .ai-roadmap-{{ ai_gen_id }}__step--active { opacity:1; }
+  @media screen and (max-width:749px) { .ai-roadmap-{{ ai_gen_id }} { padding:32px 18px; } .ai-roadmap-{{ ai_gen_id }}__grid { grid-template-columns:1fr; } .ai-roadmap-{{ ai_gen_id }}__card { min-height:0; } .ai-roadmap-{{ ai_gen_id }}__body { padding:18px; } .ai-roadmap-{{ ai_gen_id }}__steps { grid-template-columns:repeat(2,1fr); row-gap:6px; } .ai-roadmap-{{ ai_gen_id }}__step, .ai-roadmap-{{ ai_gen_id }}__badge { font-size:11px; } .ai-roadmap-{{ ai_gen_id }}__description { font-size:14px; } .ai-roadmap-{{ ai_gen_id }}__number { font-size:34px; } }
+{% endstyle %}
+
+<div class="ai-roadmap-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-roadmap-{{ ai_gen_id }}__inner">
+    {% if block.settings.heading != blank %}<h2 class="ai-roadmap-{{ ai_gen_id }}__heading">{{ block.settings.heading | escape }}</h2>{% endif %}
+    <div class="ai-roadmap-{{ ai_gen_id }}__grid">
+      {% for i in (1..3) %}
+        {% liquid
+          assign enabled_key = 'card_' | append: i | append: '_enabled'
+          assign number_key = 'card_' | append: i | append: '_number'
+          assign status_key = 'card_' | append: i | append: '_status'
+          assign image_key = 'card_' | append: i | append: '_image'
+          assign title_key = 'card_' | append: i | append: '_title'
+          assign description_key = 'card_' | append: i | append: '_description'
+          assign percent_key = 'card_' | append: i | append: '_percent'
+          assign step_key = 'card_' | append: i | append: '_step'
+          assign enabled = block.settings[enabled_key]
+          assign index_number = block.settings[number_key]
+          assign status = block.settings[status_key]
+          assign card_image = block.settings[image_key]
+          assign title = block.settings[title_key]
+          assign description = block.settings[description_key]
+          assign percent = block.settings[percent_key]
+          assign active_steps = block.settings[step_key] | plus: 0
+        %}
+        {% if enabled %}
+          <article class="ai-roadmap-{{ ai_gen_id }}__card">
+            <div class="ai-roadmap-{{ ai_gen_id }}__art">
+              {% if card_image %}<img src="{{ card_image | image_url: width: 1200 }}" alt="{{ card_image.alt | escape }}" loading="lazy" width="{{ card_image.width }}" height="{{ card_image.height }}">{% else %}<div class="ai-roadmap-{{ ai_gen_id }}__placeholder">{{ 'image' | placeholder_svg_tag }}</div>{% endif %}
+              <div class="ai-roadmap-{{ ai_gen_id }}__top"><span class="ai-roadmap-{{ ai_gen_id }}__number">{{ index_number | escape }}</span>{% if status != blank %}<span class="ai-roadmap-{{ ai_gen_id }}__badge">{{ status | escape }}</span>{% endif %}</div>
+            </div>
+            <div class="ai-roadmap-{{ ai_gen_id }}__body">
+              <div>{% if title != blank %}<h3 class="ai-roadmap-{{ ai_gen_id }}__title">{{ title | escape }}</h3>{% endif %}{% if description != blank %}<p class="ai-roadmap-{{ ai_gen_id }}__description">{{ description | escape }}</p>{% endif %}</div>
+              <div class="ai-roadmap-{{ ai_gen_id }}__progress" role="img" aria-label="Progress: {{ percent }} percent, step {{ active_steps }} of 4">
+                <div class="ai-roadmap-{{ ai_gen_id }}__track"><span class="ai-roadmap-{{ ai_gen_id }}__fill" style="--progress:{{ percent }}%;"></span></div>
+                <div class="ai-roadmap-{{ ai_gen_id }}__steps"><span class="ai-roadmap-{{ ai_gen_id }}__step{% if active_steps >= 1 %} ai-roadmap-{{ ai_gen_id }}__step--active{% endif %}">Sketch</span><span class="ai-roadmap-{{ ai_gen_id }}__step{% if active_steps >= 2 %} ai-roadmap-{{ ai_gen_id }}__step--active{% endif %}">Build</span><span class="ai-roadmap-{{ ai_gen_id }}__step{% if active_steps >= 3 %} ai-roadmap-{{ ai_gen_id }}__step--active{% endif %}">Test</span><span class="ai-roadmap-{{ ai_gen_id }}__step{% if active_steps >= 4 %} ai-roadmap-{{ ai_gen_id }}__step--active{% endif %}">Launch</span></div>
+              </div>
+            </div>
+          </article>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Roadmap cards",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What’s coming next" },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "color", "id": "section_color", "label": "Section background", "default": "#0F3D2E" },
+    { "type": "color", "id": "card_color", "label": "Card background", "default": "#17513F" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#F7F4EA" },
+    { "type": "color", "id": "progress_color", "label": "Progress fill", "default": "#D8C99B" },
+    { "type": "header", "content": "Card 1" },
+    { "type": "checkbox", "id": "card_1_enabled", "label": "Show card", "default": true },
+    { "type": "text", "id": "card_1_number", "label": "Index number", "default": "02" },
+    { "type": "text", "id": "card_1_status", "label": "Status badge", "default": "IN BUILD" },
+    { "type": "image_picker", "id": "card_1_image", "label": "Background image" },
+    { "type": "text", "id": "card_1_title", "label": "Title", "default": "Codename “Ember”" },
+    { "type": "text", "id": "card_1_description", "label": "Description", "default": "A little more room to make it yours." },
+    { "type": "range", "id": "card_1_percent", "label": "Progress fill", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "select", "id": "card_1_step", "label": "Current step", "options": [{ "value": "1", "label": "Sketch" }, { "value": "2", "label": "Build" }, { "value": "3", "label": "Test" }, { "value": "4", "label": "Launch" }], "default": "2" },
+    { "type": "header", "content": "Card 2" },
+    { "type": "checkbox", "id": "card_2_enabled", "label": "Show card", "default": true },
+    { "type": "text", "id": "card_2_number", "label": "Index number", "default": "03" },
+    { "type": "text", "id": "card_2_status", "label": "Status badge", "default": "SKETCHING" },
+    { "type": "image_picker", "id": "card_2_image", "label": "Background image" },
+    { "type": "text", "id": "card_2_title", "label": "Title", "default": "Codename “Moss”" },
+    { "type": "text", "id": "card_2_description", "label": "Description", "default": "A fresh direction is taking shape." },
+    { "type": "range", "id": "card_2_percent", "label": "Progress fill", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 25 },
+    { "type": "select", "id": "card_2_step", "label": "Current step", "options": [{ "value": "1", "label": "Sketch" }, { "value": "2", "label": "Build" }, { "value": "3", "label": "Test" }, { "value": "4", "label": "Launch" }], "default": "1" },
+    { "type": "header", "content": "Card 3" },
+    { "type": "checkbox", "id": "card_3_enabled", "label": "Show card", "default": true },
+    { "type": "text", "id": "card_3_number", "label": "Index number", "default": "04" },
+    { "type": "text", "id": "card_3_status", "label": "Status badge", "default": "YOU DECIDE" },
+    { "type": "image_picker", "id": "card_3_image", "label": "Background image" },
+    { "type": "text", "id": "card_3_title", "label": "Title", "default": "Codename “North”" },
+    { "type": "text", "id": "card_3_description", "label": "Description", "default": "The next move is yours to shape." },
+    { "type": "range", "id": "card_3_percent", "label": "Progress fill", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 10 },
+    { "type": "select", "id": "card_3_step", "label": "Current step", "options": [{ "value": "1", "label": "Sketch" }, { "value": "2", "label": "Build" }, { "value": "3", "label": "Test" }, { "value": "4", "label": "Launch" }], "default": "1" }
+  ],
+  "presets": [{ "name": "Roadmap cards" }],
+  "tag": null,
+  "class": "roadmap-cards-block"
+}
+{% endschema %}
