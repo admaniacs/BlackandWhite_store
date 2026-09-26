@@ -34,7 +34,7 @@
       </div>
 
       <div style="display:flex;justify-content:flex-end;margin-top:24px">
-        <div style="width:320px">
+        <div class="bw-cart-summary" style="width:320px;max-width:100%">
           <div class="bw-summary-row"><span>{{ 'general.cart.subtotal' | t }}</span><span>{{ cart.total_price | money }}</span></div>
           <div class="bw-summary-total"><span class="bw-h3" style="font-size:18px">{{ 'general.cart.total' | t }}</span><span style="font:700 20px var(--font-ui)">{{ cart.total_price | money }}</span></div>
           <button type="submit" name="checkout" class="bw-btn bw-btn--block" style="margin-top:14px">{{ 'general.cart.checkout' | t }}</button>

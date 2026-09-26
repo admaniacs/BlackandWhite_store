@@ -1270,3 +1270,21 @@ body[data-custom-cursor="true"] * {
 
 /* ===== Utility ===== */
 .bw-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* ===== Phone layout fixes (sections with inline desktop grids) ===== */
+@media (max-width: 749px) {
+  .bw-lookbook-top { grid-template-columns: 1fr !important; }
+  .bw-lookbook-top__main { height: 420px !important; }
+  .bw-lookbook-top__side { grid-template-rows: none !important; grid-template-columns: 1fr 1fr; }
+  .bw-lookbook-top__side > * { aspect-ratio: 3 / 4; }
+  .bw-lookbook-row { grid-template-columns: 1fr !important; }
+  [data-bw-mobile-media] { height: 280px !important; border-left: 0 !important; }
+  .bw-split-media { grid-template-columns: 1fr !important; }
+  .bw-split-media > * { order: 0 !important; border-left: 0 !important; }
+  .bw-split-media > * + * { border-top: 1px solid var(--ink); }
+  .bw-cart-summary { width: 100% !important; }
+  /* Comfortable tap targets and no iOS zoom-on-focus */
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea { font-size: 16px; }
+  .bw-qty-stepper button { min-width: 44px; min-height: 44px; }
+  html, body { overflow-x: clip; }
+}

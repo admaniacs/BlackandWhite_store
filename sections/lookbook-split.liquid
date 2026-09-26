@@ -1,6 +1,6 @@
 <div class="bw-split-media" style="border-top:1px solid {{ section.settings.divider_color }};margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px">
   {%- for block in section.blocks -%}
-    <a href="{{ block.settings.link }}" class="bw-media-placeholder{% if block.settings.dark %} bw-media-placeholder--dark{% endif %}" style="height:380px;position:relative{% if forloop.index0 == 1 %};border-left:1px solid {{ section.settings.divider_color }}{% endif %}">
+    <a href="{{ block.settings.link }}" class="bw-media-placeholder{% if block.settings.dark %} bw-media-placeholder--dark{% endif %}" data-bw-mobile-media style="height:380px;position:relative{% if forloop.index0 == 1 %};border-left:1px solid {{ section.settings.divider_color }}{% endif %}">
       {%- if block.settings.image -%}
         <img src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
       {%- else -%}

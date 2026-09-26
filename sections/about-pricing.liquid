@@ -1,5 +1,5 @@
 <div style="display:grid;grid-template-columns:1fr 1.2fr;border-top:1px solid var(--ink);background:var(--paper);color:var(--ink);margin-top:{{ section.settings.padding_top }}px;margin-bottom:{{ section.settings.padding_bottom }}px" class="bw-split-media color-{{ section.settings.color_scheme }}">
-  <div class="bw-media-placeholder" style="height:400px;order:{% if section.settings.image_position == 'right' %}2{% else %}1{% endif %};{% if section.settings.image_position == 'right' %}border-left:1px solid var(--ink){% endif %}">
+  <div class="bw-media-placeholder" data-bw-mobile-media style="height:400px;order:{% if section.settings.image_position == 'right' %}2{% else %}1{% endif %};{% if section.settings.image_position == 'right' %}border-left:1px solid var(--ink){% endif %}">
     {%- if section.settings.image -%}
       <img src="{{ section.settings.image | image_url: width: 1000 }}" alt="" loading="lazy">
     {%- else -%}studio / mill photo · 1000×800{%- endif -%}

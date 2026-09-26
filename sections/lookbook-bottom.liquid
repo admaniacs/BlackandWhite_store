@@ -1,8 +1,8 @@
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:{{ section.settings.divider_color }};border-top:1px solid {{ section.settings.divider_color }};margin-bottom:{{ section.settings.padding_bottom }}px">
+<div class="bw-lookbook-row" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:{{ section.settings.divider_color }};border-top:1px solid {{ section.settings.divider_color }};margin-bottom:{{ section.settings.padding_bottom }}px">
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when 'image' -%}
-        <div class="bw-media-placeholder{% if block.settings.dark %} bw-media-placeholder--dark{% endif %}" style="height:300px">
+        <div class="bw-media-placeholder{% if block.settings.dark %} bw-media-placeholder--dark{% endif %}" style="height:300px" data-bw-mobile-media>
           {%- if block.settings.image -%}
             <img src="{{ block.settings.image | image_url: width: 900 }}" alt="" loading="lazy">
           {%- else -%}{{ block.settings.placeholder_label }}{%- endif -%}
