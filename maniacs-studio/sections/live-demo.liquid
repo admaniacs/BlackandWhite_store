@@ -77,6 +77,10 @@
     display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
     border: 1px solid #d0d0d0; border-radius: 999px; color: #111; text-decoration: none; font-size: 14px;
   }
+  .live-demo-{{ sid }}__pass { gap: 8px; border-style: dashed; background: transparent; font: inherit; font-size: 13px; cursor: pointer; }
+  .live-demo-{{ sid }}__pass-label { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .6; }
+  .live-demo-{{ sid }}__pass code { font-family: ui-monospace, Menlo, Consolas, monospace; font-weight: 600; }
+  .live-demo-{{ sid }}__pass [data-copy-state] { padding: 4px 8px; background: #111; color: #fff; border-radius: 999px; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
   .live-demo-{{ sid }}__btn--primary { background: {{ section.settings.button_color }}; border-color: {{ section.settings.button_color }}; color: #fff; }
 
   @media screen and (max-width: 749px) {
@@ -138,7 +142,14 @@
         {%- if section.settings.meta != blank -%}<span class="live-demo-{{ sid }}__meta">{{ section.settings.meta | escape }}</span>{%- endif -%}
       </p>
       <div class="live-demo-{{ sid }}__actions">
-        <a class="live-demo-{{ sid }}__btn" href="{{ demo_url }}" target="_blank" rel="noopener">{{ section.settings.view_label | escape }}</a>
+        {%- if section.settings.password != blank -%}
+          <button type="button" class="live-demo-{{ sid }}__btn live-demo-{{ sid }}__pass" data-copy-pass="{{ section.settings.password | escape }}" aria-label="Copy demo password">
+            <span class="live-demo-{{ sid }}__pass-label">Password</span>
+            <code>{{ section.settings.password | escape }}</code>
+            <span data-copy-state>Copy</span>
+          </button>
+        {%- endif -%}
+        <a class="live-demo-{{ sid }}__btn" href="{{ demo_url }}" target="_blank" rel="noopener" data-open-demo>{{ section.settings.view_label | escape }} ↗</a>
         {%- if section.settings.buy_link != blank -%}
           <a class="live-demo-{{ sid }}__btn live-demo-{{ sid }}__btn--primary" href="{{ section.settings.buy_link }}">{{ section.settings.buy_label | escape }}</a>
         {%- endif -%}
@@ -158,6 +169,16 @@
     };
     buttons.forEach((b) => b.addEventListener('click', () => setView(b.dataset.viewBtn)));
     if (window.matchMedia('(max-width: 749px)').matches) setView('mobile');
+    const pass = root.querySelector('[data-copy-pass]');
+    const copy = async () => {
+      if (!pass) return;
+      try { await navigator.clipboard.writeText(pass.dataset.copyPass); } catch (e) { return; }
+      const state = pass.querySelector('[data-copy-state]');
+      state.textContent = 'Copied';
+      setTimeout(() => { state.textContent = 'Copy'; }, 1800);
+    };
+    pass?.addEventListener('click', copy);
+    root.querySelector('[data-open-demo]')?.addEventListener('click', copy);
   })();
 </script>
 
@@ -177,6 +198,7 @@
     { "type": "text", "id": "theme_name", "label": "Theme name", "default": "Black & White" },
     { "type": "text", "id": "meta", "label": "Small text next to name", "default": "Online Store 2.0" },
     { "type": "text", "id": "view_label", "label": "Open demo button", "default": "View demo" },
+    { "type": "text", "id": "password", "label": "Demo password", "default": "Demo-BW", "info": "Shown next to the button and copied when visitors open the demo." },
     { "type": "url", "id": "buy_link", "label": "Buy button link" },
     { "type": "text", "id": "buy_label", "label": "Buy button text", "default": "Buy theme" },
     { "type": "header", "content": "Layout" },

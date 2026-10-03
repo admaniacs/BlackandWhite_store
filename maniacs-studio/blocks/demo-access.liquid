@@ -1,0 +1,151 @@
+{%- liquid
+  assign bid = block.id | replace: '_', '' | downcase
+  assign demo_url = block.settings.demo_url | default: 'https://black-and-white-8fiua40n.myshopify.com/'
+  assign password = block.settings.password
+-%}
+
+{% style %}
+  .demo-access-{{ bid }} {
+    --da-ink: {{ block.settings.ink_color }};
+    --da-paper: {{ block.settings.paper_color }};
+    display: flex;
+    flex-direction: column;
+    align-items: {{ block.settings.alignment }};
+    gap: 8px;
+    width: 100%;
+    font-family: var(--font-body--family);
+  }
+  .demo-access-{{ bid }}__row {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 8px;
+    max-width: 100%;
+  }
+  .demo-access-{{ bid }}__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 22px;
+    border: 1px solid var(--da-ink);
+    background: var(--da-ink);
+    color: var(--da-paper);
+    font-size: 14px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background .2s, color .2s;
+  }
+  .demo-access-{{ bid }}__btn:hover { background: transparent; color: var(--da-ink); }
+  .demo-access-{{ bid }}__btn svg { width: 16px; height: 16px; flex: none; }
+  .demo-access-{{ bid }}__pass {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 8px 0 14px;
+    border: 1px dashed var(--da-ink);
+    color: var(--da-ink);
+    background: transparent;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .demo-access-{{ bid }}__label { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+  .demo-access-{{ bid }}__code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+  .demo-access-{{ bid }}__copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 8px;
+    background: var(--da-ink);
+    color: var(--da-paper);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .demo-access-{{ bid }}__copy svg { width: 12px; height: 12px; }
+  .demo-access-{{ bid }}__hint { margin: 0; font-size: 12px; color: var(--da-ink); opacity: .75; }
+  .demo-access-{{ bid }}__live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  @media screen and (max-width: 749px) {
+    .demo-access-{{ bid }}__row { width: 100%; }
+    .demo-access-{{ bid }}__btn, .demo-access-{{ bid }}__pass { flex: 1 1 100%; justify-content: center; }
+  }
+{% endstyle %}
+
+<div class="demo-access-{{ bid }}" data-demo-access data-password="{{ password | escape }}" {{ block.shopify_attributes }}>
+  <div class="demo-access-{{ bid }}__row">
+    <a class="demo-access-{{ bid }}__btn" href="{{ demo_url }}" target="_blank" rel="noopener" data-demo-open>
+      {{ block.settings.label | escape }}
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg>
+    </a>
+    {%- if password != blank -%}
+      <button type="button" class="demo-access-{{ bid }}__pass" data-demo-copy aria-label="Copy demo password {{ password | escape }}">
+        <span class="demo-access-{{ bid }}__label">Password</span>
+        <span class="demo-access-{{ bid }}__code">{{ password | escape }}</span>
+        <span class="demo-access-{{ bid }}__copy" data-demo-copy-label>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5" y="5" width="8" height="8"/><path d="M3 11V3h8"/></svg>
+          Copy
+        </span>
+      </button>
+    {%- endif -%}
+  </div>
+  {%- if password != blank and block.settings.hint != blank -%}
+    <p class="demo-access-{{ bid }}__hint">{{ block.settings.hint | escape }}</p>
+  {%- endif -%}
+  <span class="demo-access-{{ bid }}__live" aria-live="polite" data-demo-live></span>
+</div>
+
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    if (!root || !root.matches('[data-demo-access]')) return;
+    const pw = root.dataset.password;
+    const label = root.querySelector('[data-demo-copy-label]');
+    const live = root.querySelector('[data-demo-live]');
+    const copy = async () => {
+      if (!pw) return;
+      try { await navigator.clipboard.writeText(pw); } catch (e) { return; }
+      if (label) {
+        const old = label.innerHTML;
+        label.textContent = 'Copied';
+        setTimeout(() => { label.innerHTML = old; }, 1800);
+      }
+      if (live) live.textContent = 'Password copied';
+    };
+    root.querySelector('[data-demo-copy]')?.addEventListener('click', copy);
+    root.querySelector('[data-demo-open]')?.addEventListener('click', copy);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "View demo + password",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "label", "label": "Button text", "default": "View live demo" },
+    { "type": "url", "id": "demo_url", "label": "Demo store URL" },
+    { "type": "text", "id": "password", "label": "Demo password", "default": "Demo-BW" },
+    { "type": "text", "id": "hint", "label": "Hint under button", "default": "Password copies automatically — paste it on the demo's entry page." },
+    {
+      "type": "select", "id": "alignment", "label": "Alignment", "default": "flex-start",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ]
+    },
+    { "type": "color", "id": "ink_color", "label": "Main colour", "default": "#074F3B" },
+    { "type": "color", "id": "paper_color", "label": "Button text colour", "default": "#FFFFFF" }
+  ],
+  "presets": [{ "name": "View demo + password" }]
+}
+{% endschema %}
