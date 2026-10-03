@@ -78,7 +78,6 @@
     border: 1px solid #d0d0d0; border-radius: 999px; color: #111; text-decoration: none; font-size: 14px;
   }
   .live-demo-{{ sid }}__btn--primary { background: {{ section.settings.button_color }}; border-color: {{ section.settings.button_color }}; color: #fff; }
-  .live-demo-{{ sid }}__note { margin: 12px 0 0; text-align: center; font-size: 13px; opacity: .7; }
 
   @media screen and (max-width: 749px) {
     .live-demo-{{ sid }}__view--desktop { height: 420px; }
@@ -145,10 +144,6 @@
         {%- endif -%}
       </div>
     </div>
-
-    {%- if section.settings.password_note != blank -%}
-      <p class="live-demo-{{ sid }}__note">{{ section.settings.password_note | escape }}</p>
-    {%- endif -%}
   </div>
 </div>
 
@@ -184,7 +179,6 @@
     { "type": "text", "id": "view_label", "label": "Open demo button", "default": "View demo" },
     { "type": "url", "id": "buy_link", "label": "Buy button link" },
     { "type": "text", "id": "buy_label", "label": "Buy button text", "default": "Buy theme" },
-    { "type": "text", "id": "password_note", "label": "Note under bar" },
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "desktop_height", "label": "Desktop preview height", "min": 400, "max": 900, "step": 20, "unit": "px", "default": 640 },
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
