@@ -30,35 +30,40 @@
 
   .live-demo-{{ sid }}__stage { display: flex; justify-content: center; }
 
-  /* Desktop frame: renders the store at 1440px wide and scales it to fit */
   .live-demo-{{ sid }}__frame {
     position: relative; overflow: hidden; background: #fff;
-    border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,.35);
-    transition: width .35s ease, height .35s ease, border-radius .35s ease;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
   }
-  .live-demo-{{ sid }}[data-view="desktop"] .live-demo-{{ sid }}__frame {
-    width: 100%; height: var(--desktop-h, 640px);
+  .live-demo-{{ sid }}__screen {
+    height: 100%; overflow-y: auto; overscroll-behavior: contain;
+    scrollbar-width: thin; -webkit-overflow-scrolling: touch;
   }
-  .live-demo-{{ sid }}[data-view="desktop"] iframe {
-    width: 1440px; height: calc(var(--desktop-h, 640px) / var(--scale, 1));
-    transform: scale(var(--scale, 1)); transform-origin: 0 0;
+  .live-demo-{{ sid }}__screen img { display: block; width: 100%; height: auto; }
+  .live-demo-{{ sid }}__empty {
+    height: 100%; display: grid; place-items: center; padding: 24px;
+    color: #555; background: #f4f4f1; font-size: 14px; text-align: center;
   }
 
-  /* Phone frame */
-  .live-demo-{{ sid }}[data-view="mobile"] .live-demo-{{ sid }}__frame {
-    width: 390px; max-width: 100%; height: min(780px, 80vh);
+  .live-demo-{{ sid }}__view { display: none; }
+  .live-demo-{{ sid }}[data-view="desktop"] .live-demo-{{ sid }}__view--desktop,
+  .live-demo-{{ sid }}[data-view="mobile"] .live-demo-{{ sid }}__view--mobile { display: block; }
+
+  /* Desktop: browser window */
+  .live-demo-{{ sid }}__view--desktop { width: 100%; height: {{ section.settings.desktop_height }}px; border-radius: 12px; }
+  .live-demo-{{ sid }}__chrome {
+    display: flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px;
+    background: #ececec; border-bottom: 1px solid #ddd;
+  }
+  .live-demo-{{ sid }}__chrome span { width: 10px; height: 10px; border-radius: 50%; background: #c9c9c9; }
+  .live-demo-{{ sid }}__view--desktop .live-demo-{{ sid }}__screen { height: calc(100% - 32px); }
+
+  /* Phone: device frame */
+  .live-demo-{{ sid }}__view--mobile {
+    width: 375px; max-width: 100%; height: min(760px, 80vh);
     border: 10px solid #1b1b1b; border-radius: 40px;
   }
-  .live-demo-{{ sid }}[data-view="mobile"] iframe { width: 100%; height: 100%; transform: none; }
 
-  .live-demo-{{ sid }} iframe { display: block; border: 0; background: #fff; }
-
-  .live-demo-{{ sid }}__loading {
-    position: absolute; inset: 0; display: grid; place-items: center;
-    color: #555; font-size: 14px; background: #f4f4f1; pointer-events: none;
-    transition: opacity .3s;
-  }
-  .live-demo-{{ sid }}__frame.is-loaded .live-demo-{{ sid }}__loading { opacity: 0; }
+  .live-demo-{{ sid }}__hint { margin: 10px 0 0; text-align: center; font-size: 13px; opacity: .6; }
 
   .live-demo-{{ sid }}__bar {
     display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
@@ -66,7 +71,7 @@
     background: #fff; color: #111; border-radius: 999px;
   }
   .live-demo-{{ sid }}__name { margin: 0; font-size: 20px; font-weight: 600; }
-  .live-demo-{{ sid }}__meta { margin-left: 10px; font-size: 14px; opacity: .65; }
+  .live-demo-{{ sid }}__meta { margin-left: 10px; font-size: 14px; font-weight: 400; opacity: .65; }
   .live-demo-{{ sid }}__actions { display: flex; gap: 8px; }
   .live-demo-{{ sid }}__btn {
     display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
@@ -76,20 +81,14 @@
   .live-demo-{{ sid }}__note { margin: 12px 0 0; text-align: center; font-size: 13px; opacity: .7; }
 
   @media screen and (max-width: 749px) {
-    /* Phones have no room for a scaled desktop, so default to the phone view */
-    .live-demo-{{ sid }}[data-view="desktop"] .live-demo-{{ sid }}__frame { height: var(--desktop-h-mobile, 420px); }
+    .live-demo-{{ sid }}__view--desktop { height: 420px; }
     .live-demo-{{ sid }}__bar { border-radius: 20px; padding: 16px; justify-content: center; text-align: center; }
     .live-demo-{{ sid }}__actions { width: 100%; }
     .live-demo-{{ sid }}__btn { flex: 1; justify-content: center; }
   }
 {% endstyle %}
 
-<div
-  class="live-demo-{{ sid }}"
-  data-view="desktop"
-  style="--desktop-h: {{ section.settings.desktop_height }}px;"
-  data-live-demo
->
+<div class="live-demo-{{ sid }}" data-view="desktop" data-live-demo>
   <div class="live-demo-{{ sid }}__inner">
     {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
       <div class="live-demo-{{ sid }}__head">
@@ -110,16 +109,29 @@
     </div>
 
     <div class="live-demo-{{ sid }}__stage">
-      <div class="live-demo-{{ sid }}__frame" data-frame>
-        <div class="live-demo-{{ sid }}__loading">Loading live demo…</div>
-        <iframe
-          src="{{ demo_url }}"
-          title="{{ section.settings.theme_name | escape }} live demo"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
+      <div class="live-demo-{{ sid }}__frame live-demo-{{ sid }}__view live-demo-{{ sid }}__view--desktop">
+        <div class="live-demo-{{ sid }}__chrome" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="live-demo-{{ sid }}__screen" tabindex="0" aria-label="Desktop preview, scroll to explore">
+          {%- if section.settings.desktop_image != blank -%}
+            {{ section.settings.desktop_image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '800, 1200, 1600', sizes: '(min-width: 1200px) 1200px, 100vw', alt: section.settings.desktop_image.alt }}
+          {%- else -%}
+            <div class="live-demo-{{ sid }}__empty">Add a full-page desktop screenshot in the section settings.</div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="live-demo-{{ sid }}__frame live-demo-{{ sid }}__view live-demo-{{ sid }}__view--mobile">
+        <div class="live-demo-{{ sid }}__screen" tabindex="0" aria-label="Phone preview, scroll to explore">
+          {%- if section.settings.mobile_image != blank -%}
+            {{ section.settings.mobile_image | image_url: width: 750 | image_tag: loading: 'lazy', widths: '375, 750', sizes: '375px', alt: section.settings.mobile_image.alt }}
+          {%- else -%}
+            <div class="live-demo-{{ sid }}__empty">Add a full-page phone screenshot in the section settings.</div>
+          {%- endif -%}
+        </div>
       </div>
     </div>
+
+    <p class="live-demo-{{ sid }}__hint">Scroll inside the preview to explore the page.</p>
 
     <div class="live-demo-{{ sid }}__bar">
       <p class="live-demo-{{ sid }}__name">
@@ -144,27 +156,13 @@
   (() => {
     const root = document.currentScript.previousElementSibling;
     if (!root || !root.matches('[data-live-demo]')) return;
-    const frame = root.querySelector('[data-frame]');
-    const iframe = frame.querySelector('iframe');
     const buttons = root.querySelectorAll('[data-view-btn]');
-
-    const fit = () => {
-      if (root.dataset.view !== 'desktop') return;
-      root.style.setProperty('--scale', frame.clientWidth / 1440);
-    };
-
     const setView = (view) => {
       root.dataset.view = view;
       buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.viewBtn === view)));
-      requestAnimationFrame(fit);
     };
-
     buttons.forEach((b) => b.addEventListener('click', () => setView(b.dataset.viewBtn)));
-    iframe.addEventListener('load', () => frame.classList.add('is-loaded'));
-    new ResizeObserver(fit).observe(frame);
-
     if (window.matchMedia('(max-width: 749px)').matches) setView('mobile');
-    else fit();
   })();
 </script>
 
@@ -176,13 +174,17 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Try before you buy" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "See it live" },
-    { "type": "url", "id": "demo_url", "label": "Demo store URL", "info": "The storefront shown inside the preview." },
+    { "type": "header", "content": "Screenshots" },
+    { "type": "image_picker", "id": "desktop_image", "label": "Desktop full-page screenshot", "info": "A tall screenshot of the whole page at desktop width, e.g. 1440px wide." },
+    { "type": "image_picker", "id": "mobile_image", "label": "Phone full-page screenshot", "info": "A tall screenshot of the whole page at phone width, e.g. 390px wide." },
+    { "type": "header", "content": "Bar" },
+    { "type": "url", "id": "demo_url", "label": "Demo store URL", "info": "Opened in a new tab by the View demo button." },
     { "type": "text", "id": "theme_name", "label": "Theme name", "default": "Black & White" },
     { "type": "text", "id": "meta", "label": "Small text next to name", "default": "Online Store 2.0" },
     { "type": "text", "id": "view_label", "label": "Open demo button", "default": "View demo" },
     { "type": "url", "id": "buy_link", "label": "Buy button link" },
     { "type": "text", "id": "buy_label", "label": "Buy button text", "default": "Buy theme" },
-    { "type": "text", "id": "password_note", "label": "Note under preview" },
+    { "type": "text", "id": "password_note", "label": "Note under bar" },
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "desktop_height", "label": "Desktop preview height", "min": 400, "max": 900, "step": 20, "unit": "px", "default": 640 },
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
