@@ -55,6 +55,7 @@
   }
   .demo-access-{{ bid }}__label { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
   .demo-access-{{ bid }}__code {
+    user-select: all;
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-size: 14px;
     font-weight: 600;
@@ -83,17 +84,17 @@
 
 <div class="demo-access-{{ bid }}" data-demo-access data-password="{{ password | escape }}" {{ block.shopify_attributes }}>
   <div class="demo-access-{{ bid }}__row">
-    <a class="demo-access-{{ bid }}__btn" href="{{ demo_url }}" target="_blank" rel="noopener" data-demo-open>
+    <a class="demo-access-{{ bid }}__btn" href="{{ demo_url }}" target="_blank" rel="noopener" data-demo-open data-bw-copy="{{ password | escape }}">
       {{ block.settings.label | escape }}
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg>
     </a>
     {%- if password != blank -%}
-      <button type="button" class="demo-access-{{ bid }}__pass" data-demo-copy aria-label="Copy demo password {{ password | escape }}">
+      <button type="button" class="demo-access-{{ bid }}__pass" data-demo-copy data-bw-copy="{{ password | escape }}" aria-label="Copy demo password {{ password | escape }}">
         <span class="demo-access-{{ bid }}__label">Password</span>
         <span class="demo-access-{{ bid }}__code">{{ password | escape }}</span>
-        <span class="demo-access-{{ bid }}__copy" data-demo-copy-label>
+        <span class="demo-access-{{ bid }}__copy">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5" y="5" width="8" height="8"/><path d="M3 11V3h8"/></svg>
-          Copy
+          <span data-bw-state>Copy</span>
         </span>
       </button>
     {%- endif -%}
@@ -104,27 +105,7 @@
   <span class="demo-access-{{ bid }}__live" aria-live="polite" data-demo-live></span>
 </div>
 
-<script>
-  (() => {
-    const root = document.currentScript.previousElementSibling;
-    if (!root || !root.matches('[data-demo-access]')) return;
-    const pw = root.dataset.password;
-    const label = root.querySelector('[data-demo-copy-label]');
-    const live = root.querySelector('[data-demo-live]');
-    const copy = async () => {
-      if (!pw) return;
-      try { await navigator.clipboard.writeText(pw); } catch (e) { return; }
-      if (label) {
-        const old = label.innerHTML;
-        label.textContent = 'Copied';
-        setTimeout(() => { label.innerHTML = old; }, 1800);
-      }
-      if (live) live.textContent = 'Password copied';
-    };
-    root.querySelector('[data-demo-copy]')?.addEventListener('click', copy);
-    root.querySelector('[data-demo-open]')?.addEventListener('click', copy);
-  })();
-</script>
+<script>if(!window.bwCopy){window.bwCopy=function(t){var legacy=function(){var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0;pointer-events:none';document.body.appendChild(a);a.focus();a.select();a.setSelectionRange(0,t.length);var ok=false;try{ok=document.execCommand('copy')}catch(e){}a.remove();return ok};if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(t).then(function(){return true},function(){return legacy()})}return Promise.resolve(legacy())};document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-bw-copy]');if(!b)return;if(b.tagName!=='A')e.preventDefault();e.stopPropagation();window.bwCopy(b.getAttribute('data-bw-copy')).then(function(ok){var s=b.querySelector('[data-bw-state]');if(!s)return;var o=s.getAttribute('data-bw-label')||s.textContent;s.setAttribute('data-bw-label',o);s.textContent=ok?'Copied':'Press Ctrl+C';setTimeout(function(){s.textContent=o},1800)})},true)}</script>
 
 {% schema %}
 {
