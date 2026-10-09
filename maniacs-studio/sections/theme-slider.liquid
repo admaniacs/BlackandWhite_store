@@ -1,0 +1,463 @@
+{%- liquid
+  assign sid = section.id | replace: '_', '' | downcase
+  assign slide_count = section.blocks.size
+-%}
+
+{% style %}
+  .ts-{{ sid }} {
+    position: relative;
+    overflow: hidden;
+    font-family: var(--font-body--family);
+  }
+  .ts-{{ sid }}__track { display: grid; }
+  .ts-{{ sid }}__slide {
+    --s-bg: #ffffff; --s-text: #111111; --s-accent: #111111; --s-on-accent: #ffffff;
+    --s-line: color-mix(in srgb, var(--s-text) 18%, transparent);
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    min-height: clamp(560px, 86vh, 820px);
+    padding: 64px 0 120px;
+    background: var(--s-bg);
+    color: var(--s-text);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .7s ease, visibility 0s linear .7s;
+  }
+  .ts-{{ sid }}__slide.is-active { opacity: 1; visibility: visible; transition: opacity .7s ease, visibility 0s; z-index: 1; }
+  .ts-{{ sid }}__inner {
+    width: 100%;
+    max-width: var(--page-width, 1400px);
+    margin: 0 auto;
+    padding-inline: var(--page-margin, 40px);
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .ts-{{ sid }}__content { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .ts-{{ sid }}__slide.is-active .ts-{{ sid }}__content > * { animation: ts-rise-{{ sid }} .7s both; }
+  .ts-{{ sid }}__slide.is-active .ts-{{ sid }}__content > *:nth-child(2) { animation-delay: .06s; }
+  .ts-{{ sid }}__slide.is-active .ts-{{ sid }}__content > *:nth-child(3) { animation-delay: .12s; }
+  .ts-{{ sid }}__slide.is-active .ts-{{ sid }}__content > *:nth-child(4) { animation-delay: .18s; }
+  .ts-{{ sid }}__slide.is-active .ts-{{ sid }}__content > *:nth-child(n+5) { animation-delay: .24s; }
+  @keyframes ts-rise-{{ sid }} { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  .ts-{{ sid }}__ribbon {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 14px 7px 10px;
+    border-radius: 999px;
+    background: var(--s-accent); color: var(--s-on-accent);
+    font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+    text-decoration: none;
+  }
+  .ts-{{ sid }}__pulse { position: relative; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .ts-{{ sid }}__pulse::after {
+    content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid currentColor;
+    animation: ts-pulse-{{ sid }} 1.8s ease-out infinite;
+  }
+  @keyframes ts-pulse-{{ sid }} { from { transform: scale(.6); opacity: .9; } to { transform: scale(1.8); opacity: 0; } }
+  .ts-{{ sid }}__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .ts-{{ sid }}__badge { padding: 5px 10px; border: 1px solid currentColor; font-size: 11px; font-weight: 600; letter-spacing: .14em; }
+  .ts-{{ sid }}__eyebrow { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; opacity: .8; }
+  .ts-{{ sid }}__heading {
+    margin: 0;
+    font-size: clamp(2.6rem, 6vw, 5.25rem);
+    line-height: .98;
+    letter-spacing: -.01em;
+    color: var(--s-text);
+  }
+  .ts-{{ sid }}__heading em { color: var(--s-accent); font-style: italic; }
+  .ts-{{ sid }}__text { margin: 0; max-width: 44ch; font-size: 1.0625rem; line-height: 1.55; opacity: .85; }
+  .ts-{{ sid }}__tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .ts-{{ sid }}__tags li { padding: 5px 10px; border: 1px solid var(--s-line); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+  .ts-{{ sid }}__actions { display: flex; flex-wrap: wrap; align-items: stretch; gap: 10px; }
+  .ts-{{ sid }}__btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    min-height: 52px; padding: 0 22px;
+    border: 1px solid var(--s-text);
+    font-size: 13px; letter-spacing: .1em; text-transform: uppercase; text-decoration: none;
+    transition: background .2s, color .2s, border-color .2s;
+  }
+  .ts-{{ sid }}__btn svg { width: 15px; height: 15px; flex: none; }
+  .ts-{{ sid }}__btn--primary { background: var(--s-accent); border-color: var(--s-accent); color: var(--s-on-accent); }
+  .ts-{{ sid }}__btn--primary:hover { background: var(--s-text); border-color: var(--s-text); color: var(--s-bg); }
+  .ts-{{ sid }}__btn--ghost { background: transparent; color: var(--s-text); }
+  .ts-{{ sid }}__btn--ghost:hover { background: var(--s-text); color: var(--s-bg); }
+  .ts-{{ sid }}__price { display: inline-flex; gap: 8px; align-items: baseline; font-weight: 600; }
+  .ts-{{ sid }}__price s { font-weight: 400; opacity: .6; }
+  .ts-{{ sid }}__pass {
+    display: inline-flex; align-items: center; gap: 8px;
+    min-height: 52px; padding: 0 8px 0 14px;
+    border: 1px dashed var(--s-text); background: transparent; color: var(--s-text);
+    font: inherit; font-size: 12px; cursor: pointer;
+  }
+  .ts-{{ sid }}__pass code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; font-weight: 600; letter-spacing: .04em; }
+  .ts-{{ sid }}__pass span[data-bw-state] { padding: 5px 8px; background: var(--s-text); color: var(--s-bg); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+  .ts-{{ sid }}__note { margin: 0; font-size: 12px; opacity: .7; }
+
+  .ts-{{ sid }}__stage { position: relative; padding: 0 9% 9% 0; }
+  .ts-{{ sid }}__laptop { position: relative; }
+  .ts-{{ sid }}__screen {
+    aspect-ratio: 16 / 10; padding: 10px 10px 12px; overflow: hidden;
+    background: #1d1d1d; border-radius: 14px 14px 4px 4px;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .45);
+  }
+  .ts-{{ sid }}__screen > * { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; border-radius: 4px; background: #f2f2f2; }
+  .ts-{{ sid }}__base { height: 12px; margin: 0 -5%; background: linear-gradient(#cfcfcf, #9d9d9d); border-radius: 0 0 14px 14px; }
+  .ts-{{ sid }}__phone {
+    position: absolute; right: 0; bottom: 0; width: 24%;
+    aspect-ratio: 9 / 19; padding: 6px; overflow: hidden;
+    background: #1d1d1d; border-radius: 22px;
+    box-shadow: 0 24px 40px -14px rgba(0, 0, 0, .5);
+  }
+  .ts-{{ sid }}__phone > * { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; border-radius: 17px; background: #f2f2f2; }
+
+  .ts-{{ sid }}__controls {
+    position: absolute; left: 0; right: 0; bottom: 28px; z-index: 2;
+    max-width: var(--page-width, 1400px); margin: 0 auto; padding-inline: var(--page-margin, 40px);
+    display: flex; align-items: center; gap: 18px;
+    color: var(--ts-ctrl, #111111);
+    transition: color .5s;
+  }
+  .ts-{{ sid }}__count { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; letter-spacing: .08em; min-width: 52px; }
+  .ts-{{ sid }}__tabs { flex: 1; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 12px; }
+  .ts-{{ sid }}__tab {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+    padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer;
+    font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .6;
+  }
+  .ts-{{ sid }}__tab[aria-selected="true"] { opacity: 1; }
+  .ts-{{ sid }}__bar { position: relative; width: 100%; height: 2px; background: color-mix(in srgb, currentColor 25%, transparent); overflow: hidden; }
+  .ts-{{ sid }}__bar i { position: absolute; inset: 0; background: currentColor; transform: scaleX(0); transform-origin: left; }
+  .ts-{{ sid }}__tab[aria-selected="true"] .ts-{{ sid }}__bar i { transform: scaleX(1); }
+  .ts-{{ sid }}.is-playing .ts-{{ sid }}__tab[aria-selected="true"] .ts-{{ sid }}__bar i { animation: ts-fill-{{ sid }} var(--ts-delay, 7s) linear both; }
+  .ts-{{ sid }}.is-paused .ts-{{ sid }}__tab[aria-selected="true"] .ts-{{ sid }}__bar i { animation-play-state: paused; }
+  @keyframes ts-fill-{{ sid }} { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .ts-{{ sid }}__arrows { display: flex; gap: 6px; }
+  .ts-{{ sid }}__arrow {
+    display: grid; place-items: center; width: 42px; height: 42px;
+    border: 1px solid currentColor; border-radius: 50%; background: transparent; color: inherit; cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .ts-{{ sid }}__arrow:hover { background: currentColor; }
+  .ts-{{ sid }}__arrow:hover svg { color: var(--ts-ctrl-bg, #ffffff); }
+  .ts-{{ sid }}__arrow svg { width: 16px; height: 16px; }
+  .ts-{{ sid }} a:focus-visible, .ts-{{ sid }} button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+  .ts-{{ sid }}__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media screen and (max-width: 989px) {
+    .ts-{{ sid }}__inner { grid-template-columns: minmax(0, 1fr); }
+    .ts-{{ sid }}__media { max-width: 560px; width: 100%; }
+  }
+  @media screen and (max-width: 749px) {
+    .ts-{{ sid }}__slide { min-height: 0; align-items: flex-start; padding: 32px 0 104px; }
+    .ts-{{ sid }}__inner { padding-inline: 16px; gap: 28px; }
+    .ts-{{ sid }}__content { gap: 14px; }
+    .ts-{{ sid }}__heading { font-size: clamp(2.4rem, 12vw, 3.25rem); overflow-wrap: normal; word-break: keep-all; }
+    .ts-{{ sid }}__text { font-size: 1rem; }
+    .ts-{{ sid }}__actions { width: 100%; }
+    .ts-{{ sid }}__btn, .ts-{{ sid }}__pass { flex: 1 1 100%; justify-content: center; }
+    .ts-{{ sid }}__controls { bottom: 20px; padding-inline: 16px; gap: 12px; }
+    .ts-{{ sid }}__tab span { display: none; }
+    .ts-{{ sid }}__arrow { width: 38px; height: 38px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ts-{{ sid }}__slide, .ts-{{ sid }}__slide.is-active { transition: none; }
+    .ts-{{ sid }}__slide.is-active .ts-{{ sid }}__content > * { animation: none; }
+    .ts-{{ sid }}__pulse::after { animation: none; }
+  }
+{% endstyle %}
+
+<section
+  class="ts-{{ sid }}"
+  data-theme-slider
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-delay="{{ section.settings.delay }}"
+  aria-roledescription="carousel"
+  aria-label="{{ section.settings.label | escape }}"
+  style="--ts-delay: {{ section.settings.delay }}s;"
+>
+  <div class="ts-{{ sid }}__track" aria-live="off">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign p = block.settings.product
+        assign laptop_img = block.settings.laptop_image
+        if laptop_img == blank and p != blank
+          assign laptop_img = p.featured_image
+        endif
+        assign tags = block.settings.tags | split: ','
+        if forloop.first
+          assign htag = 'h1'
+          assign loading = 'eager'
+        else
+          assign htag = 'h2'
+          assign loading = 'lazy'
+        endif
+      -%}
+      <div
+        class="ts-{{ sid }}__slide{% if forloop.first %} is-active{% endif %}"
+        id="Slide-{{ sid }}-{{ forloop.index }}"
+        role="group"
+        aria-roledescription="slide"
+        aria-label="{{ forloop.index }} of {{ slide_count }}: {{ block.settings.tab_label | escape }}"
+        data-ctrl="{{ block.settings.text_color }}"
+        data-ctrl-bg="{{ block.settings.background }}"
+        {% unless forloop.first %}aria-hidden="true" inert{% endunless %}
+        style="--s-bg: {{ block.settings.background }}; --s-text: {{ block.settings.text_color }}; --s-accent: {{ block.settings.accent }}; --s-on-accent: {{ block.settings.on_accent }};"
+        {{ block.shopify_attributes }}
+      >
+        <div class="ts-{{ sid }}__inner">
+          <div class="ts-{{ sid }}__content">
+            {%- if block.settings.ribbon != blank -%}
+              {%- if block.settings.button_link != blank -%}
+                <a class="ts-{{ sid }}__ribbon" href="{{ block.settings.button_link }}"><span class="ts-{{ sid }}__pulse" aria-hidden="true"></span>{{ block.settings.ribbon | escape }}</a>
+              {%- else -%}
+                <span class="ts-{{ sid }}__ribbon"><span class="ts-{{ sid }}__pulse" aria-hidden="true"></span>{{ block.settings.ribbon | escape }}</span>
+              {%- endif -%}
+            {%- endif -%}
+
+            {%- if block.settings.badge != blank or block.settings.eyebrow != blank -%}
+              <div class="ts-{{ sid }}__meta">
+                {%- if block.settings.badge != blank -%}<span class="ts-{{ sid }}__badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
+                {%- if block.settings.eyebrow != blank -%}<span class="ts-{{ sid }}__eyebrow">{{ block.settings.eyebrow | escape }}</span>{%- endif -%}
+              </div>
+            {%- endif -%}
+
+            <{{ htag }} class="ts-{{ sid }}__heading">{{ block.settings.heading }}</{{ htag }}>
+
+            {%- if block.settings.text != blank -%}
+              <p class="ts-{{ sid }}__text">{{ block.settings.text }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.tags != blank -%}
+              <ul class="ts-{{ sid }}__tags">
+                {%- for tag in tags -%}
+                  {%- assign t = tag | strip -%}
+                  {%- if t != blank -%}<li>{{ t | escape }}</li>{%- endif -%}
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+            <div class="ts-{{ sid }}__actions">
+              {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
+                <a class="ts-{{ sid }}__btn ts-{{ sid }}__btn--primary" href="{{ block.settings.button_link }}">
+                  {{ block.settings.button_label | escape }}
+                  {%- if p != blank -%}
+                    <span class="ts-{{ sid }}__price">
+                      {{ p.price | money_without_trailing_zeros }}
+                      {%- if p.compare_at_price > p.price -%}<s>{{ p.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}
+                    </span>
+                  {%- endif -%}
+                </a>
+              {%- endif -%}
+              {%- if block.settings.demo_url != blank -%}
+                <a class="ts-{{ sid }}__btn ts-{{ sid }}__btn--ghost" href="{{ block.settings.demo_url }}" target="_blank" rel="noopener"{% if block.settings.password != blank %} data-bw-copy="{{ block.settings.password | escape }}"{% endif %}>
+                  {{ block.settings.demo_label | escape }}
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg>
+                </a>
+              {%- endif -%}
+              {%- if block.settings.password != blank -%}
+                <button type="button" class="ts-{{ sid }}__pass" data-bw-copy="{{ block.settings.password | escape }}" aria-label="Copy demo password {{ block.settings.password | escape }}">
+                  Password <code>{{ block.settings.password | escape }}</code> <span data-bw-state>Copy</span>
+                </button>
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.note != blank -%}
+              <p class="ts-{{ sid }}__note">{{ block.settings.note | escape }}</p>
+            {%- endif -%}
+          </div>
+
+          <div class="ts-{{ sid }}__media">
+            <div class="ts-{{ sid }}__stage">
+              <div class="ts-{{ sid }}__laptop">
+                <div class="ts-{{ sid }}__screen">
+                  {%- if block.settings.laptop_video != blank -%}
+                    {{ block.settings.laptop_video | video_tag: autoplay: forloop.first, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', image_size: '1200x' }}
+                  {%- elsif laptop_img != blank -%}
+                    {{ laptop_img | image_url: width: 1600 | image_tag: loading: loading, widths: '600, 900, 1200, 1600', sizes: '(min-width: 990px) 55vw, 100vw', alt: block.settings.tab_label }}
+                  {%- else -%}
+                    {{ 'detailed-apparel-1' | placeholder_svg_tag }}
+                  {%- endif -%}
+                </div>
+                <div class="ts-{{ sid }}__base" aria-hidden="true"></div>
+              </div>
+              {%- if block.settings.phone_image != blank -%}
+                <div class="ts-{{ sid }}__phone">
+                  {{ block.settings.phone_image | image_url: width: 600 | image_tag: loading: loading, widths: '300, 450, 600', sizes: '(min-width: 990px) 14vw, 25vw', alt: '' }}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if slide_count > 1 -%}
+    {%- assign first = section.blocks.first -%}
+    <div class="ts-{{ sid }}__controls" style="--ts-ctrl: {{ first.settings.text_color }}; --ts-ctrl-bg: {{ first.settings.background }};">
+      <span class="ts-{{ sid }}__count" aria-hidden="true"><span data-ts-current>01</span> / {{ slide_count | prepend: '0' | slice: -2, 2 }}</span>
+      <div class="ts-{{ sid }}__tabs" role="tablist" aria-label="Choose a slide">
+        {%- for block in section.blocks -%}
+          <button type="button" class="ts-{{ sid }}__tab" role="tab" aria-controls="Slide-{{ sid }}-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-ts-go="{{ forloop.index0 }}">
+            <span>{{ block.settings.tab_label | escape }}</span>
+            <span class="ts-{{ sid }}__sr">Slide {{ forloop.index }}</span>
+            <em class="ts-{{ sid }}__bar" aria-hidden="true"><i></i></em>
+          </button>
+        {%- endfor -%}
+      </div>
+      <div class="ts-{{ sid }}__arrows">
+        <button type="button" class="ts-{{ sid }}__arrow" data-ts-pause aria-label="Pause slides">
+          <svg data-ts-icon-pause viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="4" y="3" width="3" height="10"/><rect x="9" y="3" width="3" height="10"/></svg>
+          <svg data-ts-icon-play viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" hidden><path d="M5 3l8 5-8 5z"/></svg>
+        </button>
+        <button type="button" class="ts-{{ sid }}__arrow" data-ts-prev aria-label="Previous slide">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+        </button>
+        <button type="button" class="ts-{{ sid }}__arrow" data-ts-next aria-label="Next slide">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg>
+        </button>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>if(!window.bwCopy){window.bwCopy=function(t){var legacy=function(){var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0;pointer-events:none';document.body.appendChild(a);a.focus();a.select();a.setSelectionRange(0,t.length);var ok=false;try{ok=document.execCommand('copy')}catch(e){}a.remove();return ok};if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(t).then(function(){return true},function(){return legacy()})}return Promise.resolve(legacy())};document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-bw-copy]');if(!b)return;if(b.tagName!=='A')e.preventDefault();e.stopPropagation();window.bwCopy(b.getAttribute('data-bw-copy')).then(function(ok){var s=b.querySelector('[data-bw-state]');if(!s)return;var o=s.getAttribute('data-bw-label')||s.textContent;s.setAttribute('data-bw-label',o);s.textContent=ok?'Copied':'Press Ctrl+C';setTimeout(function(){s.textContent=o},1800)})},true)}</script>
+
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling.previousElementSibling;
+    if (!root || !root.hasAttribute('data-theme-slider')) return;
+    var slides = root.querySelectorAll('[aria-roledescription="slide"]');
+    var tabs = root.querySelectorAll('[data-ts-go]');
+    var controls = root.querySelector('.ts-{{ sid }}__controls');
+    var current = root.querySelector('[data-ts-current]');
+    var pauseBtn = root.querySelector('[data-ts-pause]');
+    if (slides.length < 2) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var delay = (parseInt(root.dataset.delay, 10) || 7) * 1000;
+    var autoplay = root.dataset.autoplay === 'true' && !reduce;
+    var index = 0, timer = null, userPaused = !autoplay, hoverPaused = false;
+
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function setVideos(slide, play) {
+      slide.querySelectorAll('video').forEach(function (v) {
+        if (play) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else { v.pause(); }
+      });
+    }
+    function go(i) {
+      index = (i + slides.length) % slides.length;
+      slides.forEach(function (s, n) {
+        var on = n === index;
+        s.classList.toggle('is-active', on);
+        if (on) { s.removeAttribute('aria-hidden'); s.removeAttribute('inert'); }
+        else { s.setAttribute('aria-hidden', 'true'); s.setAttribute('inert', ''); }
+        setVideos(s, on);
+      });
+      tabs.forEach(function (t, n) { t.setAttribute('aria-selected', n === index ? 'true' : 'false'); });
+      if (current) current.textContent = pad(index + 1);
+      if (controls) {
+        controls.style.setProperty('--ts-ctrl', slides[index].dataset.ctrl);
+        controls.style.setProperty('--ts-ctrl-bg', slides[index].dataset.ctrlBg);
+      }
+      schedule();
+    }
+    function schedule() {
+      clearTimeout(timer);
+      var playing = !userPaused && !hoverPaused && !document.hidden;
+      root.classList.toggle('is-playing', !userPaused);
+      root.classList.toggle('is-paused', !playing);
+      if (!userPaused) {
+        // restart the progress bar animation
+        var bar = tabs[index] && tabs[index].querySelector('i');
+        if (bar) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; }
+      }
+      if (playing) timer = setTimeout(function () { go(index + 1); }, delay);
+    }
+    function setPaused(p) {
+      userPaused = p;
+      if (pauseBtn) {
+        pauseBtn.setAttribute('aria-label', p ? 'Play slides' : 'Pause slides');
+        pauseBtn.querySelector('[data-ts-icon-pause]').hidden = p;
+        pauseBtn.querySelector('[data-ts-icon-play]').hidden = !p;
+      }
+      schedule();
+    }
+
+    tabs.forEach(function (t) { t.addEventListener('click', function () { go(parseInt(t.dataset.tsGo, 10)); }); });
+    root.querySelector('[data-ts-prev]').addEventListener('click', function () { go(index - 1); });
+    root.querySelector('[data-ts-next]').addEventListener('click', function () { go(index + 1); });
+    if (pauseBtn) pauseBtn.addEventListener('click', function () { setPaused(!userPaused); });
+    root.addEventListener('mouseenter', function () { hoverPaused = true; schedule(); });
+    root.addEventListener('mouseleave', function () { hoverPaused = false; schedule(); });
+    root.addEventListener('focusin', function () { hoverPaused = true; schedule(); });
+    root.addEventListener('focusout', function (e) { if (!root.contains(e.relatedTarget)) { hoverPaused = false; schedule(); } });
+    document.addEventListener('visibilitychange', schedule);
+    root.addEventListener('keydown', function (e) {
+      if (e.target.closest('[role="tablist"]') && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
+        e.preventDefault(); go(index + (e.key === 'ArrowRight' ? 1 : -1)); tabs[index].focus();
+      }
+    });
+    var x0 = null;
+    root.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    root.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 50) go(index + (dx < 0 ? 1 : -1));
+    });
+    document.addEventListener('shopify:block:select', function (e) {
+      var n = Array.prototype.indexOf.call(slides, e.target.closest && e.target.closest('[aria-roledescription="slide"]'));
+      if (n > -1) { setPaused(true); go(n); }
+    });
+
+    setPaused(userPaused);
+    go(0);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Theme slider",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Slider name (for screen readers)", "default": "Our Shopify themes" },
+    { "type": "checkbox", "id": "autoplay", "label": "Change slides automatically", "default": true },
+    { "type": "range", "id": "delay", "label": "Time per slide", "min": 4, "max": 12, "step": 1, "unit": "s", "default": 7 }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Theme slide",
+      "settings": [
+        { "type": "text", "id": "tab_label", "label": "Tab label", "default": "Theme" },
+        { "type": "text", "id": "ribbon", "label": "Ribbon (e.g. New · Now live)" },
+        { "type": "text", "id": "badge", "label": "Badge", "default": "THEME 01" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Theme <em>name</em>" },
+        { "type": "inline_richtext", "id": "text", "label": "Text" },
+        { "type": "text", "id": "tags", "label": "Tags", "info": "Separate with commas" },
+        { "type": "header", "content": "Buy button" },
+        { "type": "product", "id": "product", "label": "Product", "info": "Shows the price on the button" },
+        { "type": "text", "id": "button_label", "label": "Button text", "default": "Buy now" },
+        { "type": "url", "id": "button_link", "label": "Button link" },
+        { "type": "text", "id": "note", "label": "Note under buttons" },
+        { "type": "header", "content": "Live demo" },
+        { "type": "text", "id": "demo_label", "label": "Demo button text", "default": "View live demo" },
+        { "type": "url", "id": "demo_url", "label": "Demo store URL" },
+        { "type": "text", "id": "password", "label": "Demo password" },
+        { "type": "header", "content": "Device mockups" },
+        { "type": "video", "id": "laptop_video", "label": "Laptop video" },
+        { "type": "image_picker", "id": "laptop_image", "label": "Laptop image", "info": "Used when there's no video. Falls back to the product image." },
+        { "type": "image_picker", "id": "phone_image", "label": "Phone image" },
+        { "type": "header", "content": "Colours" },
+        { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
+        { "type": "color", "id": "text_color", "label": "Text", "default": "#111111" },
+        { "type": "color", "id": "accent", "label": "Accent and buy button", "default": "#111111" },
+        { "type": "color", "id": "on_accent", "label": "Buy button text", "default": "#FFFFFF" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Theme slider", "blocks": [{ "type": "slide" }, { "type": "slide" }] }]
+}
+{% endschema %}
