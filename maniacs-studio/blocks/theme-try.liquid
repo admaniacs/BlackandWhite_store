@@ -1,0 +1,169 @@
+{%- liquid
+  assign bid = block.id | replace: '_', '' | downcase
+  assign password = block.settings.password
+-%}
+
+{% style %}
+  .theme-try-{{ bid }} {
+    --tt-ink: {{ block.settings.ink_color }};
+    --tt-accent: {{ block.settings.accent_color }};
+    --tt-paper: {{ block.settings.paper_color }};
+    --tt-line: {{ block.settings.line_color }};
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    padding: 22px 22px 20px;
+    background: var(--tt-paper);
+    border: 1px solid var(--tt-line);
+    color: var(--tt-ink);
+    font-family: var(--font-body--family);
+  }
+  .theme-try-{{ bid }}__top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .theme-try-{{ bid }}__eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--tt-accent);
+  }
+  .theme-try-{{ bid }}__eyebrow::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .theme-try-{{ bid }}__aside { font-size: 12px; opacity: .7; }
+  .theme-try-{{ bid }}__heading {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.5rem, 2.2vw, 1.875rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--tt-ink);
+  }
+  .theme-try-{{ bid }}__heading em { font-style: italic; color: var(--tt-accent); }
+  .theme-try-{{ bid }}__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .theme-try-{{ bid }}__btn {
+    display: inline-flex; align-items: center; justify-content: space-between; gap: 10px;
+    min-height: 52px; padding: 0 18px;
+    border: 1px solid var(--tt-ink);
+    font-size: 13px; letter-spacing: .1em; text-transform: uppercase; text-decoration: none;
+    transition: background .2s, color .2s, transform .2s;
+  }
+  .theme-try-{{ bid }}__btn svg { width: 16px; height: 16px; flex: none; transition: transform .2s; }
+  .theme-try-{{ bid }}__btn--primary { background: var(--tt-ink); color: var(--tt-paper); }
+  .theme-try-{{ bid }}__btn--primary:hover { background: var(--tt-accent); border-color: var(--tt-accent); }
+  .theme-try-{{ bid }}__btn--ghost { background: transparent; color: var(--tt-ink); }
+  .theme-try-{{ bid }}__btn--ghost:hover { background: var(--tt-ink); color: var(--tt-paper); }
+  .theme-try-{{ bid }}__btn:hover svg { transform: translate(2px, -2px); }
+  .theme-try-{{ bid }}__ticket {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 14px 12px 22px;
+    background: #ffffff;
+    -webkit-mask:
+      radial-gradient(circle 9px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 9px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+            mask:
+      radial-gradient(circle 9px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 9px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+  }
+  .theme-try-{{ bid }}__ticket-label { display: flex; flex-direction: column; gap: 2px; padding-right: 14px; border-right: 1px dashed var(--tt-line); }
+  .theme-try-{{ bid }}__ticket-label span:first-child { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; opacity: .65; }
+  .theme-try-{{ bid }}__ticket-label span:last-child { font-size: 12px; color: var(--tt-accent); }
+  .theme-try-{{ bid }}__code {
+    flex: 1; min-width: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 17px; font-weight: 600; letter-spacing: .08em;
+    user-select: all;
+  }
+  .theme-try-{{ bid }}__copy {
+    display: inline-flex; align-items: center; gap: 6px;
+    min-height: 36px; padding: 0 12px;
+    border: 1px solid var(--tt-ink); border-radius: 999px;
+    background: transparent; color: var(--tt-ink);
+    font: inherit; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    cursor: pointer; transition: background .2s, color .2s;
+  }
+  .theme-try-{{ bid }}__copy:hover { background: var(--tt-ink); color: #ffffff; }
+  .theme-try-{{ bid }}__copy svg { width: 12px; height: 12px; }
+  .theme-try-{{ bid }}__hint { margin: 0; font-size: 12px; opacity: .7; }
+  .theme-try-{{ bid }} a:focus-visible, .theme-try-{{ bid }} button:focus-visible { outline: 2px solid var(--tt-accent); outline-offset: 3px; }
+
+  @media screen and (max-width: 749px) {
+    .theme-try-{{ bid }} { padding: 18px 16px; }
+    .theme-try-{{ bid }}__actions { grid-template-columns: 1fr; }
+    .theme-try-{{ bid }}__ticket-label span:last-child { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .theme-try-{{ bid }}__btn, .theme-try-{{ bid }}__btn svg { transition: none; }
+    .theme-try-{{ bid }}__btn:hover svg { transform: none; }
+  }
+{% endstyle %}
+
+<div class="theme-try-{{ bid }}" {{ block.shopify_attributes }}>
+  <div class="theme-try-{{ bid }}__top">
+    <span class="theme-try-{{ bid }}__eyebrow">{{ block.settings.eyebrow | escape }}</span>
+    {%- if block.settings.aside != blank -%}
+      <span class="theme-try-{{ bid }}__aside">{{ block.settings.aside | escape }}</span>
+    {%- endif -%}
+  </div>
+
+  {%- if block.settings.heading != blank -%}
+    <h2 class="theme-try-{{ bid }}__heading">{{ block.settings.heading }}</h2>
+  {%- endif -%}
+
+  <div class="theme-try-{{ bid }}__actions">
+    {%- if block.settings.demo_url != blank -%}
+      <a class="theme-try-{{ bid }}__btn theme-try-{{ bid }}__btn--primary" href="{{ block.settings.demo_url }}" target="_blank" rel="noopener"{% if password != blank %} data-bw-copy="{{ password | escape }}"{% endif %}>
+        {{ block.settings.demo_label | escape }}
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg>
+      </a>
+    {%- endif -%}
+    {%- if block.settings.docs_url != blank -%}
+      <a class="theme-try-{{ bid }}__btn theme-try-{{ bid }}__btn--ghost" href="{{ block.settings.docs_url }}" target="_blank" rel="noopener">
+        {{ block.settings.docs_label | escape }}
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg>
+      </a>
+    {%- endif -%}
+  </div>
+
+  {%- if password != blank -%}
+    <div class="theme-try-{{ bid }}__ticket">
+      <div class="theme-try-{{ bid }}__ticket-label">
+        <span>Demo password</span>
+        <span>{{ block.settings.ticket_note | escape }}</span>
+      </div>
+      <span class="theme-try-{{ bid }}__code">{{ password | escape }}</span>
+      <button type="button" class="theme-try-{{ bid }}__copy" data-bw-copy="{{ password | escape }}" aria-label="Copy demo password {{ password | escape }}">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5" y="5" width="8" height="8"/><path d="M3 11V3h8"/></svg>
+        <span data-bw-state>Copy</span>
+      </button>
+    </div>
+    {%- if block.settings.hint != blank -%}
+      <p class="theme-try-{{ bid }}__hint">{{ block.settings.hint | escape }}</p>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+<script>if(!window.bwCopy){window.bwCopy=function(t){var legacy=function(){var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0;pointer-events:none';document.body.appendChild(a);a.focus();a.select();a.setSelectionRange(0,t.length);var ok=false;try{ok=document.execCommand('copy')}catch(e){}a.remove();return ok};if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(t).then(function(){return true},function(){return legacy()})}return Promise.resolve(legacy())};document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-bw-copy]');if(!b)return;if(b.tagName!=='A')e.preventDefault();e.stopPropagation();window.bwCopy(b.getAttribute('data-bw-copy')).then(function(ok){var s=b.querySelector('[data-bw-state]');if(!s)return;var o=s.getAttribute('data-bw-label')||s.textContent;s.setAttribute('data-bw-label',o);s.textContent=ok?'Copied':'Press Ctrl+C';setTimeout(function(){s.textContent=o},1800)})},true)}</script>
+
+{% schema %}
+{
+  "name": "Try before you buy",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Try before you buy" },
+    { "type": "text", "id": "aside", "label": "Small note (top right)", "default": "No sign-up needed" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Walk through the <em>live store</em>" },
+    { "type": "header", "content": "Live demo" },
+    { "type": "text", "id": "demo_label", "label": "Demo button text", "default": "Open live demo" },
+    { "type": "url", "id": "demo_url", "label": "Demo store URL" },
+    { "type": "text", "id": "password", "label": "Demo password" },
+    { "type": "text", "id": "ticket_note", "label": "Note under password label", "default": "Paste on entry" },
+    { "type": "text", "id": "hint", "label": "Hint under password", "default": "Opening the demo copies the password for you." },
+    { "type": "header", "content": "Documentation" },
+    { "type": "text", "id": "docs_label", "label": "Docs button text", "default": "Read the docs" },
+    { "type": "url", "id": "docs_url", "label": "Documentation URL" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "ink_color", "label": "Text and buttons", "default": "#2B211C" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#B4472B" },
+    { "type": "color", "id": "paper_color", "label": "Panel background", "default": "#F4ECE1" },
+    { "type": "color", "id": "line_color", "label": "Lines", "default": "#E6D9C8" }
+  ],
+  "presets": [{ "name": "Try before you buy" }]
+}
+{% endschema %}
