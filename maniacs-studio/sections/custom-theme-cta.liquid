@@ -1,0 +1,223 @@
+{%- liquid
+  assign sid = section.id | replace: '_', '' | downcase
+  assign points = section.settings.points | split: ','
+-%}
+
+{% style %}
+  .ctc-{{ sid }} {
+    --c-bg: {{ section.settings.background }};
+    --c-text: {{ section.settings.text_color }};
+    --c-accent: {{ section.settings.accent }};
+    --c-on-accent: {{ section.settings.on_accent }};
+    --c-line: color-mix(in srgb, var(--c-text) 22%, transparent);
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--font-body--family);
+    padding-block: {{ section.settings.padding }}px;
+    overflow: hidden;
+  }
+  .ctc-{{ sid }}__wrap {
+    max-width: var(--page-width, 1400px); margin: 0 auto; padding-inline: var(--page-margin, 40px);
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); align-items: center;
+  }
+  .ctc-{{ sid }}__eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--c-accent); }
+  .ctc-{{ sid }}__eyebrow::before { content: ''; width: 28px; height: 1px; background: currentColor; }
+  .ctc-{{ sid }}__heading { margin: 18px 0 0; font-size: clamp(2.4rem, 5vw, 4.25rem); line-height: 1; letter-spacing: -.015em; color: var(--c-text); }
+  .ctc-{{ sid }}__heading em { font-style: italic; font-weight: 400; color: var(--c-accent); }
+  .ctc-{{ sid }}__text { margin: 20px 0 0; max-width: 48ch; font-size: 1.0625rem; line-height: 1.6; opacity: .85; }
+  .ctc-{{ sid }}__points { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; padding: 0; list-style: none; }
+  .ctc-{{ sid }}__points li { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid var(--c-line); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+  .ctc-{{ sid }}__points li::before { content: ''; width: 6px; height: 6px; background: var(--c-accent); transform: rotate(45deg); }
+
+  .ctc-{{ sid }}__steps { display: grid; grid-template-columns: repeat(var(--ctc-steps, 4), minmax(0, 1fr)); gap: 0; margin: 36px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--c-line); counter-reset: ctc; }
+  .ctc-{{ sid }}__step { counter-increment: ctc; padding: 16px 16px 0 0; }
+  .ctc-{{ sid }}__step::before { content: counter(ctc, decimal-leading-zero); display: block; margin-bottom: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: var(--c-accent); }
+  .ctc-{{ sid }}__step b { display: block; font-size: .9375rem; font-weight: 600; }
+  .ctc-{{ sid }}__step span { display: block; margin-top: 4px; font-size: .8125rem; line-height: 1.45; opacity: .7; }
+
+  .ctc-{{ sid }}__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 36px; }
+  .ctc-{{ sid }}__btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    min-height: 56px; padding: 0 26px;
+    background: var(--c-accent); color: var(--c-on-accent);
+    font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; text-decoration: none;
+    transition: background .2s, color .2s;
+  }
+  .ctc-{{ sid }}__btn svg { width: 16px; height: 16px; transition: transform .25s; }
+  .ctc-{{ sid }}__btn:hover { background: var(--c-text); color: var(--c-bg); }
+  .ctc-{{ sid }}__btn:hover svg { transform: translateX(4px); }
+  .ctc-{{ sid }}__btn:focus-visible { outline: 2px solid var(--c-text); outline-offset: 3px; }
+  .ctc-{{ sid }}__note { margin: 0; max-width: 32ch; font-size: 13px; line-height: 1.5; opacity: .75; }
+
+  /* Blueprint */
+  .ctc-{{ sid }}__plan, .ctc-{{ sid }}__plan * { box-sizing: border-box; }
+  .ctc-{{ sid }}__plan {
+    position: relative; aspect-ratio: 4 / 5; padding: 26px;
+    border: 1px solid var(--c-line);
+    background-color: color-mix(in srgb, var(--c-text) 4%, transparent);
+    background-image:
+      linear-gradient(var(--c-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--c-line) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+  }
+  .ctc-{{ sid }}__frame { position: relative; height: 100%; display: grid; grid-template-rows: auto 1.5fr auto 1fr auto; gap: 12px; padding: 14px; background: var(--c-bg); border: 1px solid var(--c-text); }
+  .ctc-{{ sid }}__bar { display: flex; justify-content: space-between; align-items: center; height: 22px; }
+  .ctc-{{ sid }}__bar i { width: 30%; height: 8px; background: var(--c-text); opacity: .9; }
+  .ctc-{{ sid }}__bar span { display: flex; gap: 6px; }
+  .ctc-{{ sid }}__bar span i { width: 22px; height: 6px; opacity: .45; }
+  .ctc-{{ sid }}__box { position: relative; border: 1px dashed var(--c-text); display: flex; align-items: flex-end; padding: 12px; }
+  .ctc-{{ sid }}__hero { flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; }
+  .ctc-{{ sid }}__hero i { display: block; height: 10px; background: var(--c-text); }
+  .ctc-{{ sid }}__hero i:nth-of-type(1) { width: 62%; }
+  .ctc-{{ sid }}__hero i:nth-of-type(2) { width: 44%; opacity: .5; height: 6px; }
+  .ctc-{{ sid }}__hero b { margin-top: 6px; width: 92px; height: 24px; background: var(--c-accent); }
+  .ctc-{{ sid }}__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; border: 0; padding: 0; }
+  .ctc-{{ sid }}__grid > i { aspect-ratio: 1; border: 1px dashed var(--c-text); }
+  .ctc-{{ sid }}__cta-row { justify-content: space-between; align-items: center; border-style: solid; }
+  .ctc-{{ sid }}__cta-row i { width: 46%; height: 6px; background: var(--c-text); opacity: .45; }
+  .ctc-{{ sid }}__cta-row b { width: 30%; height: 22px; background: var(--c-accent); }
+  .ctc-{{ sid }}__tag {
+    position: absolute; z-index: 1;
+    padding: 5px 9px; background: var(--c-accent); color: var(--c-on-accent);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 10px; letter-spacing: .04em; white-space: nowrap;
+  }
+  .ctc-{{ sid }}__tag--r { top: -11px; right: 12px; }
+  .ctc-{{ sid }}__tag--l { top: -11px; left: 12px; }
+  .ctc-{{ sid }}__stamp {
+    position: absolute; right: -14px; bottom: -14px; z-index: 2;
+    display: grid; place-items: center; width: 108px; height: 108px; border-radius: 50%;
+    background: var(--c-text); color: var(--c-bg); text-align: center;
+    font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; line-height: 1.4;
+    transform: rotate(-12deg);
+  }
+  .ctc-{{ sid }}__stamp span { display: block; font-family: var(--font-heading--family); font-size: 26px; letter-spacing: 0; text-transform: none; }
+
+  @media screen and (max-width: 989px) {
+    .ctc-{{ sid }}__wrap { grid-template-columns: minmax(0, 1fr); }
+    .ctc-{{ sid }}__plan { max-width: 460px; width: 100%; margin-inline: auto; }
+  }
+  @media screen and (max-width: 749px) {
+    .ctc-{{ sid }}__wrap { padding-inline: 16px; gap: 48px; }
+    .ctc-{{ sid }}__heading { font-size: clamp(2.2rem, 10.5vw, 3rem); }
+    .ctc-{{ sid }}__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 8px; }
+    .ctc-{{ sid }}__btn { width: 100%; justify-content: space-between; }
+    .ctc-{{ sid }}__plan { padding: 18px; aspect-ratio: 4 / 4.6; }
+    .ctc-{{ sid }}__stamp { width: 88px; height: 88px; right: -6px; bottom: -10px; font-size: 9px; }
+    .ctc-{{ sid }}__stamp span { font-size: 21px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ctc-{{ sid }}__btn, .ctc-{{ sid }}__btn svg { transition: none; }
+  }
+{% endstyle %}
+
+<div class="ctc-{{ sid }}">
+  <div class="ctc-{{ sid }}__wrap">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}<span class="ctc-{{ sid }}__eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+      <h2 class="ctc-{{ sid }}__heading">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}<p class="ctc-{{ sid }}__text">{{ section.settings.text }}</p>{%- endif -%}
+
+      {%- if section.settings.points != blank -%}
+        <ul class="ctc-{{ sid }}__points">
+          {%- for point in points -%}
+            {%- assign pt = point | strip -%}
+            {%- if pt != blank -%}<li>{{ pt | escape }}</li>{%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <ol class="ctc-{{ sid }}__steps" style="--ctc-steps: {{ section.blocks.size }};">
+          {%- for block in section.blocks -%}
+            <li class="ctc-{{ sid }}__step" {{ block.shopify_attributes }}>
+              <b>{{ block.settings.title | escape }}</b>
+              {%- if block.settings.text != blank -%}<span>{{ block.settings.text | escape }}</span>{%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ol>
+      {%- endif -%}
+
+      <div class="ctc-{{ sid }}__actions">
+        {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+          <a class="ctc-{{ sid }}__btn" href="{{ section.settings.button_link }}">
+            {{ section.settings.button_label | escape }}
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.note != blank -%}<p class="ctc-{{ sid }}__note">{{ section.settings.note }}</p>{%- endif -%}
+      </div>
+    </div>
+
+    <div class="ctc-{{ sid }}__plan" aria-hidden="true">
+      <div class="ctc-{{ sid }}__frame">
+        <div class="ctc-{{ sid }}__bar"><i></i><span><i></i><i></i><i></i></span></div>
+        <div class="ctc-{{ sid }}__box ctc-{{ sid }}__hero">
+          <span class="ctc-{{ sid }}__tag ctc-{{ sid }}__tag--r">{{ section.settings.note_1 | escape }}</span>
+          <i></i><i></i><b></b>
+        </div>
+        <div class="ctc-{{ sid }}__box ctc-{{ sid }}__cta-row">
+          <span class="ctc-{{ sid }}__tag ctc-{{ sid }}__tag--l">{{ section.settings.note_2 | escape }}</span>
+          <i></i><b></b>
+        </div>
+        <div class="ctc-{{ sid }}__box ctc-{{ sid }}__grid">
+          <span class="ctc-{{ sid }}__tag ctc-{{ sid }}__tag--r">{{ section.settings.note_3 | escape }}</span>
+          <i></i><i></i><i></i>
+        </div>
+        <div class="ctc-{{ sid }}__bar"><i style="width: 18%; opacity: .45;"></i><span><i></i><i></i></span></div>
+      </div>
+      {%- if section.settings.stamp != blank -%}
+        <div class="ctc-{{ sid }}__stamp"><div><span>{{ section.settings.stamp_big | escape }}</span>{{ section.settings.stamp | escape }}</div></div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom theme CTA",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Custom theme studio" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Want a theme that's <em>only yours?</em>" },
+    { "type": "inline_richtext", "id": "text", "label": "Text", "default": "We design and build custom, high-converting Shopify themes around your products, your brand and the way your customers shop." },
+    { "type": "text", "id": "points", "label": "Benefits", "info": "Separate with commas", "default": "Conversion-first layouts, Online Store 2.0, Fast on every phone, Editable without code" },
+    { "type": "text", "id": "button_label", "label": "Button text", "default": "Start a custom project" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "inline_richtext", "id": "note", "label": "Note next to button", "default": "Tell us about your store and we'll reply with ideas and a quote." },
+    { "type": "header", "content": "Blueprint" },
+    { "type": "text", "id": "note_1", "label": "Note 1", "default": "Hero that sells in 3s" },
+    { "type": "text", "id": "note_2", "label": "Note 2", "default": "Sticky add to cart" },
+    { "type": "text", "id": "note_3", "label": "Note 3", "default": "Built for your catalogue" },
+    { "type": "text", "id": "stamp_big", "label": "Stamp (large)", "default": "100%" },
+    { "type": "text", "id": "stamp", "label": "Stamp (small)", "default": "Custom built" },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#074F3B" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#F4F1E8" },
+    { "type": "color", "id": "accent", "label": "Accent and button", "default": "#C6F432" },
+    { "type": "color", "id": "on_accent", "label": "Button text", "default": "#0B1F17" },
+    { "type": "range", "id": "padding", "label": "Top and bottom padding", "min": 32, "max": 160, "step": 8, "unit": "px", "default": 104 }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Process step",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Step" },
+        { "type": "text", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom theme CTA",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Discovery", "text": "Your brand, products and goals" } },
+        { "type": "step", "settings": { "title": "Design", "text": "Layouts made to convert" } },
+        { "type": "step", "settings": { "title": "Build", "text": "Fast, editable OS 2.0 code" } },
+        { "type": "step", "settings": { "title": "Launch", "text": "Go live with support" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
