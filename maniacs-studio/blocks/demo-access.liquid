@@ -84,7 +84,7 @@
 
 <div class="demo-access-{{ bid }}" data-demo-access data-password="{{ password | escape }}" {{ block.shopify_attributes }}>
   <div class="demo-access-{{ bid }}__row">
-    <a class="demo-access-{{ bid }}__btn" href="{{ demo_url }}" target="_blank" rel="noopener" data-demo-open data-bw-copy="{{ password | escape }}">
+    <a class="demo-access-{{ bid }}__btn" href="{{ demo_url }}" target="_blank" rel="noopener" data-demo-open{% if password != blank %} data-bw-copy="{{ password | escape }}"{% endif %}>
       {{ block.settings.label | escape }}
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg>
     </a>
