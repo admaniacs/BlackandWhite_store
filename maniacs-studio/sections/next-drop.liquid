@@ -1,0 +1,259 @@
+{%- liquid
+  assign sid = section.id | replace: '_', '' | downcase
+  assign form_id = 'NextDrop-' | append: section.id
+-%}
+
+{% style %}
+  .nd-{{ sid }} {
+    --nd-bg: {{ section.settings.background }};
+    --nd-text: {{ section.settings.text_color }};
+    --nd-accent: {{ section.settings.accent }};
+    --nd-on-accent: {{ section.settings.on_accent }};
+    --nd-panel: color-mix(in srgb, var(--nd-text) 6%, var(--nd-bg));
+    --nd-line: color-mix(in srgb, var(--nd-text) 16%, transparent);
+    --nd-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background: var(--nd-bg);
+    color: var(--nd-text);
+    font-family: var(--font-body--family);
+    padding-block: {{ section.settings.padding }}px;
+  }
+  .nd-{{ sid }} *, .nd-{{ sid }} *::before, .nd-{{ sid }} *::after { box-sizing: border-box; }
+  .nd-{{ sid }}__wrap {
+    max-width: var(--page-width, 1400px); margin: 0 auto; padding-inline: var(--page-margin, 40px);
+    display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(36px, 5vw, 80px); align-items: center;
+  }
+  .nd-{{ sid }}__eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: var(--nd-mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--nd-accent); }
+  .nd-{{ sid }}__eyebrow i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: nd-blink-{{ sid }} 1.2s steps(2, start) infinite; }
+  @keyframes nd-blink-{{ sid }} { to { visibility: hidden; } }
+  .nd-{{ sid }}__heading { margin: 14px 0 26px; font-size: clamp(2.2rem, 4.6vw, 3.75rem); line-height: 1; letter-spacing: -.015em; color: var(--nd-text); }
+  .nd-{{ sid }}__heading em { font-style: italic; font-weight: 400; color: var(--nd-accent); }
+
+  .nd-{{ sid }}__board { background: var(--nd-panel); border: 1px solid var(--nd-line); padding: 18px 20px 22px; }
+  .nd-{{ sid }}__rows { margin: 0 0 20px; padding: 0; list-style: none; font-family: var(--nd-mono); }
+  .nd-{{ sid }}__head, .nd-{{ sid }}__row { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 16px; align-items: center; }
+  .nd-{{ sid }}__head { padding-bottom: 10px; border-bottom: 1px solid var(--nd-line); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; opacity: .6; }
+  .nd-{{ sid }}__row { padding: 12px 0; border-bottom: 1px dashed var(--nd-line); font-size: 14px; letter-spacing: .06em; text-transform: uppercase; color: inherit; text-decoration: none; }
+  a.nd-{{ sid }}__row:hover .nd-{{ sid }}__name { color: var(--nd-accent); }
+  .nd-{{ sid }}__code { opacity: .65; }
+  .nd-{{ sid }}__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color .2s; }
+  .nd-{{ sid }}__status { padding: 3px 8px; border: 1px solid currentColor; font-size: 10px; letter-spacing: .14em; }
+  .nd-{{ sid }}__row.is-next { color: var(--nd-accent); border-bottom: 0; }
+  .nd-{{ sid }}__row.is-next .nd-{{ sid }}__status { background: var(--nd-accent); color: var(--nd-on-accent); border-color: var(--nd-accent); animation: nd-pulse-{{ sid }} 2s ease-in-out infinite; }
+  @keyframes nd-pulse-{{ sid }} { 50% { opacity: .55; } }
+
+  .nd-{{ sid }}__clock { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .nd-{{ sid }}__unit { display: flex; flex-direction: column; gap: 8px; }
+  .nd-{{ sid }}__tiles { display: flex; gap: 4px; perspective: 400px; }
+  .nd-{{ sid }}__tile {
+    position: relative; flex: 1; display: grid; place-items: center;
+    aspect-ratio: 3 / 4; max-height: 96px;
+    background: var(--nd-bg); border: 1px solid var(--nd-line); border-radius: 4px;
+    font-family: var(--nd-mono); font-size: clamp(1.75rem, 3.6vw, 3rem); font-weight: 600; line-height: 1; color: var(--nd-text);
+    overflow: hidden;
+  }
+  .nd-{{ sid }}__tile::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--nd-panel); box-shadow: 0 1px 0 color-mix(in srgb, var(--nd-text) 8%, transparent); }
+  .nd-{{ sid }}__tile.is-flip { animation: nd-flip-{{ sid }} .45s ease-out; }
+  @keyframes nd-flip-{{ sid }} { 0% { transform: rotateX(-80deg); opacity: .3; } 100% { transform: none; opacity: 1; } }
+  .nd-{{ sid }}__label { font-family: var(--nd-mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; opacity: .6; }
+  .nd-{{ sid }}__date { margin: 16px 0 0; font-family: var(--nd-mono); font-size: 12px; letter-spacing: .06em; opacity: .7; }
+  .nd-{{ sid }}__done { display: none; margin: 0; font-family: var(--nd-mono); font-size: 1.125rem; letter-spacing: .06em; text-transform: uppercase; color: var(--nd-accent); }
+  .nd-{{ sid }}.is-done .nd-{{ sid }}__clock, .nd-{{ sid }}.is-done .nd-{{ sid }}__date { display: none; }
+  .nd-{{ sid }}.is-done .nd-{{ sid }}__done { display: block; }
+
+  .nd-{{ sid }}__signup { display: flex; flex-direction: column; gap: 14px; }
+  .nd-{{ sid }}__ticket { position: relative; padding: 28px 26px; border: 1px dashed color-mix(in srgb, var(--nd-text) 35%, transparent); }
+  .nd-{{ sid }}__ticket::before, .nd-{{ sid }}__ticket::after { content: ''; position: absolute; top: 50%; width: 20px; height: 20px; margin-top: -10px; border-radius: 50%; background: var(--nd-bg); border: 1px dashed color-mix(in srgb, var(--nd-text) 35%, transparent); }
+  .nd-{{ sid }}__ticket::before { left: -11px; clip-path: inset(0 0 0 50%); }
+  .nd-{{ sid }}__ticket::after { right: -11px; clip-path: inset(0 50% 0 0); }
+  .nd-{{ sid }}__stub { display: block; margin-bottom: 14px; font-family: var(--nd-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .65; }
+  .nd-{{ sid }}__signup h3 { margin: 0; font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.1; color: var(--nd-text); }
+  .nd-{{ sid }}__signup p { margin: 10px 0 0; font-size: .9375rem; line-height: 1.5; opacity: .8; }
+  .nd-{{ sid }}__form { display: flex; gap: 8px; margin-top: 20px; }
+  .nd-{{ sid }}__form input[type="email"] {
+    flex: 1; min-width: 0; min-height: 52px; padding: 0 16px;
+    border: 1px solid var(--nd-line); border-radius: 0; background: var(--nd-bg); color: var(--nd-text);
+    font: inherit; font-size: 15px;
+  }
+  .nd-{{ sid }}__form input[type="email"]::placeholder { color: var(--nd-text); opacity: .5; }
+  .nd-{{ sid }}__form input[type="email"]:focus { outline: 2px solid var(--nd-accent); outline-offset: 0; border-color: var(--nd-accent); }
+  .nd-{{ sid }}__form button {
+    min-height: 52px; padding: 0 20px; border: 0; cursor: pointer;
+    background: var(--nd-accent); color: var(--nd-on-accent);
+    font: inherit; font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
+  }
+  .nd-{{ sid }}__form button:hover { background: var(--nd-text); color: var(--nd-bg); }
+  .nd-{{ sid }}__form button:focus-visible { outline: 2px solid var(--nd-text); outline-offset: 2px; }
+  .nd-{{ sid }}__msg { margin: 12px 0 0; font-size: 14px; }
+  .nd-{{ sid }}__msg--ok { color: var(--nd-accent); }
+  .nd-{{ sid }}__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media screen and (max-width: 989px) {
+    .nd-{{ sid }}__wrap { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media screen and (max-width: 749px) {
+    .nd-{{ sid }}__wrap { padding-inline: 16px; }
+    .nd-{{ sid }}__board { padding: 14px 14px 18px; }
+    .nd-{{ sid }}__head, .nd-{{ sid }}__row { grid-template-columns: 44px minmax(0, 1fr) auto; gap: 10px; }
+    .nd-{{ sid }}__row { font-size: 12px; }
+    .nd-{{ sid }}__clock { gap: 6px; }
+    .nd-{{ sid }}__tiles { gap: 2px; }
+    .nd-{{ sid }}__tile { font-size: 1.5rem; }
+    .nd-{{ sid }}__ticket { padding: 22px 18px; }
+    .nd-{{ sid }}__form { flex-direction: column; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nd-{{ sid }}__eyebrow i, .nd-{{ sid }}__row.is-next .nd-{{ sid }}__status { animation: none; }
+    .nd-{{ sid }}__tile.is-flip { animation: none; }
+  }
+{% endstyle %}
+
+<div class="nd-{{ sid }}" data-next-drop data-target="{{ section.settings.target_date | escape }}">
+  <div class="nd-{{ sid }}__wrap">
+    <div>
+      <span class="nd-{{ sid }}__eyebrow"><i aria-hidden="true"></i>{{ section.settings.eyebrow | escape }}</span>
+      <h2 class="nd-{{ sid }}__heading">{{ section.settings.heading }}</h2>
+
+      <div class="nd-{{ sid }}__board">
+        {%- if section.blocks.size > 0 -%}
+          <ul class="nd-{{ sid }}__rows">
+            <li class="nd-{{ sid }}__head" aria-hidden="true"><span>No.</span><span>Theme</span><span>Status</span></li>
+            {%- for block in section.blocks -%}
+              {%- liquid
+                if block.settings.link != blank
+                  assign tag = 'a'
+                else
+                  assign tag = 'div'
+                endif
+              -%}
+              <li {{ block.shopify_attributes }}>
+                <{{ tag }} class="nd-{{ sid }}__row{% if block.settings.is_next %} is-next{% endif %}"{% if tag == 'a' %} href="{{ block.settings.link }}"{% endif %}>
+                  <span class="nd-{{ sid }}__code">{{ block.settings.code | escape }}</span>
+                  <span class="nd-{{ sid }}__name">{{ block.settings.name | escape }}</span>
+                  <span class="nd-{{ sid }}__status">{{ block.settings.status | escape }}</span>
+                </{{ tag }}>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <div class="nd-{{ sid }}__clock" role="timer" aria-live="off" aria-label="{{ section.settings.clock_label | escape }}">
+          {%- assign units = 'days,hours,minutes,seconds' | split: ',' -%}
+          {%- for u in units -%}
+            <div class="nd-{{ sid }}__unit">
+              <div class="nd-{{ sid }}__tiles" data-unit="{{ u }}"><span class="nd-{{ sid }}__tile">0</span><span class="nd-{{ sid }}__tile">0</span></div>
+              <span class="nd-{{ sid }}__label">{{ u }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+        <p class="nd-{{ sid }}__date" data-nd-date></p>
+        <p class="nd-{{ sid }}__done">{{ section.settings.done_message | escape }}</p>
+      </div>
+    </div>
+
+    <div class="nd-{{ sid }}__signup">
+      <div class="nd-{{ sid }}__ticket">
+        <span class="nd-{{ sid }}__stub">{{ section.settings.stub | escape }}</span>
+        <h3>{{ section.settings.signup_heading | escape }}</h3>
+        {%- if section.settings.signup_text != blank -%}<p>{{ section.settings.signup_text }}</p>{%- endif -%}
+
+        {%- form 'customer', id: form_id, class: 'nd-signup-form' -%}
+          <input type="hidden" name="contact[tags]" value="{{ section.settings.tags | escape }}">
+          {%- if form.posted_successfully? -%}
+            <p class="nd-{{ sid }}__msg nd-{{ sid }}__msg--ok" role="status">{{ section.settings.success | escape }}</p>
+          {%- else -%}
+            <div class="nd-{{ sid }}__form">
+              <label class="nd-{{ sid }}__sr" for="{{ form_id }}-email">Email address</label>
+              <input id="{{ form_id }}-email" type="email" name="contact[email]" autocomplete="email" required placeholder="Email address" value="{{ form.email }}">
+              <button type="submit">{{ section.settings.button_label | escape }}</button>
+            </div>
+            {%- if form.errors -%}
+              <p class="nd-{{ sid }}__msg" role="alert">{{ form.errors | default_errors }}</p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling;
+    if (!root || !root.hasAttribute('data-next-drop')) return;
+    var target = Date.parse(root.dataset.target);
+    if (isNaN(target)) { root.classList.add('is-done'); return; }
+    var dateEl = root.querySelector('[data-nd-date]');
+    try {
+      dateEl.textContent = 'Arriving ' + new Date(target).toLocaleString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } catch (e) {}
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var first = true;
+    function set(unit, value) {
+      var str = String(value).padStart(2, '0');
+      var group = root.querySelector('[data-unit="' + unit + '"]');
+      while (group.children.length < str.length) {
+        var extra = group.firstElementChild.cloneNode(true);
+        group.insertBefore(extra, group.firstElementChild);
+      }
+      var tiles = group.children;
+      for (var i = 0; i < tiles.length; i++) {
+        if (tiles[i].textContent !== str[i]) {
+          tiles[i].textContent = str[i];
+          if (!reduce && !first) { tiles[i].classList.remove('is-flip'); void tiles[i].offsetWidth; tiles[i].classList.add('is-flip'); }
+        }
+      }
+    }
+    function tick() {
+      var diff = target - Date.now();
+      if (diff <= 0) { root.classList.add('is-done'); clearInterval(timer); return; }
+      var s = Math.floor(diff / 1000);
+      set('days', Math.floor(s / 86400));
+      set('hours', Math.floor(s % 86400 / 3600));
+      set('minutes', Math.floor(s % 3600 / 60));
+      set('seconds', s % 60);
+      first = false;
+    }
+    var timer = setInterval(tick, 1000);
+    tick();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Next theme countdown",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Departure board" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Theme 03 is <em>boarding</em>" },
+    { "type": "text", "id": "target_date", "label": "Launch date and time", "default": "2026-12-15T10:00:00+05:30", "info": "Format: 2026-12-15T10:00:00+05:30 (date, time, time zone)" },
+    { "type": "text", "id": "clock_label", "label": "Countdown label (for screen readers)", "default": "Time until Theme 03 launches" },
+    { "type": "text", "id": "done_message", "label": "Message after the countdown ends", "default": "Theme 03 has landed" },
+    { "type": "header", "content": "Signup" },
+    { "type": "text", "id": "stub", "label": "Ticket label", "default": "Boarding pass · Theme 03" },
+    { "type": "text", "id": "signup_heading", "label": "Heading", "default": "Be first when theme 03 drops." },
+    { "type": "inline_richtext", "id": "signup_text", "label": "Text", "default": "One email at launch, plus an early-bird discount. Nothing else." },
+    { "type": "text", "id": "button_label", "label": "Button text", "default": "Notify me" },
+    { "type": "text", "id": "tags", "label": "Customer tags", "default": "newsletter,theme-03-waitlist", "info": "Added to everyone who signs up" },
+    { "type": "text", "id": "success", "label": "Success message", "default": "You're on the list. We'll email you the moment it lands." },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#0B1F17" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#F4F1E8" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#C6F432" },
+    { "type": "color", "id": "on_accent", "label": "Text on accent", "default": "#0B1F17" },
+    { "type": "range", "id": "padding", "label": "Top and bottom padding", "min": 32, "max": 160, "step": 8, "unit": "px", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Board row",
+      "settings": [
+        { "type": "text", "id": "code", "label": "Number", "default": "T01" },
+        { "type": "text", "id": "name", "label": "Theme name", "default": "Theme" },
+        { "type": "text", "id": "status", "label": "Status", "default": "Arrived" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "checkbox", "id": "is_next", "label": "Highlight as next theme", "default": false }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Next theme countdown" }]
+}
+{% endschema %}
