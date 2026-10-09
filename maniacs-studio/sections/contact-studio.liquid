@@ -1,0 +1,317 @@
+{%- liquid
+  assign sid = section.id | replace: '_', '' | downcase
+  assign form_id = 'ContactStudio-' | append: section.id
+  assign topics = section.settings.topics | split: ','
+-%}
+
+{% style %}
+  .cs-{{ sid }} {
+    --cs-ink: {{ section.settings.ink }};
+    --cs-panel: {{ section.settings.panel }};
+    --cs-on-panel: {{ section.settings.on_panel }};
+    --cs-accent: {{ section.settings.accent }};
+    --cs-paper: {{ section.settings.paper }};
+    --cs-line: color-mix(in srgb, var(--cs-ink) 18%, transparent);
+    --cs-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: var(--cs-ink);
+    font-family: var(--font-body--family);
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+  }
+  .cs-{{ sid }} *, .cs-{{ sid }} *::before, .cs-{{ sid }} *::after { box-sizing: border-box; }
+  .cs-{{ sid }}__wrap { max-width: var(--page-width, 1400px); margin: 0 auto; padding-inline: var(--page-margin, 40px); }
+  .cs-{{ sid }}__grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); border: 1px solid var(--cs-ink); }
+
+  /* Studio panel */
+  .cs-{{ sid }}__panel { position: relative; display: flex; flex-direction: column; gap: 28px; padding: clamp(28px, 4vw, 52px); background: var(--cs-panel); color: var(--cs-on-panel); overflow: hidden; }
+  .cs-{{ sid }}__panel::after { content: ''; position: absolute; right: -80px; bottom: -80px; width: 260px; height: 260px; border: 1px solid color-mix(in srgb, var(--cs-on-panel) 18%, transparent); border-radius: 50%; box-shadow: 0 0 0 40px color-mix(in srgb, var(--cs-on-panel) 4%, transparent), 0 0 0 80px color-mix(in srgb, var(--cs-on-panel) 3%, transparent); pointer-events: none; }
+  .cs-{{ sid }}__eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: var(--cs-mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--cs-accent); }
+  .cs-{{ sid }}__eyebrow i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 25%, transparent); }
+  .cs-{{ sid }}__heading { margin: 14px 0 0; font-size: clamp(2.4rem, 4.8vw, 4rem); line-height: 1; letter-spacing: -.015em; color: var(--cs-on-panel); }
+  .cs-{{ sid }}__heading em { font-style: italic; font-weight: 400; color: var(--cs-accent); }
+  .cs-{{ sid }}__intro { margin: 16px 0 0; max-width: 42ch; font-size: 1.0625rem; line-height: 1.6; opacity: .85; }
+  .cs-{{ sid }}__ways { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; border-top: 1px solid color-mix(in srgb, var(--cs-on-panel) 20%, transparent); position: relative; z-index: 1; }
+  .cs-{{ sid }}__way { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 14px; padding: 16px 0; border-bottom: 1px solid color-mix(in srgb, var(--cs-on-panel) 20%, transparent); }
+  .cs-{{ sid }}__way span { font-family: var(--cs-mono); font-size: 12px; color: var(--cs-accent); padding-top: 3px; }
+  .cs-{{ sid }}__way b { display: block; font-size: 1rem; }
+  .cs-{{ sid }}__way p { margin: 4px 0 0; font-size: .875rem; line-height: 1.5; opacity: .75; }
+  .cs-{{ sid }}__way a { color: inherit; text-underline-offset: 3px; }
+  .cs-{{ sid }}__note { position: relative; z-index: 1; margin: 0; font-family: var(--cs-mono); font-size: 12px; letter-spacing: .04em; opacity: .75; }
+
+  /* Form */
+  .cs-{{ sid }}__form { display: flex; flex-direction: column; gap: 22px; padding: clamp(28px, 4vw, 52px); background: var(--cs-paper); }
+  .cs-{{ sid }}__step { display: flex; align-items: baseline; gap: 12px; margin: 0 0 12px; font-size: 1.125rem; font-weight: 600; }
+  .cs-{{ sid }}__step span { font-family: var(--cs-mono); font-size: 12px; font-weight: 400; color: var(--cs-panel); }
+  .cs-{{ sid }}__topics { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; border: 0; }
+  .cs-{{ sid }}__topics legend { padding: 0; }
+  .cs-{{ sid }}__chip { position: relative; }
+  .cs-{{ sid }}__chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .cs-{{ sid }}__chip label { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 1px solid var(--cs-line); border-radius: 999px; font-size: 14px; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+  .cs-{{ sid }}__chip label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; border: 1px solid currentColor; transition: background .2s; }
+  .cs-{{ sid }}__chip input:checked + label { background: var(--cs-panel); border-color: var(--cs-panel); color: var(--cs-on-panel); }
+  .cs-{{ sid }}__chip input:checked + label::before { background: var(--cs-accent); border-color: var(--cs-accent); }
+  .cs-{{ sid }}__chip input:focus-visible + label { outline: 2px solid var(--cs-panel); outline-offset: 2px; }
+  .cs-{{ sid }}__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cs-{{ sid }}__field { display: flex; flex-direction: column; gap: 6px; }
+  .cs-{{ sid }}__field label { font-family: var(--cs-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
+  .cs-{{ sid }}__field input, .cs-{{ sid }}__field select, .cs-{{ sid }}__field textarea {
+    width: 100%; min-height: 50px; padding: 12px 0; border: 0; border-bottom: 1px solid var(--cs-ink); border-radius: 0;
+    background: transparent; color: var(--cs-ink); font: inherit; font-size: 16px;
+  }
+  .cs-{{ sid }}__field textarea { min-height: 120px; resize: vertical; }
+  .cs-{{ sid }}__field input:focus, .cs-{{ sid }}__field select:focus, .cs-{{ sid }}__field textarea:focus { outline: none; border-bottom: 2px solid var(--cs-panel); }
+  .cs-{{ sid }}__field [hidden] { display: none; }
+  .cs-{{ sid }}__submit { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
+  .cs-{{ sid }}__submit button {
+    display: inline-flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 28px; border: 0; cursor: pointer;
+    background: var(--cs-panel); color: var(--cs-on-panel);
+    font: inherit; font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+    transition: background .2s, color .2s;
+  }
+  .cs-{{ sid }}__submit button svg { width: 16px; height: 16px; transition: transform .25s; }
+  .cs-{{ sid }}__submit button:hover { background: var(--cs-ink); }
+  .cs-{{ sid }}__submit button:hover svg { transform: translateX(4px); }
+  .cs-{{ sid }}__submit button:focus-visible { outline: 2px solid var(--cs-ink); outline-offset: 3px; }
+  .cs-{{ sid }}__submit small { font-size: 12px; opacity: .65; }
+  .cs-{{ sid }}__msg { margin: 0; padding: 14px 16px; border-left: 3px solid var(--cs-panel); background: color-mix(in srgb, var(--cs-panel) 8%, transparent); font-size: 15px; }
+  .cs-{{ sid }}__msg--error { border-left-color: #b42318; background: #fdecea; color: #7a1a12; }
+
+  /* FAQ */
+  .cs-{{ sid }}__faq { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 32px; margin-top: 64px; }
+  .cs-{{ sid }}__faq h2 { margin: 0; font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.05; color: var(--cs-ink); }
+  .cs-{{ sid }}__faq h2 em { font-style: italic; font-weight: 400; color: var(--cs-panel); }
+  .cs-{{ sid }}__qs { border-top: 1px solid var(--cs-ink); }
+  .cs-{{ sid }}__q { border-bottom: 1px solid var(--cs-line); }
+  .cs-{{ sid }}__q summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; font-size: 1.0625rem; font-weight: 600; cursor: pointer; list-style: none; }
+  .cs-{{ sid }}__q summary::-webkit-details-marker { display: none; }
+  .cs-{{ sid }}__q summary::after { content: '+'; font-family: var(--cs-mono); font-size: 1.25rem; font-weight: 400; color: var(--cs-panel); transition: transform .25s; }
+  .cs-{{ sid }}__q[open] summary::after { transform: rotate(45deg); }
+  .cs-{{ sid }}__q summary:focus-visible { outline: 2px solid var(--cs-panel); outline-offset: 2px; }
+  .cs-{{ sid }}__q div { padding: 0 0 18px; max-width: 60ch; line-height: 1.6; opacity: .8; }
+
+  @media screen and (max-width: 989px) {
+    .cs-{{ sid }}__grid, .cs-{{ sid }}__faq { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media screen and (max-width: 749px) {
+    .cs-{{ sid }}__wrap { padding-inline: 16px; }
+    .cs-{{ sid }}__row { grid-template-columns: minmax(0, 1fr); }
+    .cs-{{ sid }}__submit button { width: 100%; justify-content: space-between; }
+    .cs-{{ sid }}__faq { margin-top: 48px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cs-{{ sid }} * { transition: none !important; }
+  }
+{% endstyle %}
+
+<div class="cs-{{ sid }}">
+  <div class="cs-{{ sid }}__wrap">
+    <div class="cs-{{ sid }}__grid">
+      <div class="cs-{{ sid }}__panel">
+        <div>
+          <span class="cs-{{ sid }}__eyebrow"><i aria-hidden="true"></i>{{ section.settings.eyebrow | escape }}</span>
+          <h1 class="cs-{{ sid }}__heading">{{ section.settings.heading }}</h1>
+          {%- if section.settings.intro != blank -%}<p class="cs-{{ sid }}__intro">{{ section.settings.intro }}</p>{%- endif -%}
+        </div>
+
+        {%- if section.blocks.size > 0 -%}
+          <ul class="cs-{{ sid }}__ways">
+            {%- for block in section.blocks -%}
+              <li class="cs-{{ sid }}__way" {{ block.shopify_attributes }}>
+                <span>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                <div>
+                  <b>{{ block.settings.title | escape }}</b>
+                  {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
+                </div>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.email != blank or section.settings.note != blank -%}
+          <p class="cs-{{ sid }}__note">
+            {%- if section.settings.email != blank -%}Prefer email? <a href="mailto:{{ section.settings.email }}" style="color: inherit;">{{ section.settings.email }}</a>{% if section.settings.note != blank %} · {% endif %}{%- endif -%}
+            {{- section.settings.note | escape -}}
+          </p>
+        {%- endif -%}
+      </div>
+
+      <div class="cs-{{ sid }}__form">
+        {%- form 'contact', id: form_id -%}
+          <input type="hidden" name="contact[id]" value="{{ form_id }}">
+          {%- liquid
+            assign form_matches = false
+            if form.id == form_id or form.id == blank
+              assign form_matches = true
+            endif
+          -%}
+          {%- if form.posted_successfully? and form_matches -%}
+            <p class="cs-{{ sid }}__msg" role="status" tabindex="-1" autofocus>{{ section.settings.success | escape }}</p>
+          {%- endif -%}
+          {%- if form.errors and form_matches -%}
+            <p class="cs-{{ sid }}__msg cs-{{ sid }}__msg--error" role="alert" tabindex="-1" autofocus>{{ form.errors | default_errors }}</p>
+          {%- endif -%}
+
+          <div style="display: flex; flex-direction: column; gap: 22px;">
+            <fieldset class="cs-{{ sid }}__topics">
+              <legend class="cs-{{ sid }}__step"><span>01</span>What can we help with?</legend>
+              {%- for t in topics -%}
+                {%- assign topic = t | strip -%}
+                {%- if topic != blank -%}
+                  <div class="cs-{{ sid }}__chip">
+                    <input type="radio" id="{{ form_id }}-topic-{{ forloop.index }}" name="contact[Topic]" value="{{ topic | escape }}" data-slug="{{ topic | handleize }}"{% if forloop.first %} checked{% endif %}>
+                    <label for="{{ form_id }}-topic-{{ forloop.index }}">{{ topic | escape }}</label>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </fieldset>
+
+            <div>
+              <p class="cs-{{ sid }}__step"><span>02</span>About you</p>
+              <div class="cs-{{ sid }}__row">
+                <div class="cs-{{ sid }}__field">
+                  <label for="{{ form_id }}-name">Name</label>
+                  <input id="{{ form_id }}-name" type="text" name="contact[name]" autocomplete="name" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+                </div>
+                <div class="cs-{{ sid }}__field">
+                  <label for="{{ form_id }}-email">Email *</label>
+                  <input id="{{ form_id }}-email" type="email" name="contact[email]" autocomplete="email" required spellcheck="false" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+                </div>
+                <div class="cs-{{ sid }}__field">
+                  <label for="{{ form_id }}-store">Store URL</label>
+                  <input id="{{ form_id }}-store" type="text" name="contact[Store URL]" placeholder="yourstore.myshopify.com" inputmode="url">
+                </div>
+                <div class="cs-{{ sid }}__field" data-cs-budget>
+                  <label for="{{ form_id }}-budget">Budget</label>
+                  <select id="{{ form_id }}-budget" name="contact[Budget]">
+                    {%- assign budgets = section.settings.budgets | split: ',' -%}
+                    {%- for b in budgets -%}
+                      <option value="{{ b | strip | escape }}">{{ b | strip | escape }}</option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <p class="cs-{{ sid }}__step"><span>03</span>Your message</p>
+              <div class="cs-{{ sid }}__field">
+                <label for="{{ form_id }}-body">Tell us about your store, what you need and any deadlines</label>
+                <textarea id="{{ form_id }}-body" name="contact[body]" rows="5">{{ form.body }}</textarea>
+              </div>
+            </div>
+
+            <div class="cs-{{ sid }}__submit">
+              <button type="submit">
+                {{ section.settings.button_label | escape }}
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5"/></svg>
+              </button>
+              {%- if section.settings.submit_note != blank -%}<small>{{ section.settings.submit_note | escape }}</small>{%- endif -%}
+            </div>
+          </div>
+        {%- endform -%}
+      </div>
+    </div>
+
+    {%- if section.settings.faq_heading != blank -%}
+      <div class="cs-{{ sid }}__faq">
+        <h2>{{ section.settings.faq_heading }}</h2>
+        <div class="cs-{{ sid }}__qs">
+          {%- for i in (1..5) -%}
+            {%- capture qk %}q{{ i }}{% endcapture -%}
+            {%- capture ak %}a{{ i }}{% endcapture -%}
+            {%- if section.settings[qk] != blank -%}
+              <details class="cs-{{ sid }}__q">
+                <summary>{{ section.settings[qk] | escape }}</summary>
+                <div>{{ section.settings[ak] }}</div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling;
+    if (!root) return;
+    var budget = root.querySelector('[data-cs-budget]');
+    var radios = root.querySelectorAll('input[name="contact[Topic]"]');
+    var budgetFor = {{ section.settings.budget_topic | handleize | json }};
+    function sync() {
+      var picked = root.querySelector('input[name="contact[Topic]"]:checked');
+      var show = picked && picked.dataset.slug === budgetFor;
+      if (budget) {
+        budget.hidden = !show;
+        budget.querySelector('select').disabled = !show;
+      }
+    }
+    var want = new URLSearchParams(window.location.search).get('topic');
+    if (want) {
+      radios.forEach(function (r) { if (r.dataset.slug === want) r.checked = true; });
+    }
+    radios.forEach(function (r) { r.addEventListener('change', sync); });
+    sync();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Contact studio",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Studio inbox · open" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Tell us what you're <em>building</em>" },
+    { "type": "inline_richtext", "id": "intro", "label": "Intro", "default": "Questions about a theme, help with setup, or a custom Shopify store from scratch — it all lands with the people who design and build our themes." },
+    { "type": "text", "id": "email", "label": "Email address (optional)", "info": "Shown under the list as a direct email link" },
+    { "type": "text", "id": "note", "label": "Small note", "default": "Every message is read by a person, not a bot." },
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "topics", "label": "Topics", "info": "Separate with commas. The first is selected by default. Link to a topic with ?topic=custom-theme", "default": "Custom theme, Theme support, Buying a theme, Something else" },
+    { "type": "text", "id": "budget_topic", "label": "Show budget for topic", "default": "Custom theme" },
+    { "type": "text", "id": "budgets", "label": "Budget options", "info": "Separate with commas", "default": "Not sure yet, Under ₹25,000, ₹25,000 – ₹75,000, ₹75,000 – ₹1,50,000, ₹1,50,000+" },
+    { "type": "text", "id": "button_label", "label": "Button text", "default": "Send message" },
+    { "type": "text", "id": "submit_note", "label": "Note next to button", "default": "We'll reply by email." },
+    { "type": "text", "id": "success", "label": "Success message", "default": "Thanks — your message is in. We'll get back to you by email." },
+    { "type": "header", "content": "FAQ" },
+    { "type": "inline_richtext", "id": "faq_heading", "label": "Heading", "default": "Before you <em>write</em>" },
+    { "type": "text", "id": "q1", "label": "Question 1", "default": "I bought a theme. How do I get help?" },
+    { "type": "inline_richtext", "id": "a1", "label": "Answer 1", "default": "Choose “Theme support” above and include your store URL and order number, plus a screenshot if something looks wrong." },
+    { "type": "text", "id": "q2", "label": "Question 2", "default": "How does a custom theme project work?" },
+    { "type": "inline_richtext", "id": "a2", "label": "Answer 2", "default": "Tell us about your brand, products and goals. We'll reply with questions, ideas and a quote before any work starts." },
+    { "type": "text", "id": "q3", "label": "Question 3", "default": "Can you set up a theme on my store?" },
+    { "type": "inline_richtext", "id": "a3", "label": "Answer 3", "default": "Yes. Setup help is included with our setup package — pick “Buying a theme” and tell us what you need." },
+    { "type": "text", "id": "q4", "label": "Question 4", "default": "What should I include in my message?" },
+    { "type": "inline_richtext", "id": "a4", "label": "Answer 4", "default": "Your store URL, what you'd like to change or build, and any deadlines. Links to stores you like help a lot." },
+    { "type": "text", "id": "q5", "label": "Question 5" },
+    { "type": "inline_richtext", "id": "a5", "label": "Answer 5" },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "ink", "label": "Text", "default": "#0B1F17" },
+    { "type": "color", "id": "panel", "label": "Studio panel", "default": "#074F3B" },
+    { "type": "color", "id": "on_panel", "label": "Text on panel", "default": "#F4F1E8" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#C6F432" },
+    { "type": "color", "id": "paper", "label": "Form background", "default": "#F7F5EF" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "way",
+      "name": "Way we help",
+      "limit": 5,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Custom themes" },
+        { "type": "inline_richtext", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact studio",
+      "blocks": [
+        { "type": "way", "settings": { "title": "Custom themes", "text": "High-converting Shopify themes designed around your brand." } },
+        { "type": "way", "settings": { "title": "Theme support", "text": "Bought Black & White or Terra Oddity? We'll help you get it right." } },
+        { "type": "way", "settings": { "title": "Setup & tweaks", "text": "Installation, content setup and small changes to your store." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
