@@ -1,0 +1,252 @@
+{%- liquid
+  assign sid = section.id | replace: '_', '' | downcase
+  assign stages = 'Sketch,Build,Test,Launch' | split: ','
+-%}
+
+{% style %}
+  .shelf-{{ sid }} {
+    --sh-ink: {{ section.settings.ink }};
+    --sh-bg: {{ section.settings.background }};
+    --sh-line: color-mix(in srgb, var(--sh-ink) 16%, transparent);
+    background: var(--sh-bg);
+    color: var(--sh-ink);
+    overflow-x: clip;
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+    font-family: var(--font-body--family);
+  }
+  .shelf-{{ sid }}__wrap { max-width: var(--page-width, 1400px); margin: 0 auto; padding-inline: var(--page-margin, 40px); }
+  .shelf-{{ sid }}__head { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; margin-bottom: 40px; }
+  .shelf-{{ sid }}__eyebrow { display: block; margin-bottom: 14px; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; opacity: .7; }
+  .shelf-{{ sid }}__heading { margin: 0; font-size: clamp(2.5rem, 5.5vw, 4.75rem); line-height: .98; letter-spacing: -.015em; color: var(--sh-ink); }
+  .shelf-{{ sid }}__heading em { font-style: italic; font-weight: 400; }
+  .shelf-{{ sid }}__intro { margin: 0; max-width: 40ch; font-size: 1rem; line-height: 1.6; opacity: .8; }
+  .shelf-{{ sid }}__legend { display: flex; gap: 16px; margin-top: 14px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+  .shelf-{{ sid }}__legend b { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: 600; }
+
+  .shelf-{{ sid }}__list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--sh-ink); }
+  .shelf-{{ sid }}__item { position: relative; border-bottom: 1px solid var(--sh-line); }
+  .shelf-{{ sid }}__row {
+    --row-accent: var(--sh-ink); --row-on: var(--sh-bg);
+    position: relative; isolation: isolate;
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1.25fr) minmax(0, 1fr) 190px 40px;
+    gap: 24px; align-items: center;
+    padding: 28px 16px;
+    color: var(--sh-ink); text-decoration: none;
+    transition: color .35s ease;
+  }
+  .shelf-{{ sid }}__row::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: var(--row-accent);
+    transform: scaleY(0); transform-origin: bottom;
+    transition: transform .45s cubic-bezier(.2, .7, .2, 1);
+  }
+  .shelf-{{ sid }}__row:hover, .shelf-{{ sid }}__row:focus-visible { color: var(--row-on); }
+  .shelf-{{ sid }}__row:hover::before, .shelf-{{ sid }}__row:focus-visible::before { transform: scaleY(1); }
+  .shelf-{{ sid }}__row:focus-visible { outline: 2px solid var(--sh-ink); outline-offset: 2px; }
+
+  .shelf-{{ sid }}__num { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(2rem, 3.2vw, 2.75rem); line-height: 1; letter-spacing: -.04em; }
+  .shelf-{{ sid }}__name { display: block; font-family: var(--font-heading--family); font-size: clamp(1.75rem, 3.4vw, 2.75rem); line-height: 1; letter-spacing: -.01em; }
+  .shelf-{{ sid }}__desc { display: block; margin-top: 8px; max-width: 46ch; font-size: .9375rem; line-height: 1.5; opacity: .75; }
+
+  .shelf-{{ sid }}__track { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; padding: 0; list-style: none; }
+  .shelf-{{ sid }}__step { position: relative; display: flex; flex-direction: column; gap: 10px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; opacity: .5; }
+  .shelf-{{ sid }}__step::before { content: ''; position: absolute; top: 5px; left: 12px; right: 0; height: 1px; background: currentColor; opacity: .5; }
+  .shelf-{{ sid }}__step:last-child::before { display: none; }
+  .shelf-{{ sid }}__step i { position: relative; width: 11px; height: 11px; border: 1px solid currentColor; border-radius: 50%; }
+  .shelf-{{ sid }}__step.is-done, .shelf-{{ sid }}__step.is-now { opacity: 1; }
+  .shelf-{{ sid }}__step.is-done i { background: currentColor; }
+  .shelf-{{ sid }}__step.is-done::before { opacity: 1; }
+  .shelf-{{ sid }}__step.is-now i { background: currentColor; box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 22%, transparent); }
+
+  .shelf-{{ sid }}__status { justify-self: start; display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid currentColor; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+  .shelf-{{ sid }}__status.is-live::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: shelf-blink-{{ sid }} 1.6s ease-in-out infinite; }
+  @keyframes shelf-blink-{{ sid }} { 50% { opacity: .25; } }
+  .shelf-{{ sid }}__cta { display: block; margin-top: 8px; font-size: 12px; letter-spacing: .06em; text-decoration: underline; text-underline-offset: 3px; }
+  .shelf-{{ sid }}__arrow { justify-self: end; width: 28px; height: 28px; transition: transform .35s ease; }
+  .shelf-{{ sid }}__row:hover .shelf-{{ sid }}__arrow { transform: rotate(-45deg); }
+
+  .shelf-{{ sid }}__peek {
+    position: absolute; top: 0; left: 0; z-index: 3;
+    width: clamp(240px, 24vw, 340px); aspect-ratio: 16 / 10;
+    margin: 0; overflow: hidden; pointer-events: none;
+    border: 6px solid #ffffff; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .45);
+    opacity: 0;
+    transform: translate(var(--px, 60%), var(--py, -50%)) rotate(-4deg) scale(.9);
+    transition: opacity .25s ease, transform .25s ease;
+  }
+  .shelf-{{ sid }}__peek img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+  .shelf-{{ sid }}__item:hover .shelf-{{ sid }}__peek,
+  .shelf-{{ sid }}__item:focus-within .shelf-{{ sid }}__peek { opacity: 1; transform: translate(var(--px, 60%), var(--py, -50%)) rotate(-4deg) scale(1); }
+  .shelf-{{ sid }}__thumb { display: none; }
+
+  @media screen and (max-width: 1099px) {
+    .shelf-{{ sid }}__row { grid-template-columns: 64px minmax(0, 1fr) 170px 28px; grid-auto-flow: row dense; }
+    .shelf-{{ sid }}__track { grid-column: 2 / -1; }
+    .shelf-{{ sid }}__thumb { order: -1; }
+  }
+  @media screen and (max-width: 749px), (hover: none) {
+    .shelf-{{ sid }}__peek { display: none; }
+    .shelf-{{ sid }}__thumb { display: block; grid-column: 1 / -1; aspect-ratio: 16 / 10; overflow: hidden; border: 1px solid var(--sh-line); }
+    .shelf-{{ sid }}__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+  }
+  @media screen and (max-width: 749px) {
+    .shelf-{{ sid }}__wrap { padding-inline: 16px; }
+    .shelf-{{ sid }}__head { grid-template-columns: minmax(0, 1fr); margin-bottom: 28px; }
+    .shelf-{{ sid }}__heading { font-size: clamp(2.25rem, 11vw, 3rem); }
+    .shelf-{{ sid }}__row { grid-template-columns: auto minmax(0, 1fr); gap: 14px 16px; padding: 22px 0; }
+    .shelf-{{ sid }}__row::before { inset: 0 -16px; }
+    .shelf-{{ sid }}__thumb { order: -1; }
+    .shelf-{{ sid }}__num { font-size: 1.75rem; }
+    .shelf-{{ sid }}__track { grid-column: 1 / -1; }
+    .shelf-{{ sid }}__status-wrap { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .shelf-{{ sid }}__cta { margin-top: 0; }
+    .shelf-{{ sid }}__arrow { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .shelf-{{ sid }}__row::before, .shelf-{{ sid }}__peek, .shelf-{{ sid }}__arrow { transition: none; }
+    .shelf-{{ sid }}__status.is-live::before { animation: none; }
+  }
+{% endstyle %}
+
+<div class="shelf-{{ sid }}" data-shelf>
+  <div class="shelf-{{ sid }}__wrap">
+    <div class="shelf-{{ sid }}__head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<span class="shelf-{{ sid }}__eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+        <h2 class="shelf-{{ sid }}__heading">{{ section.settings.heading }}</h2>
+      </div>
+      <div>
+        {%- if section.settings.intro != blank -%}<p class="shelf-{{ sid }}__intro">{{ section.settings.intro }}</p>{%- endif -%}
+        {%- liquid
+          assign live_count = 0
+          assign bench_count = 0
+          for b in section.blocks
+            if b.settings.stage == '4'
+              assign live_count = live_count | plus: 1
+            else
+              assign bench_count = bench_count | plus: 1
+            endif
+          endfor
+        -%}
+        <div class="shelf-{{ sid }}__legend">
+          <span><b>{{ live_count | prepend: '0' | slice: -2, 2 }}</b> Live</span>
+          <span><b>{{ bench_count | prepend: '0' | slice: -2, 2 }}</b> On the bench</span>
+        </div>
+      </div>
+    </div>
+
+    <ol class="shelf-{{ sid }}__list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign stage = block.settings.stage | plus: 0
+          assign stage_idx = stage | minus: 1
+          assign is_live = false
+          if stage == 4
+            assign is_live = true
+          endif
+          if block.settings.link != blank
+            assign tag = 'a'
+          else
+            assign tag = 'div'
+          endif
+          assign num = forloop.index | prepend: '0' | slice: -2, 2
+        -%}
+        <li class="shelf-{{ sid }}__item" {{ block.shopify_attributes }}>
+          <{{ tag }}
+            class="shelf-{{ sid }}__row"
+            {% if tag == 'a' %}href="{{ block.settings.link }}"{% endif %}
+            style="--row-accent: {{ block.settings.accent }}; --row-on: {{ block.settings.on_accent }};"
+          >
+            {%- if block.settings.image != blank -%}
+              <span class="shelf-{{ sid }}__thumb">
+                {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '450, 700, 900', sizes: '100vw', alt: '' }}
+              </span>
+            {%- endif -%}
+            <span class="shelf-{{ sid }}__num" aria-hidden="true">{{ num }}</span>
+            <span>
+              <span class="shelf-{{ sid }}__name">{{ block.settings.name | escape }}</span>
+              {%- if block.settings.description != blank -%}<span class="shelf-{{ sid }}__desc">{{ block.settings.description | escape }}</span>{%- endif -%}
+            </span>
+            <ol class="shelf-{{ sid }}__track" aria-label="Progress: {{ stages[stage_idx] }}">
+              {%- for s in stages -%}
+                <li class="shelf-{{ sid }}__step{% if forloop.index < stage %} is-done{% elsif forloop.index == stage %} is-now{% endif %}"><i aria-hidden="true"></i>{{ s }}</li>
+              {%- endfor -%}
+            </ol>
+            <span class="shelf-{{ sid }}__status-wrap">
+              <span class="shelf-{{ sid }}__status{% if is_live %} is-live{% endif %}">{{ block.settings.status | escape }}</span>
+              {%- if block.settings.link_label != blank and tag == 'a' -%}
+                <span class="shelf-{{ sid }}__cta">{{ block.settings.link_label | escape }}</span>
+              {%- endif -%}
+            </span>
+            <svg class="shelf-{{ sid }}__arrow" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5 14h18M16 7l7 7-7 7"/></svg>
+          </{{ tag }}>
+          {%- if block.settings.image != blank -%}
+            <figure class="shelf-{{ sid }}__peek" aria-hidden="true">
+              {{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '400, 700', sizes: '340px', alt: '' }}
+            </figure>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling;
+    if (!root || !root.hasAttribute('data-shelf')) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.querySelectorAll('.shelf-{{ sid }}__item').forEach(function (item) {
+      var peek = item.querySelector('.shelf-{{ sid }}__peek');
+      if (!peek) return;
+      item.addEventListener('mousemove', function (e) {
+        var r = item.getBoundingClientRect();
+        peek.style.setProperty('--px', (e.clientX - r.left + 24) + 'px');
+        peek.style.setProperty('--py', (e.clientY - r.top - peek.offsetHeight / 2) + 'px');
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Theme shelf",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The studio shelf" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Every theme, <em>sketch to launch</em>" },
+    { "type": "inline_richtext", "id": "intro", "label": "Intro" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "ink", "label": "Text and lines", "default": "#074F3B" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "theme",
+      "name": "Theme",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Theme name" },
+        { "type": "text", "id": "description", "label": "Description" },
+        { "type": "image_picker", "id": "image", "label": "Preview image" },
+        {
+          "type": "select", "id": "stage", "label": "Stage", "default": "1",
+          "options": [
+            { "value": "1", "label": "Sketch" },
+            { "value": "2", "label": "Build" },
+            { "value": "3", "label": "Test" },
+            { "value": "4", "label": "Launched" }
+          ]
+        },
+        { "type": "text", "id": "status", "label": "Status label", "default": "Sketching" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "link_label", "label": "Link text" },
+        { "type": "color", "id": "accent", "label": "Hover colour", "default": "#074F3B" },
+        { "type": "color", "id": "on_accent", "label": "Hover text colour", "default": "#FFFFFF" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Theme shelf", "blocks": [{ "type": "theme" }, { "type": "theme" }, { "type": "theme" }] }]
+}
+{% endschema %}
