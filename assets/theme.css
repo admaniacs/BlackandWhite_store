@@ -669,6 +669,15 @@ html { scroll-behavior: smooth; }
 .bw-cart-drawer__lines { flex: 1; padding: 6px 20px; overflow-y: auto; }
 .bw-cart-line { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--grey-20); }
 .bw-cart-line__media { width: 76px; height: 96px; flex: none; }
+/* Personalization from Zepto Product Personalizer, as line item properties. */
+.bw-cart-props { margin: 8px 0 0; display: grid; gap: 4px; }
+.bw-cart-props__row { display: flex; gap: 8px; align-items: center; font: 500 11px var(--font-ui); }
+.bw-cart-props dt { color: var(--grey-70); flex: none; }
+.bw-cart-props dt::after { content: ":"; }
+.bw-cart-props dd { margin: 0; color: var(--ink); overflow-wrap: anywhere; }
+.bw-cart-props__thumb { display: block; width: 40px; height: 40px; border: 1px solid var(--grey-20); }
+.bw-cart-props__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.bw-cart-props__link { text-decoration: underline; }
 .bw-qty-stepper { display: flex; border: 1px solid var(--ink); width: fit-content; }
 /* WCAG 2.2 asks for a 24x24px minimum pointer target. */
 .bw-qty-stepper button { min-width: 32px; min-height: 32px; padding: 5px 11px; font: 600 12px var(--font-ui); }

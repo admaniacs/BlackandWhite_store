@@ -26,7 +26,8 @@
       "free_shipping_reached": "You've unlocked free shipping",
       "returns_note": "30-day returns · secure checkout",
       "add_on_title": "Add {{ title }} for {{ price }}",
-      "view_cart": "View cart"
+      "view_cart": "View cart",
+      "view_file": "View file"
     },
     "newsletter": {
       "placeholder": "email address",

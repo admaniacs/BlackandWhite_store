@@ -1,0 +1,43 @@
+{%- comment -%}
+  Lists a cart line's personalization, such as the text, font, color or
+  uploaded photo a customer picked in Zepto Product Personalizer.
+  Accepts: item (cart line item)
+
+  Properties whose names start with "_" are the app's own bookkeeping and stay
+  hidden. Uploaded files come through as URLs: images show as a thumbnail that
+  opens the full file, other files as a link.
+{%- endcomment -%}
+{%- assign visible_count = 0 -%}
+{%- for property in item.properties -%}
+  {%- assign first_char = property.first | slice: 0 -%}
+  {%- if property.last != blank and first_char != '_' -%}
+    {%- assign visible_count = visible_count | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if visible_count > 0 -%}
+  <dl class="bw-cart-props">
+    {%- for property in item.properties -%}
+      {%- assign first_char = property.first | slice: 0 -%}
+      {%- if property.last == blank or first_char == '_' -%}{%- continue -%}{%- endif -%}
+      {%- assign value = property.last | strip -%}
+      {%- assign value_lower = value | downcase | split: '?' | first -%}
+      <div class="bw-cart-props__row">
+        <dt>{{ property.first | escape }}</dt>
+        <dd>
+          {%- if value contains '://' or value contains '/uploads/' -%}
+            {%- if value_lower contains '.jpg' or value_lower contains '.jpeg' or value_lower contains '.png' or value_lower contains '.webp' or value_lower contains '.gif' or value_lower contains '.heic' -%}
+              <a href="{{ value | escape }}" target="_blank" rel="noopener" class="bw-cart-props__thumb">
+                <img src="{{ value | escape }}" alt="{{ property.first | escape }}" width="40" height="40" loading="lazy">
+              </a>
+            {%- else -%}
+              <a href="{{ value | escape }}" target="_blank" rel="noopener" class="bw-cart-props__link">{{ 'general.cart.view_file' | t }}</a>
+            {%- endif -%}
+          {%- else -%}
+            {{ value | escape }}
+          {%- endif -%}
+        </dd>
+      </div>
+    {%- endfor -%}
+  </dl>
+{%- endif -%}

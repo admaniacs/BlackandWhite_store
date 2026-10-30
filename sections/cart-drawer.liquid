@@ -43,7 +43,8 @@
               <span style="font:600 13px var(--font-ui);text-transform:uppercase">{{ item.product.title }}</span>
               <span style="font:700 13px var(--font-ui)">{{ item.final_line_price | money }}</span>
             </div>
-            <div class="bw-label-mono" style="margin-top:4px">{{ item.variant.title }}</div>
+            {%- unless item.product.has_only_default_variant -%}<div class="bw-label-mono" style="margin-top:4px">{{ item.variant.title }}</div>{%- endunless -%}
+            {%- render 'cart-line-properties', item: item -%}
             <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
               <div class="bw-qty-stepper" data-qty-stepper>
                 <button type="button" data-qty-decrease aria-label="Decrease quantity">−</button>
